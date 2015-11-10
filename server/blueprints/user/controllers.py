@@ -68,9 +68,10 @@ def get_sup_token(): #code to here
     user['refresh_token'] = resp['refresh_token']
     user['expires_in'] = resp['expires_in']
 
-    user.save()
-
     ext_token = current_app.sup_auth.generate_ext_token(open_id)
+    user['ext_token'] = ext_token
+
+    user.save()
 
     return {
         'ext_token': ext_token

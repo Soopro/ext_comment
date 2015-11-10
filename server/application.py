@@ -37,17 +37,20 @@ def create_app(config_name='development'):
     # app.mongodb_conn = mongodb_conn
 
     # register mongokit models
-    from blueprints.extension.models import (CommentExtension,
+    from blueprints.comment.models import (CommentExtension,
                                              CommentGroup, Comment)
 
-    app.mongodb_database.register([CommentExtension, CommentGroup, Comment])
+    from blueprints.user.models import User
+
+    app.mongodb_database.register([CommentExtension, CommentGroup,
+                                   Comment, User])
 
     # register blueprints
-    from blueprints.extension import blueprint as comment_blueprint
+    from blueprints.comment import blueprint as comment_blueprint
     app.register_blueprint(comment_blueprint)
 
     from blueprints.user import blueprint as user_blueprint
-    app.register_blueprint(user_blueprint, url_prefix="/comment/user")
+    app.register_blueprint(user_blueprint)
 
     # register error handlers
     @app.errorhandler(404)

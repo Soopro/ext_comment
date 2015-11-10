@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 
 from functools import wraps
@@ -40,18 +39,14 @@ def verify_outer():
                 CommentExtension.find_one_by_eid(ext_id)
     except:
         raise ExtensionNotFound
-
     if request.url.startswith(comment_ext.allowed_origin) is False:
         raise PermissionDenied
 
-    if CommentExtension.get("require_login"):
-        member_token = request.headers.get('MemberAuthr')
-        open_id = CommentExtension["open_id"]
-
-        #TODO: Check member token
-        #raise PermissionDenied
+    if comment_ext.get("require_login"):
+        memeber_token = request.headers.get('MemberAuthr')
+        open_id = comment_ext["open_id"]
+        # TODO: Check member token
+        # raise PermissionDenied
     return
 
 
-def verify_admin():
-    pass

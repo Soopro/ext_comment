@@ -15,7 +15,8 @@ class User(Document):
         "refresh_token": unicode,
         "token_type": unicode,
         "expires_in": int,
-        "random_string": unicode
+        "random_string": unicode,
+        "ext_token": unicode
     }
 
     default_values = {

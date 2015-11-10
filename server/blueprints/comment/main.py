@@ -1,22 +1,25 @@
 from flask import Blueprint, request, current_app
 
-from blueprints.extension.models import CommentExtension
+from blueprints.comment.models import CommentExtension
 from errors.base_errors import APIError
 from routes import urls
 from utils.response_json import make_json_response
-from utils.base_utils import route_inject
-from errors.general_errors import PermissionDenied
-from utils.base_utils import verify_outer
+from utils.base_utils import (route_inject,
+                              verify_outer)
+from utils.request import verify_token
 
-bp_name = 'extension'
+bp_name = 'comment'
 
 visit_api = [
     "{}.add_comment".format(bp_name),
     "{}.remove_comment".format(bp_name),
+
 ]
 manage_api = [
+    "{}.get_comment_extension".format(bp_name),
+    "{}.list_comment_groups".format(bp_name),
     "{}.remove_batch_comments".format(bp_name),
-    "{}.list_comment_groups".format(bp_name)
+    "{}.remove_comment".format(bp_name)
 ]
 
 blueprint = Blueprint(bp_name, __name__)
@@ -34,8 +37,8 @@ def before_first_request():
 def before_request():
     if request.endpoint in visit_api:
         verify_outer()
-    elif request.endpoint in mange_api:
-        verify_jwt()
+    elif request.endpoint in manage_api:
+        verify_token()
     return
 
 

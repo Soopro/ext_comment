@@ -96,13 +96,12 @@ class PermissionDenied(APIError):
 
 class AuthenticationFailed(APIError):
     status_code = httplib.UNAUTHORIZED
+    response_code = 100500
     status_message = 'AUTHENTICATION_FAILED'
-    response_code = 100400
 
     def __init__(self, name=""):
         super(AuthenticationFailed, self).__init__(name)
         return
-
 #
 
 # class FileCreateFail(APIError):
@@ -212,17 +211,13 @@ class AuthenticationFailed(APIError):
 #     status_message = "APP_NOT_FOUND"
 
 
+class OAuth2PermissionDenied(APIError):
+    status_code = httplib.FORBIDDEN
+    status_message = 'OAUTH2_FORBIDDEN'
+    response_code = 990126
 
-
-
-
-# class OAuth2PermissionDenied(APIError):
-#     status_code = httplib.FORBIDDEN
-#     status_message = 'OAUTH2_FORBIDDEN'
-#     response_code = 990126
-#
-#     def __init__(self, name=""):
-#         super(OAuth2PermissionDenied, self).__init__(name)
+    def __init__(self, name=""):
+        super(OAuth2PermissionDenied, self).__init__(name)
 #         return
 #
 #

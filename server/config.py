@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 
 __version_info__ = ('0', '0', '1')
 __version__ = '.'.join(__version_info__)
+
 
 class Config(object):
     version = __version__
@@ -29,6 +31,14 @@ class Config(object):
 
     REDIRECT_URI = 'http://127.0.0.1:9000/#/redirect'
     EXPIRED_IN = 36000
+
+    # JWT
+    JWT_SECRET_KEY = SECRET_KEY  # SECRET_KEY
+    JWT_ALGORITHM = 'HS256'
+    JWT_VERIFY_EXPIRATION = True,
+    JWT_LEEWAY = 0
+    JWT_EXPIRATION_DELTA = timedelta(seconds=3600 * 24 * 30)
+    JWT_DEFAULT_REALM = 'Login Required'
 
 
 class DevelopmentConfig(Config):

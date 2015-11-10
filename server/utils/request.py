@@ -1,8 +1,9 @@
-#coding=utf-8
+# coding=utf-8
 from __future__ import absolute_import
 
 from flask import request, current_app, g
-from errors.general_errors import ErrInvalidRequestBody, ErrRequestBodyNotExists
+from errors.general_errors import ErrInvalidRequestBody, \
+    ErrRequestBodyNotExists
 from errors.validation_errors import ValidationParameterRequired
 from errors.general_errors import AuthenticationFailed
 
@@ -14,6 +15,8 @@ def parse_json():
     if not isinstance(source, dict):
         raise ErrInvalidRequestBody
     return ParsedBody(source)
+
+
 #
 #
 # def parse_form():
@@ -37,7 +40,9 @@ def parse_args():
 def make_query(args):
     query = ""
     for arg in args:
-        s = "{}={}".format(arg, args.get(arg)) if query == "" else "&{}={}".format(arg, args.get(arg))
+        s = "{}={}".format(arg,
+                           args.get(arg)) if query == "" else "&{}={}".format(
+            arg, args.get(arg))
         query = "{}{}".format(query, s)
     return query
 
@@ -75,8 +80,8 @@ def verify_token(debug=False):
 
     ext_token = request.headers.get('Authorization')
     if ext_token is None:
-        raise AuthenticationFailed('Authorization(token) Required, Authorization header was missing')
-
+        raise AuthenticationFailed(
+            'Authorization(token) Required, Authorization header was missing')
 
     open_id = current_app.sup_auth.parse_ext_token(ext_token)
 

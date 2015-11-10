@@ -10,8 +10,8 @@ from utils.base_utils import now
 
 class CommentExtension(BaseDocument):
     structure = {
-        'app_id': ObjectId,
-        'allowed_origins': unicode
+        'open_id': ObjectId,
+        'allowed_origins': unicode,
     }
 
     use_dot_notation = True
@@ -25,15 +25,17 @@ class CommentExtension(BaseDocument):
 class CommentGroup(BaseDocument):
     structure = {
         'ext_id': ObjectId,
-        'group_name': unicode
+        'group_key': unicode,
+        'creation': int
     }
 
     use_dot_notation = True
 
-    def find_one_by_eid_and_gname(self, ext_id, group_name):
+    default_values = {'creation': now()}
+
+    def find_one_by_group_key(self, group_key):
         return self.find_one({
-            'ext_id': ObjectId(ext_id),
-            'group_name': group_name
+            'group_key': group_key
         })
 
     def find_all_by_eid(self, ext_id):
@@ -49,7 +51,8 @@ class Comment(BaseDocument):
         'author_id': unicode,
         'author_name': unicode,
         'ext_id': ObjectId,
-        'group_id': ObjectId
+        'group_id': ObjectId,
+        'group_key': unicode
     }
 
     use_dot_notation = True
@@ -62,13 +65,13 @@ class Comment(BaseDocument):
             '_id': ObjectId(comment_id)
         })
 
-    def find_all_by_gid(self, group_id):
+    def find_all_by_gid(self, gid):
         return self.find({
-            'group_id': ObjectId(group_id)
+            'group_id': ObjectId(gid)
         })
 
-    def find_by_eid_and_aid_desc(self, author_id, ext_id):
+    def find_by_gkey_and_aid_desc(self, group_key, author_id):
         return self.find({
             'author_id': author_id,
-            'ext_id': ext_id
+            'group_key': group_key
         }).sort('creation', INDEX_DESCENDING).limit(5)
