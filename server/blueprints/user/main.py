@@ -1,13 +1,11 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from flask import Blueprint, request, current_app, g
-from .models import User
+from flask import Blueprint, request, current_app
 from .routes import urlpatterns
 from errors.base_errors import APIError
 from utils.base_utils import make_json_response, route_inject
 from utils.request import verify_token
-
 
 bp_name = "user"
 
@@ -20,12 +18,6 @@ user_api_endpoints = [
 blueprint = Blueprint(bp_name, __name__)
 
 route_inject(blueprint, urlpatterns)
-
-
-@blueprint.before_app_first_request
-def before_first_request():
-    current_app.mongodb_database.register(User)
-    return
 
 
 @blueprint.before_request

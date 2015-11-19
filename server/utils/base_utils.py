@@ -7,6 +7,8 @@ from flask import request, current_app
 from errors.general_errors import (PermissionDenied,
                                    ExtensionNotFound)
 import base64
+import requests
+import json
 
 def route_inject(app_or_blueprint, url_patterns):
     for pattern in url_patterns:
@@ -48,5 +50,16 @@ def verify_outer():
         # TODO: Check member token
         # raise PermissionDenied
     return
+
+
+def get_allowed_origin(open_id):
+    payloads = {
+        'open_id': open_id
+    }
+    headers = {'content-type': 'application/json'}
+    r = requests.post(current_app.config.get(''),
+                    # TODO: need the platform API to get the allowed origin
+                      data=json.dumps(payloads), headers=headers)
+    return json.loads(r.text)
 
 

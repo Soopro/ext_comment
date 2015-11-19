@@ -2,8 +2,10 @@
 from __future__ import absolute_import
 
 import traceback
+
 from flask import Flask, current_app
 from mongokit import Connection as MongodbConn
+
 from config import config
 from utils.encoders import Encoder
 from utils.ext_oauth import SupAuth
@@ -36,21 +38,17 @@ def create_app(config_name='development'):
     # app.mongodb_database = mongodb_database
     # app.mongodb_conn = mongodb_conn
 
-    # register mongokit models
-    from blueprints.comment.models import (CommentExtension,
-                                             CommentGroup, Comment)
 
-    from blueprints.user.models import User
+    from common_models import User
 
-    app.mongodb_database.register([CommentExtension, CommentGroup,
-                                   Comment, User])
+    app.mongodb_database.register(User)
 
     # register blueprints
     from blueprints.comment import blueprint as comment_blueprint
-    app.register_blueprint(comment_blueprint)
+    app.register_blueprint(comment_blueprint, url_prefix="/comment")
 
     from blueprints.user import blueprint as user_blueprint
-    app.register_blueprint(user_blueprint)
+    app.register_blueprint(user_blueprint, url_prefix="/comment/user")
 
     # register error handlers
     @app.errorhandler(404)

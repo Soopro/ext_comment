@@ -10,6 +10,7 @@ urls = [
 
     # admin api
     ("/manage/settings", get_comment_extension, "GET"),
+    ("/manage/settings", sync_comment_extension, "POST"),
     ("/manage/group", list_comment_groups, "GET"),
     ("/manage/group/<group_key>", get_group_comments, "GET"),
     ("/manage/group/<group_key>", remove_batch_comments, "DELETE"),

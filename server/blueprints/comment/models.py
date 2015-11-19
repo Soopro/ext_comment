@@ -10,15 +10,26 @@ from utils.base_utils import now
 
 class CommentExtension(BaseDocument):
     structure = {
-        'open_id': ObjectId,
+        'open_id' : ObjectId,
         'allowed_origins': unicode,
+        'title' : unicode,
+        'style' : unicode,
+        'thumbnail' : unicode,
+        'require_login' : bool
     }
 
     use_dot_notation = True
 
+    default_values = {'require_login': False}
+
     def find_one_by_eid(self, ext_id):
         return self.find_one({
             "_id": ObjectId(ext_id)
+        })
+
+    def find_one_by_open_id(self, open_id):
+        return self.find_one({
+            "open_id" : ObjectId(open_id)
         })
 
 

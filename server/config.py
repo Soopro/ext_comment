@@ -22,14 +22,12 @@ class Config(object):
     ALLOW_ORIGINS = ['*']
     ALLOW_CREDENTIALS = False
 
-    AUTH_URL = 'http://127.0.0.1:9002/#/oauth2'
-    TOKEN_URL = 'http://127.0.0.1:5000/auth2/token'
-
     APP_KEY = 'url4cc-1431520320'
     APP_SECRET = 'feff7961-c2df-410d-b581-711adff34c16'
     GRANT_TYPE = 'code'
 
-    REDIRECT_URI = 'http://127.0.0.1:9000/#/redirect'
+    REMOTE_OAUTH_URL = 'http://d.sup.farm/#/oauth'
+    REDIRECT_URI = 'http://127.0.0.1:9527/#/redirect'
     EXPIRED_IN = 36000
 
     # JWT
