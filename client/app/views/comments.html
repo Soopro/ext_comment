@@ -17,9 +17,9 @@
       <md-checkbox></md-checkbox>
     </div>
     <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="comment in comments">
-      <div class="md-list-item-text">
+      <div class="md-list-item-text" layout="column">
         <h3>{{ comment.content }}</h3>
-        <h4>{{ comment.author_name }} | {{ comment.creation | date }}</h4>
+        <h4>{{ comment.author_name }}</h4>|<h4>{{ comment.creation | date }}</h4>
         <md-checkbox class="md-secondary"></md-checkbox>
       </div>
       <md-divider ng-if="!$last"></md-divider>

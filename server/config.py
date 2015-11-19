@@ -19,9 +19,6 @@ class Config(object):
 
     SECRET_KEY = 'secret_key'
 
-    ALLOW_ORIGINS = ['*']
-    ALLOW_CREDENTIALS = False
-
     APP_KEY = 'url4cc-1431520320'
     APP_SECRET = 'feff7961-c2df-410d-b581-711adff34c16'
     GRANT_TYPE = 'code'

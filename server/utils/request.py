@@ -17,18 +17,6 @@ def parse_json():
     return ParsedBody(source)
 
 
-#
-#
-# def parse_form():
-#     source = request.form
-#     if source is None:
-#         raise ErrRequestBodyNotExists
-#     if not isinstance(source, dict):
-#         raise ErrInvalidRequestBody
-#     return ParsedBody(source)
-#
-
-
 def parse_args():
     new = dict()
     args = request.args

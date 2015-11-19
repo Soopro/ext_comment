@@ -45,8 +45,8 @@
           <input ng-model="comment_extension.thumbnail">
         </md-input-container>
         <div layout="row" layout-align="end center">
-          <md-checkbox ng-model="comment_extension.require_login" aria-label="only login member">Only logged-in member can comment</md-chceckbox>
-          <md-button class="md-raised md-primary">Submit</md-button>
+          <md-checkbox ng-model="comment_extension.require_login">Only logged-in member can comment</md-chceckbox>
+          <md-button class="md-raised md-primary" ng-click="updateCommentExtension()">Submit</md-button>
         </div>
       </form>
     </md-content>

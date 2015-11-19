@@ -19,6 +19,9 @@ return {
   setToken: function(token) {
     $cookie.put('token',token)
   },
+  setStatus: function(status) {
+    $cookie.put('status', status)
+  },
   getToken: function() {
     return $cookie.get('token')
   },

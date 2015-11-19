@@ -25,7 +25,7 @@ angular.module('commentClient')
 
 
     comment_extension: (function () {
-      return $resource(api+"/manage/settings/:open_id");
+      return $resource(api+"/manage/settings");
     })(),
 
     list_comment_groups: (function () {

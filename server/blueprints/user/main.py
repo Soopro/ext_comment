@@ -23,7 +23,6 @@ route_inject(blueprint, urlpatterns)
 @blueprint.before_request
 def before_request():
     if request.endpoint in user_api_endpoints:
-        print current_app.debug
         verify_token(current_app.dev)
     return
 
