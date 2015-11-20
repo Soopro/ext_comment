@@ -5,24 +5,24 @@
  * @name commentClient.controller:AuthCtrl
  * @description
  * # AuthCtrl
- * Controller of the url4Client
+ * Controller of the commentClient
  */
 angular.module('commentClient')
-.controller('AuthCtrl', function ($window, $routeParams, Auth, restAPI, Config, $location) {
+.controller('AuthCtrl', function($window, $routeParams, Auth, restAPI, Config, $location) {
 
   // get remote redirect info from ext server.
-  var goPlatfromLogin = function () {
+  var goPlatfromLogin = function() {
     if ($routeParams.open_id) {
       var open_id = $routeParams.open_id;
       Auth.cleanAuth();
       Auth.setOpenId(open_id);
-      console.log(Auth.getOpenId())
+      console.log(Auth.getOpenId());
 
       restAPI.ext_token.get({open_id: open_id})
       .$promise
-      .then(function (data) {
+      .then(function(data) {
         if (data.state) {
-          var redirect_uri = encodeURIComponent(data.redirect_uri)
+          var redirect_uri = encodeURIComponent(data.redirect_uri);
             
           $window.location = data.auth_uri +
           '?open_id=' + open_id +
@@ -32,12 +32,12 @@ angular.module('commentClient')
           '&redirect_uri=' + redirect_uri;
         }
       })
-			.catch(function (data) {
-				console.error(data)
-			})
+      .catch(function(data) {
+        console.error(data);
+      })
     }
     else {
-      alert('open_id is required!')
+      alert('open_id is required!');
     }
   };
   
@@ -46,15 +46,15 @@ angular.module('commentClient')
   
   if (!extToken) {
     // get new  token from remote if no token in cookies.
-    getToken()
+    getToken();
   } else {
     restAPI.token_check.save({},{ext_token: extToken})
     .$promise
-    .then(function (data){
-      $location.url('/')
+    .then(function(data){
+      $location.url('/');
     })
     .catch(function(error){
-      getToken()
+      getToken();
     })
   }
 });

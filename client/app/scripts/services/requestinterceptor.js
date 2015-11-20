@@ -11,12 +11,12 @@ angular.module('commentClient')
     request: function (request) {
       request.headers = request.headers || {};
       if (Auth.getToken()) {
-        request.headers.Authorization = Auth.getToken()
+        request.headers.Authorization = Auth.getToken();
       }
       return request;
     },
     response: function (response) {
-      return response ? response : $q.when(response)
+      return response ? response : $q.when(response);
     },
     responseError: function (rejection) {
       if (rejection.status===0 && rejection.data === null){

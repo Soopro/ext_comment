@@ -2,7 +2,7 @@
   <h2 class="md-toolbar-tools">
     <span>Comment Group Name</span>
   </h2>
-  <button class="md-button md-ink-ripple" aria-label="Go Back" ng-click="jumpToIndex()">
+  <button class="md-button md-ink-ripple" ng-click="jumpToIndex()">
     <span class="ng-scope">
           Go Back
     </span>
@@ -16,11 +16,11 @@
       <md-subheader class="md-no-sticky">Mark all</md-subheader>
       <md-checkbox></md-checkbox>
     </div>
-    <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="comment in comments">
+    <md-list-item ng-repeat="comment in comments">
       <div class="md-list-item-text" layout="column">
         <h3>{{ comment.content }}</h3>
         <h4>{{ comment.author_name }}</h4>|<h4>{{ comment.creation | date }}</h4>
-        <md-checkbox class="md-secondary"></md-checkbox>
+        <md-button md-no-ink class="md-primary" ng-click="adminRemoveComment">Delete</md-button>
       </div>
       <md-divider ng-if="!$last"></md-divider>
     </md-list-item>

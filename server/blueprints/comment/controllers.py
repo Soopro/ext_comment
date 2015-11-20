@@ -131,9 +131,12 @@ def remove_batch_comments(group_key):
 
 @output_json
 def list_comment_groups():
-    ext_id = base64.b64decode(request.headers.get('ExtKey'))
+    ext_token = request.get_json().get('ext_token')
+    open_id = current_app.sup_auth.parse_ext_token(ext_token)
+    comment_ext = current_app.mongodb_conn. \
+            CommentExtension.find_one_by_open_id(open_id)
     comment_groups = list(current_app.mongodb_conn. \
-                          CommentGroup.find_all_by_eid(ext_id))
+                          CommentGroup.find_all_by_eid(comment_ext['_id']))
 
     return comment_groups
 
