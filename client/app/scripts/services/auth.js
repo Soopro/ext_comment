@@ -17,23 +17,23 @@ return {
     return ext_token? true : false;
   },
   setToken: function(token) {
-    $cookie.put('token',token)
+    $cookie.put('token',token);
   },
   setStatus: function(status) {
-    $cookie.put('status', status)
+    $cookie.put('status', status);
   },
   getToken: function() {
-    return $cookie.get('token')
+    return $cookie.get('token');
   },
   setOpenId: function(open_id) {
     $cookie.put('open_id', open_id);
   },
   getOpenId: function() {
-    return $cookie.get('open_id')
+    return $cookie.get('open_id');
   },
   cleanAuth: function() {
-    $cookie.remove('token')
-		$cookie.remove('open_id')
+    $cookie.remove('token');
+		$cookie.remove('open_id');
   }
 }
 }]);

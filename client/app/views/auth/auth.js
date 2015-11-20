@@ -16,12 +16,13 @@ angular.module('commentClient')
       var open_id = $routeParams.open_id;
       Auth.cleanAuth();
       Auth.setOpenId(open_id);
-      console.log(Auth.getOpenId());
+      // console.log(Auth.getOpenId());
 
       restAPI.ext_token.get({open_id: open_id})
       .$promise
       .then(function(data) {
         if (data.state) {
+          console.log(data);
           var redirect_uri = encodeURIComponent(data.redirect_uri);
             
           $window.location = data.auth_uri +
@@ -34,7 +35,7 @@ angular.module('commentClient')
       })
       .catch(function(data) {
         console.error(data);
-      })
+      });
     }
     else {
       alert('open_id is required!');
@@ -46,7 +47,7 @@ angular.module('commentClient')
   
   if (!extToken) {
     // get new  token from remote if no token in cookies.
-    getToken();
+    goPlatfromLogin();
   } else {
     restAPI.token_check.save({},{ext_token: extToken})
     .$promise
@@ -54,7 +55,7 @@ angular.module('commentClient')
       $location.url('/');
     })
     .catch(function(error){
-      getToken();
-    })
+      goPlatfromLogin();
+    });
   }
 });

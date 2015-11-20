@@ -8,7 +8,7 @@
  * Controller of the commentClient
  */
 angular.module('commentClient')
-.controller('RedirectCtrl', function ($routeParams, Auth, restAPI, $location) {
+.controller('RedirectCtrl', function($routeParams, Auth, restAPI, $location) {
   if ($routeParams.code && $routeParams.state) {
     
     var params = {
@@ -17,7 +17,7 @@ angular.module('commentClient')
       state: $routeParams.state
     };
 
-    console.log(params)
+    console.log(params);
 
     restAPI.sup_auth.save({},params)
     .$promise
@@ -28,6 +28,6 @@ angular.module('commentClient')
       $location.url("/");
     })
   } else {
-    alert("code and state is required!")
+    alert("code and state is required!");
   }
 });

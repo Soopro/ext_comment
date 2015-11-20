@@ -37,6 +37,7 @@ def get_new_ext_token(open_id):
     remote_oauth_url = current_app.config.get('REMOTE_OAUTH_URL')
     redirect_uri = current_app.config.get('REDIRECT_URI')
 
+    print user
     return {
         'state': state,
         'auth_uri': remote_oauth_url,

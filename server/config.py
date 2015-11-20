@@ -15,8 +15,6 @@ class Config(object):
     EXT_COMMENT_DB_HOST = '127.0.0.1'
     EXT_COMMENT_DB_PORT = 27017
 
-    REDIRECT_URL_DOMAIN = 'http://url4.cc'
-
     SECRET_KEY = 'secret_key'
 
     APP_KEY = 'url4cc-1431520320'

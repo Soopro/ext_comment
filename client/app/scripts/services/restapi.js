@@ -36,6 +36,10 @@ angular.module('commentClient')
       return $resource(api+"/manage/group/:group_key");
     })(),
 
+    admin_remove_comment: (function () {
+      return $resource(api+"/manage/group/:group_key/:comment_id");
+    })(),
+
 
     alias: (function () {
       return $resource(auth_api+"/alias");
