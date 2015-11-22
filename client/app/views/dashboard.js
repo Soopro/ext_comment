@@ -13,20 +13,11 @@ angular.module('commentClient')
     $scope.comment_extension = function () {
       var status = $cookie.get('status');
       if (status === 0) {
-        restAPI.comment_extension.save({open_id: open_id});
+        restAPI.comment_extension.save({}, {open_id: open_id});
       } else if (status == 1) {
         restAPI.comment_extension.get({open_id: open_id});
       }};
     
-    $scope.comment_extension = function () {
-      var status = $cookie.get('status');
-      if (status == 0) {
-        restAPI.comment_extension.save({open_id: open_id});
-      } else if (status == 1) {
-        restAPI.comment_extension.get({open_id: open_id})
-      }
-    };
-
 
     $scope.updateCommentExtension = function() {
       if (status == 1) {

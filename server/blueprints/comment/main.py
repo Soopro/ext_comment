@@ -3,9 +3,9 @@ from flask import Blueprint, request, current_app
 from blueprints.comment.models import CommentExtension
 from errors.base_errors import APIError
 from routes import urls
-from utils.response_json import make_json_response
+from utils.comment_utils import verify_outer
 from utils.base_utils import (route_inject,
-                              verify_outer)
+                              make_json_response)
 from utils.request import verify_token
 from .models import (CommentExtension,
                      CommentGroup,

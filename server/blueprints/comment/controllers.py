@@ -3,7 +3,8 @@
 from __future__ import absolute_import
 
 from flask import current_app, request
-from utils.base_utils import output_json, now, get_allowed_origin
+from utils.base_utils import output_json, now
+from utils.comment_utils import get_allowed_origin
 from utils.request_json import get_request_json
 from errors.validation_errors import ContentStructure
 from errors.general_errors import (PermissionDenied, ErrCommentDeletionError,

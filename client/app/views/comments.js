@@ -36,5 +36,4 @@ angular.module('commentClient')
       alert('group_key and commment_id are required!');
     };
   };
-};
 });

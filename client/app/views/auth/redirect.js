@@ -17,8 +17,6 @@ angular.module('commentClient')
       state: $routeParams.state
     };
 
-    console.log(params);
-
     restAPI.sup_auth.save({},params)
     .$promise
     .then(function (data) {

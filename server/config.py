@@ -17,12 +17,17 @@ class Config(object):
 
     SECRET_KEY = 'secret_key'
 
-    APP_KEY = 'url4cc-1431520320'
+    ALLOW_ORIGINS = ['*']
+    ALLOW_CREDENTIALS = False
+
+    APP_KEY = 'url4-1443411015'
     APP_SECRET = 'feff7961-c2df-410d-b581-711adff34c16'
     GRANT_TYPE = 'code'
 
     REMOTE_OAUTH_URL = 'http://d.sup.farm/#/oauth'
-    REDIRECT_URI = 'http://127.0.0.1:9527/#/redirect'
+    TOKEN_URL = 'http://api.sup.farm/oauth/token'
+
+    REDIRECT_URI = 'http://localhost:9527/#/redirect'
     EXPIRED_IN = 36000
 
     # JWT

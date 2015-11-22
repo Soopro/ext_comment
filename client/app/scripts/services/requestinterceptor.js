@@ -19,12 +19,22 @@ angular.module('commentClient')
       return response ? response : $q.when(response);
     },
     responseError: function (rejection) {
-      if (rejection.status===0 && rejection.data === null){
+      if (rejection.status==0 && rejection.data == null){
         $location.path('/404');
       }
-      if (rejection.status===401) {
+      if (rejection.status==401) {
         $location.path('/auth');
       }
+			try {
+				console.error({
+					errmsg: rejection.data.errmsg,
+					erraffix: rejection.data.erraffix,
+					errcode: rejection.data.errcode,
+					rejection: rejection
+				});
+		  }catch(e){
+		  	console.error(rejection, e);
+		  }
       return $q.reject(rejection);
     }
   };

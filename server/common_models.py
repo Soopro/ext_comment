@@ -28,6 +28,7 @@ class User(Document):
     default_values = {
         "alias": u'',
         "display_name": u'',
+        "expires_in": 0,
         "status": STATUS_INACTIVATED,
     }
 

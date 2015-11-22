@@ -1,54 +1,44 @@
-<div ng-cloak>
-  <div>
-    <md-toolbar class="md-menu-toolbar">
-      <div class="layout-row">
-        <md-toolbar-filler layout layout-aligin="center center">
-          <md-icon md-svg-icon="call:chat" class="ng-isolate-scope">
-            <svg xmlns="http://www.w3.org/2000/svg" fit height="100%" width="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" style="pointer-events: none; display: block;">
-              <g id="chat">
-                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"></path>
-              </g>
-            </svg>
-          </md-icon>
-        </md-toolbar-filler>
-        <div>
-          <h2 class="md-toolbar-tools">Comment Management</h2>
-          <md-menu-bar>
-            <button class="md-button md-ink-ripple" ng-click="">Settings</button>
-            <button class="md-button md-ink-ripple" ng-click="jumpToGroups()">Manage Groups</button>
-          </md-menu-bar>
-        </div>
-      </div>
-    </md-toolbar>
+<md-toolbar class="md-menu-toolbar">
+  <div class="layout-row">
+    <md-toolbar-filler layout layout-aligin="center center">
+      <md-icon md-svg-icon="call:chat"></md-icon>
+    </md-toolbar-filler>
+    <div>
+      <h2 class="md-toolbar-tools">Comment Management</h2>
+      <md-menu-bar>
+        <button class="md-button md-ink-ripple" ng-click="">Settings</button>
+        <button class="md-button md-ink-ripple" ng-click="jumpToGroups()">Manage Groups</button>
+      </md-menu-bar>
+    </div>
   </div>
-  <div layout="column">
-    <md-content class="layout-padding">
-      <form name="commentExtensionForm">
-        <md-input-container class="md-block">
-          <label>Title</label>
-          <input ng-model="comment_extension.title">
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>Allowed Origin</label>
-          <input ng-model="comment_extension.allowed_origin">
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>Style</label>
-          <input ng-model="comment_extension.style">
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>Thumbnail</label>
-          <input ng-model="comment_extension.thumbnail">
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>Copy the JavaScript code</label>
-          <input ng-model="comment_extension.thumbnail">
-        </md-input-container>
-        <div layout="row" layout-align="end center">
-          <md-checkbox ng-model="comment_extension.require_login">Only logged-in member can comment</md-chceckbox>
-          <md-button class="md-raised md-primary" ng-click="updateCommentExtension()">Submit</md-button>
-        </div>
-      </form>
-    </md-content>
-  </div>
+</md-toolbar>
 </div>
+<div layout="column">
+<md-content class="layout-padding">
+  <form name="commentExtensionForm">
+    <md-input-container class="md-block">
+      <label>Title</label>
+      <input ng-model="comment_extension.title">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>Allowed Origin</label>
+      <input ng-model="comment_extension.allowed_origin">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>Style</label>
+      <input ng-model="comment_extension.style">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>Thumbnail</label>
+      <input ng-model="comment_extension.thumbnail">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>Copy the JavaScript code</label>
+      <input ng-model="comment_extension.thumbnail">
+    </md-input-container>
+    <div layout="row" layout-align="end center">
+      <md-checkbox ng-model="comment_extension.require_login">Only logged-in member can comment</md-chceckbox>
+      <md-button class="md-raised md-primary" ng-click="updateCommentExtension()">Submit</md-button>
+    </div>
+  </form>
+</md-content>

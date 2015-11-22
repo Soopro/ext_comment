@@ -3,14 +3,16 @@ from __future__ import absolute_import
 
 import traceback
 
-from flask import Flask, current_app
+from flask import Flask, current_app, request
 from mongokit import Connection as MongodbConn
 
 from config import config
 from utils.encoders import Encoder
-from utils.ext_oauth import SupAuth
-from utils.base_utils import make_json_response
-from errors.general_errors import (NotFound, ErrUncaughtException,
+from utils.sup_ext_oauth import SupAuth
+from utils.base_utils import make_json_response, make_cors_headers
+from errors.general_errors import (NotFound,
+                                   ErrUncaughtException,
+                                   InternalServerErr,
                                    MethodNotAllowed)
 
 
@@ -64,9 +66,19 @@ def create_app(config_name='development'):
         return make_json_response(MethodNotAllowed())
 
     @app.errorhandler(Exception)
-    def app_error_500(error):
+    def app_error_uncaught(error):
         current_app.logger.warn(
-            "Error: 500\n{}".format(traceback.format_exc()))
+            "Error: Uncaught\n{}".format(traceback.format_exc()))
         return make_json_response(ErrUncaughtException(repr(error)))
+
+    @app.before_request
+    def app_before_request():
+        # cors response
+        if request.method == "OPTIONS":
+            resp = current_app.make_default_options_response()
+            cors_headers = make_cors_headers()
+            resp.headers.extend(cors_headers)
+            return resp
+        return
 
     return app
