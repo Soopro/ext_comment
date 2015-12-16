@@ -21,7 +21,7 @@ angular.module('commentClient')
         templateUrl: 'views/auth/redirect.html',
         controller: 'RedirectCtrl'
       })
-      .when('/', {
+      .when('/dashboard', {
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
       })

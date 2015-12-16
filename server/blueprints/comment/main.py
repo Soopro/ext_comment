@@ -39,8 +39,6 @@ route_inject(blueprint, urls)
 
 @blueprint.before_request
 def before_request():
-    current_app.mongodb_database.register([CommentExtension, CommentGroup,
-                                           Comment])
     if request.endpoint in visit_api:
         verify_outer()
     elif request.endpoint in manage_api:

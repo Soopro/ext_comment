@@ -88,4 +88,4 @@ def verify_token(debug=False):
         raise AuthenticationFailed("User Not Exist")
     print "openid", open_id
     g.current_user = current_user
-    return
+    return 

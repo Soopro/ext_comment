@@ -79,7 +79,13 @@ def get_sup_token():  # code to here
 
     user['ext_token'] = current_app.sup_auth.generate_ext_token(open_id)
     user.save()
-
+    
+    CommentExtension = current_app.mongodb_conn.CommentExtension
+    comment_extention = CommentExtension.find_one_by_open_id(open_id)
+    if not comment_extention:
+        comment_extention = CommentExtension()
+        comment_extention.user_id = user["_id"]
+        comment_extention.save()
     return {
         "id": user['_id'],
         "display_name": user['display_name'],

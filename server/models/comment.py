@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# coding=utf-8
 from __future__ import absolute_import
 
 from bson import ObjectId
@@ -10,7 +9,7 @@ from utils.base_utils import now
 
 class CommentExtension(BaseDocument):
     structure = {
-        'open_id' : ObjectId,
+        'user_id' : ObjectId,
         'allowed_origins': unicode,
         'title' : unicode,
         'style' : unicode,
@@ -20,7 +19,15 @@ class CommentExtension(BaseDocument):
 
     use_dot_notation = True
 
-    default_values = {'require_login': False}
+    required_fields = ['open_id']
+
+    default_values = {
+        'allowed_origins': u'',
+        'title': u'',
+        'style': u'',
+        'thumbnail': u'',
+        'require_login': False
+    }
 
     def find_one_by_eid(self, ext_id):
         return self.find_one({

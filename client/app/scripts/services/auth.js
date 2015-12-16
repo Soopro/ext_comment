@@ -19,9 +19,9 @@ return {
   setToken: function(token) {
     $cookie.put('token',token);
   },
-  setStatus: function(status) {
-    $cookie.put('status', status);
-  },
+  // setStatus: function(status) {
+  //   $cookie.put('status', status);
+  // },
   getToken: function() {
     return $cookie.get('token');
   },
@@ -31,9 +31,17 @@ return {
   getOpenId: function() {
     return $cookie.get('open_id');
   },
+  setExtentionId: function(extention_id) {
+    $cookie,put('extention_id', extention_id);
+  },
+  getExtentionId: function() {
+    return $cookie.get('extention_id');
+  }
   cleanAuth: function() {
     $cookie.remove('token');
 		$cookie.remove('open_id');
-  }
+    $cookie.remove('extention_id');
+  },
+
 }
 }]);

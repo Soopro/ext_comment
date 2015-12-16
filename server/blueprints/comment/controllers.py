@@ -11,13 +11,13 @@ from errors.general_errors import (PermissionDenied, ErrCommentDeletionError,
                                    CommentGroupNotFound)
 import base64
 from errors.bp_users_errors import SooproAPIError
-
-
+    
+    
 @output_json
-def sync_comment_extension():
+def update_comment_extension():
     data = request.get_json()
     User = current_app.mongodb_conn.User
-    if data['status'] == User.STATUS_INACTIVATED:
+    # if data['status'] == User.STATUS_INACTIVATED:,
         try:
             allowed_origin = get_allowed_origin(data['open_id'])
         except:
@@ -41,18 +41,10 @@ def sync_comment_extension():
         raise PermissionDenied
 
 
-
-
-
 @output_json
 def get_comment_extension():
-    open_id = request.get_json('open_id')
-    try:
-        comment_ext = current_app.mongodb_conn. \
-            CommentExtension.find_one_by_open_id(open_id)
-    except:
-        raise PermissionDenied
-    return comment_ext
+    comment_extention = _get_current_comment_extention()
+    return _output_comment_extention(comment_extention)
 
 
 @output_json
@@ -114,41 +106,56 @@ def remove_comment(group_key, comment_id):
 
 @output_json
 def remove_batch_comments(group_key):
-    comment_group = current_app.mongodb_conn. \
-        CommentGroup.find_one_by_group_key(group_key)
-    try:
-        comments = current_app.mongodb_conn. \
-            Comment.find_all_by_gid(comment_group._id)
-        for comment in comments:
-            comment.delete()
-        comment_group.delete()
-    except:
-        raise ErrCommentDeletionError
-
-    message = {"status": "comments deleted successfully"}
-
-    return message
+    comment_group = _get_comment_group(group_key)
+    comments = current_app.mongodb_conn. \
+         Comment.find_all_by_gid(comment_group['_id']))
+    for comment in comments:
+        comment.delete()
+    comment_group.delete()
+    return _get_comment_group(comment_group)
 
 
 @output_json
 def list_comment_groups():
-    ext_token = request.get_json().get('ext_token')
-    open_id = current_app.sup_auth.parse_ext_token(ext_token)
-    comment_ext = current_app.mongodb_conn. \
-            CommentExtension.find_one_by_open_id(open_id)
-    comment_groups = list(current_app.mongodb_conn. \
-                          CommentGroup.find_all_by_eid(comment_ext['_id']))
-
+    comment_extention = _get_current_comment_extention()
+    comment_groups = current_app.mongodb_conn.\
+        CommentGroup.find_all_by_eid(comment_extention['_id']))
+    comment_groups = [_output_comment_group(group) for group in comment_groups]
     return comment_groups
 
 
 @output_json
 def get_group_comments(group_key):
-    try:
-        comment_group = current_app.mongodb_conn. \
-            CommentGroup.find_one_by_group_key(group_key)
-    except:
-        raise CommentGroupNotFound
-    list_comments = list(current_app.mongodb_conn. \
-                         Comment.find_all_by_gid(comment_group._id))
-    return list_comments
+    comment_group = _get_comment_group(group_key)
+    comments = current_app.mongodb_conn. \
+         Comment.find_all_by_gid(comment_group['_id']))
+    comments = [_output_comment(comment) for comment in comments]
+    return comments
+
+
+def _output_comment_extention(comment_extention):
+    pass
+    
+
+def _output_comment_group(comment_group):
+    pass
+
+
+def _output_comment(comment):
+    pass
+    
+    
+def _get_current_comment_extention():
+    comment_extention = current_app.mongodb_conn.\
+        CommentExtension.find_one_by_open_id(g.current_user["_id"])
+    if not comment_extention:
+        raise ExtentionNotFound()
+    return comment_extention
+    
+    
+def _get_comment_group(group_key):    
+    comment_group = current_app.mongodb_conn. \
+        CommentGroup.find_one_by_group_key(group_key)
+    if not comment_group:
+        raise GroupNotFound()
+    return comment_group

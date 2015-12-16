@@ -20,10 +20,11 @@ angular.module('commentClient')
     restAPI.sup_auth.save({},params)
     .$promise
     .then(function (data) {
-      console.log(data);
+      assert(data);
       Auth.setToken(data.ext_token);
-      Auth.setStatus(data.status);
-      $location.url("/");
+      Auth.setExtentionId(data.extention_id)
+      // Auth.setStatus(data.status);
+      $location.url("/dashboard");
     })
   } else {
     alert("code and state is required!");
