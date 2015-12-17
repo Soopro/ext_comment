@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
+from __future__ import absolute_import
+
 from datetime import timedelta
 
 __version_info__ = ('0', '0', '1')

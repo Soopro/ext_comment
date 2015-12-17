@@ -1,11 +1,12 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from flask import Blueprint, request, current_app
 from .routes import urlpatterns
+from utils.verify import verify_token
 from errors.base_errors import APIError
+from flask import Blueprint, request, current_app
 from utils.base_utils import make_json_response, route_inject
-from utils.request import verify_token
+
 
 bp_name = "user"
 

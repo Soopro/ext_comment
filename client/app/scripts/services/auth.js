@@ -31,16 +31,16 @@ return {
   getOpenId: function() {
     return $cookie.get('open_id');
   },
-  setExtentionId: function(extention_id) {
-    $cookie,put('extention_id', extention_id);
+  setExtensionId: function(extension_id) {
+    $cookie,put('extension_id', extension_id);
   },
-  getExtentionId: function() {
-    return $cookie.get('extention_id');
+  getExtensionId: function() {
+    return $cookie.get('extension_id');
   }
   cleanAuth: function() {
     $cookie.remove('token');
 		$cookie.remove('open_id');
-    $cookie.remove('extention_id');
+    $cookie.remove('extension_id');
   },
 
 }

@@ -1,29 +1,27 @@
-from flask import Blueprint, request, current_app
+# coding=utf-8
+from __future__ import absolute_import
 
-from blueprints.comment.models import CommentExtension
+from .routes import urls
+from flask import Blueprint, request
 from errors.base_errors import APIError
-from routes import urls
-from utils.comment_utils import verify_outer
-from utils.base_utils import (route_inject,
-                              make_json_response)
-from utils.request import verify_token
-from .models import (CommentExtension,
-                     CommentGroup,
-                     Comment)
+from utils.verify import verify_outer, verify_token
+from utils.base_utils import route_inject, make_json_response
 
 bp_name = 'comment'
 
-visit_api = [
-    "{}.add_comment".format(bp_name),
-    "{}.remove_comment".format(bp_name),
-
+apis_for_visitors = [
+    "{}.visit_get_group_comments".format(bp_name),
+    "{}.visit_add_comment".format(bp_name),
+    "{}.visit_remove_comment".format(bp_name)
 ]
-manage_api = [
-    "{}.sync_comment_extension".format(bp_name),
-    "{}.get_comment_extension".format(bp_name),
-    "{}.list_comment_groups".format(bp_name),
-    "{}.remove_batch_comments".format(bp_name),
-    "{}.remove_comment".format(bp_name)
+
+apis_for_admins = [
+    "{}.admin_add_comment_extension".format(bp_name),
+    "{}.admin_get_comment_extension".format(bp_name),
+    "{}.admin_update_comment_extension".format(bp_name),
+    "{}.admin_list_comment_groups".format(bp_name),
+    "{}.admin_get_group_comments".format(bp_name),
+    "{}.admin_remove_batch_comments".format(bp_name)
 ]
 
 blueprint = Blueprint(bp_name, __name__)
@@ -31,17 +29,11 @@ blueprint = Blueprint(bp_name, __name__)
 route_inject(blueprint, urls)
 
 
-# @blueprint.before_app_first_request
-# def before_first_request():
-#     current_app.mongodb_database.register(CommentExtension)
-#     return
-
-
 @blueprint.before_request
 def before_request():
-    if request.endpoint in visit_api:
+    if request.endpoint in apis_for_visitors:
         verify_outer()
-    elif request.endpoint in manage_api:
+    elif request.endpoint in apis_for_admins:
         verify_token()
     return
 

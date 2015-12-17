@@ -25,7 +25,7 @@ angular.module('commentClient')
 
 
     comment_extension: (function () {
-      return $resource(api+"/manage/extention/:extention_id");
+      return $resource(api+"/manage/extension/:extension_id");
     })(),
 
     list_comment_groups: (function () {

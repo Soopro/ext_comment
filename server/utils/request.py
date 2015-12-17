@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 from __future__ import absolute_import
 
 from flask import request, current_app, g
@@ -68,24 +68,3 @@ class ParsedBody(dict):
         return v
 
 
-def verify_token(debug=False):
-    if debug:
-        g.current_user = current_app.mongodb_conn.User.find_one()
-        return
-
-    ext_token = request.headers.get('Authorization')
-    if ext_token is None:
-        raise AuthenticationFailed('Authorization(token) Required, Authorization header was missing')
-
-
-    open_id = current_app.sup_auth.parse_ext_token(ext_token)
-
-    if not open_id:
-        raise AuthenticationFailed('invalid token')
-
-    current_user = current_app.mongodb_conn.User.find_one_by_open_id(open_id)
-    if current_user is None:
-        raise AuthenticationFailed("User Not Exist")
-    print "openid", open_id
-    g.current_user = current_user
-    return 

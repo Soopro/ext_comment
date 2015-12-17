@@ -22,7 +22,7 @@ angular.module('commentClient')
     .then(function (data) {
       assert(data);
       Auth.setToken(data.ext_token);
-      Auth.setExtentionId(data.extention_id)
+      Auth.setExtensionId(data.extension_id)
       // Auth.setStatus(data.status);
       $location.url("/dashboard");
     })

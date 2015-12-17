@@ -9,7 +9,7 @@ from utils.base_utils import now
 
 class CommentExtension(BaseDocument):
     structure = {
-        'user_id' : ObjectId,
+        'open_id' : ObjectId,
         'allowed_origins': unicode,
         'title' : unicode,
         'style' : unicode,
@@ -42,7 +42,7 @@ class CommentExtension(BaseDocument):
 
 class CommentGroup(BaseDocument):
     structure = {
-        'ext_id': ObjectId,
+        'extension_id': ObjectId,
         'group_key': unicode,
         'creation': int
     }
@@ -51,14 +51,15 @@ class CommentGroup(BaseDocument):
 
     default_values = {'creation': now()}
 
-    def find_one_by_group_key(self, group_key):
+    def find_one_by_group_key_and_eid(self, group_key, extension_id):
         return self.find_one({
-            'group_key': group_key
+            'group_key': group_key,
+            'extension_id': ObjectId(extension_id)
         })
 
-    def find_all_by_eid(self, ext_id):
+    def find_all_by_eid(self, extension_id):
         return self.find({
-            'ext_id': ObjectId(ext_id)
+            'extension_id': ObjectId(extension_id)
         })
 
 
@@ -68,28 +69,32 @@ class Comment(BaseDocument):
         'content': unicode,
         'author_id': unicode,
         'author_name': unicode,
-        'ext_id': ObjectId,
+        'extension_id': ObjectId,
         'group_id': ObjectId,
         'group_key': unicode
     }
 
     use_dot_notation = True
-    required_fields = ['content', 'author_name', 'ext_id', 'group_id']
+    required_fields = ['content', 'author_name', 'extension_id', 'group_id']
     default_values = {'creation': now(),
                       'author_name': u'anonymous'}
 
-    def find_one_by_id(self, comment_id):
+    def find_one_by_id_and_gid_and_eid(self, 
+        comment_id, group_id, extension_id):
         return self.find_one({
-            '_id': ObjectId(comment_id)
+            '_id': ObjectId(comment_id),
+            'group_id': ObjectId(group_id),
+            'extension_id': ObjectId(extension_id)
         })
 
-    def find_all_by_gid(self, gid):
+    def find_all_by_gid_and_eid(self, gid, extension_id):
         return self.find({
-            'group_id': ObjectId(gid)
+            'group_id': ObjectId(gid),
+            'extension_id': ObjectId(extension_id)
         })
 
-    def find_by_gkey_and_aid_desc(self, group_key, author_id):
+    def find_all_by_gkey_and_aid_desc(self, group_key, author_id, limit):
         return self.find({
-            'author_id': author_id,
-            'group_key': group_key
-        }).sort('creation', INDEX_DESCENDING).limit(5)
+            'group_key': group_key,
+            'author_id': author_id
+        }).sort('creation', INDEX_DESCENDING).limit(limit)

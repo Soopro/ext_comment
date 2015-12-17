@@ -41,10 +41,12 @@ def create_app(config_name='development'):
     # app.mongodb_conn = mongodb_conn
 
 
-    from models import User, Comment, CommentGroup, CommentExtention
+    from blueprints.comment.models \
+        import Comment, CommentGroup, CommentExtension
+    from blueprints.user.models import User
 
     app.mongodb_database.register([User, 
-        Comment, CommentGroup, CommentExtention])
+        Comment, CommentGroup, CommentExtension])
 
     # register blueprints
     from blueprints.comment import blueprint as comment_blueprint
