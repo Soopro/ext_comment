@@ -12,5 +12,8 @@ angular.module('commentClient')
       
       
       $scope.settings = restAPI.comment_extension.$get()
+      $scope.update_settings = function() {
+        $scope.settings.$update()
+      }
       
 }]);

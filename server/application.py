@@ -29,8 +29,8 @@ def create_app(config_name='development'):
     app.mongodb_conn = app.mongodb_database[
         app.config.get("EXT_COMMENT_DB_DBNAME")]
 
-    app.sup_auth = SupAuth(app_key=app.config.get("APP_KEY"),
-                           app_secret=app.config.get("APP_SECRET"),
+    app.sup_auth = SupAuth(ext_key=app.config.get("EXT_KEY"),
+                           ext_secret=app.config.get("EXT_SECRET"),
                            grant_type=app.config.get("GRANT_TYPE"),
                            secret_key=app.config.get("SECRET_KEY"),
                            redirect_uri=app.config.get("REDIRECT_URI"),

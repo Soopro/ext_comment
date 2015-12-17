@@ -20,9 +20,7 @@ angular.module('commentClient')
     restAPI.sup_auth.save({},params)
     .$promise
     .then(function (data) {
-      assert(data);
       Auth.setToken(data.ext_token);
-      Auth.setExtensionId(data.extension_id)
       // Auth.setStatus(data.status);
       $location.url("/dashboard");
     })

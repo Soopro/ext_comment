@@ -8,10 +8,10 @@ from flask import current_app
 
 
 class SupAuth(object):
-    def __init__(self, app_key, app_secret, grant_type, secret_key, redirect_uri, expired_in=3600):
+    def __init__(self, ext_key, ext_secret, grant_type, secret_key, redirect_uri, expired_in=3600):
         self._s = Serializer(secret_key, expired_in)
-        self.app_key = app_key
-        self.app_secret = app_secret
+        self.ext_key = ext_key
+        self.ext_secret = ext_secret
         self.grant_type = grant_type
         self.redirect_uri = redirect_uri
 
@@ -27,8 +27,8 @@ class SupAuth(object):
 
     def get_access_token(self, code):
         payloads = {
-            'app_key': self.app_key,
-            'app_secret': self.app_secret,
+            'ext_key': self.ext_key,
+            'ext_secret': self.ext_secret,
             'code': code,
             'grant_type': self.grant_type,
             'redirect_uri': self.redirect_uri
@@ -39,8 +39,8 @@ class SupAuth(object):
 
     def refresh_access_token(self, refresh_token):
         payloads = {
-            'app_key': self.app_key,
-            'app_secret': self.app_secret,
+            'ext_key': self.ext_key,
+            'ext_secret': self.ext_secret,
             'refresh_token': refresh_token,
             'response_type': "refresh_token",
         }
@@ -51,8 +51,8 @@ class SupAuth(object):
     
     def check_access_token(self, access_token):
         payloads = {
-            'app_key': self.app_key,
-            'app_secret': self.app_secret,
+            'ext_key': self.ext_key,
+            'ext_secret': self.ext_secret,
             'access_token': access_token,
             'response_type': "access_token",
         }

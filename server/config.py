@@ -22,8 +22,8 @@ class Config(object):
     ALLOW_ORIGINS = ['*']
     ALLOW_CREDENTIALS = False
 
-    APP_KEY = 'url4-1443411015'
-    APP_SECRET = 'feff7961-c2df-410d-b581-711adff34c16'
+    EXT_KEY = 'comment-1450347873'
+    EXT_SECRET = 'f9198051-4d0a-49c0-a824-c2bf250873fa'
     GRANT_TYPE = 'code'
 
     REMOTE_OAUTH_URL = 'http://d.sup.farm/#/oauth'

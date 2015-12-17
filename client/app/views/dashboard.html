@@ -18,27 +18,27 @@
   <form name="commentExtensionForm">
     <md-input-container class="md-block">
       <label>Title</label>
-      <input ng-model="comment_extension.title">
+      <input ng-model="settings.title">
     </md-input-container>
     <md-input-container class="md-block">
       <label>Allowed Origin</label>
-      <input ng-model="comment_extension.allowed_origin">
+      <input ng-model="settings.allowed_origin">
     </md-input-container>
     <md-input-container class="md-block">
       <label>Style</label>
-      <input ng-model="comment_extension.style">
+      <input ng-model="settings.style">
     </md-input-container>
     <md-input-container class="md-block">
       <label>Thumbnail</label>
-      <input ng-model="comment_extension.thumbnail">
+      <input ng-model="settings.thumbnail">
     </md-input-container>
     <md-input-container class="md-block">
       <label>Copy the JavaScript code</label>
-      <input ng-model="comment_extension.thumbnail">
+      <input ng-model="settings.thumbnail">
     </md-input-container>
     <div layout="row" layout-align="end center">
-      <md-checkbox ng-model="comment_extension.require_login">Only logged-in member can comment</md-chceckbox>
-      <md-button class="md-raised md-primary" ng-click="updateCommentExtension()">Submit</md-button>
+      <md-checkbox ng-model="settings.require_login">Only logged-in member can comment</md-chceckbox>
+      <md-button class="md-raised md-primary" ng-click="update_settings()">Submit</md-button>
     </div>
   </form>
 </md-content>

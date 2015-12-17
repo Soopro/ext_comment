@@ -24,11 +24,10 @@ angular.module('commentClient')
         if (data.state) {
           console.log(data);
           var redirect_uri = encodeURIComponent(data.redirect_uri);
-            
           $window.location = data.auth_uri +
           '?open_id=' + open_id +
           '&state=' + data.state +
-          '&app_key=' + data.app_key +
+          '&ext_key=' + data.ext_key +
           '&response_type=' + data.response_type +
           '&redirect_uri=' + redirect_uri;
         }

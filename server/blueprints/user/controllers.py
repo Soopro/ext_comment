@@ -1,18 +1,19 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from flask import current_app, request, g
+import uuid
+from utils.base_utils import now
 from utils.base_utils import output_json
+from flask import current_app, request, g
 from utils.request import parse_json, parse_args
-from errors.general_errors import (AuthenticationFailed, NotFound,
-                                   PermissionDenied)
 from errors.validation_errors import ObjectIdStructure, UrlStructure
+from errors.general_errors import (AuthenticationFailed, 
+                                   NotFound,
+                                   PermissionDenied)
 from errors.bp_users_errors import (SooproAccessDeniedError,
                                     SooproRequestAccessTokenError,
                                     SooproRefreshAccessTokenError,
                                     SooproAPIError)
-import uuid
-from utils.base_utils import now
 
 
 @output_json
@@ -28,7 +29,7 @@ def get_new_ext_token(open_id):
         user['open_id'] = open_id
         user['status'] = User.STATUS_INACTIVATED
 
-    app_key = current_app.config.get('APP_KEY')
+    ext_key = current_app.config.get('EXT_KEY')
     state = unicode(uuid.uuid4())
 
     user['random_string'] = state
@@ -41,7 +42,7 @@ def get_new_ext_token(open_id):
     return {
         'state': state,
         'auth_uri': remote_oauth_url,
-        'app_key': app_key,
+        'ext_key': ext_key,
         'response_type': 'code',
         'redirect_uri': redirect_uri
     }

@@ -67,11 +67,11 @@ def visit_remove_comment(group_key, comment_id):
     
 
 # endpoints for admins
-@output_json
-def admin_add_comment_extension():  
-    comment_extension = _new_comment_extension()
-    comment_extension.save()
-    return _output_comment_extension(comment_extension)
+# @output_json
+# def admin_add_comment_extension():
+#     comment_extension = _new_comment_extension()
+#     comment_extension.save()
+#     return _output_comment_extension(comment_extension)
     
     
 @output_json
@@ -123,7 +123,13 @@ def admin_remove_batch_comments(group_key):
     
 
 def _output_comment_extension(comment_extension):
-    pass
+    return {
+        "title": comment_extension.title,
+        "allowed_origins": comment_extension.allowed_origins,
+        "style": comment_extension.style,
+        "thumbnail": comment_extension.thumbnail,
+        "require_login": comment_extension.require_login,
+    }
     
 
 def _output_comment_group(comment_group):
@@ -134,14 +140,22 @@ def _output_comment(comment):
     pass
     
     
-def _new_comment_extension():
-    CommentExtension = current_app.mongodb_conn.CommentExtension
-    comment_extension = CommentExtension.\
-        find_one_by_open_id(g.current_user["_id"])
-    if comment_extension:
-        raise ExtensionIsExisted()
-    comment_extension = CommentExtension()
+# def _new_comment_extension():
+#     CommentExtension = current_app.mongodb_conn.CommentExtension
+#     comment_extension = CommentExtension.\
+#         find_one_by_open_id(g.current_user["_id"])
+#     if comment_extension:
+#         raise ExtensionIsExisted()
+#     comment_extension = CommentExtension()
+#     comment_extension.user_id = g.current_user["_id"]
+#     comment_extension.save()
+#     return comment_extension
+    
+    
+def _create_comment_extension():
+    comment_extension = current_app.mongodb_conn.CommentExtension()
     comment_extension.user_id = g.current_user["_id"]
+    comment_extension.save()
     return comment_extension
     
     
@@ -152,7 +166,7 @@ def _get_current_comment_extension():
     else:
         comment_extension = g.current_comment_extension
     if not comment_extension:
-        raise ExtensionNotFound()
+        comment_extension = _create_comment_extension()
     return comment_extension
     
     

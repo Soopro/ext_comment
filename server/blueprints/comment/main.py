@@ -35,7 +35,6 @@ def before_request():
         verify_outer()
     elif request.endpoint in apis_for_admins:
         verify_token()
-    return
 
 
 @blueprint.errorhandler(APIError)
