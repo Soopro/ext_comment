@@ -22,7 +22,7 @@
     </md-input-container>
     <md-input-container class="md-block">
       <label>Allowed Origin</label>
-      <input ng-model="settings.allowed_origin">
+      <input ng-model="settings.allowed_origins">
     </md-input-container>
     <md-input-container class="md-block">
       <label>Style</label>
@@ -36,9 +36,14 @@
       <label>Copy the JavaScript code</label>
       <input ng-model="settings.thumbnail">
     </md-input-container>
-    <div layout="row" layout-align="end center">
-      <md-checkbox ng-model="settings.require_login">Only logged-in member can comment</md-chceckbox>
-      <md-button class="md-raised md-primary" ng-click="update_settings()">Submit</md-button>
+    <div layout="row">
+      <md-checkbox ng-model="settings.require_login">
+        Only logged-in member can comment
+      </md-chceckbox>
+    </div>
+    <div layout="row">
+      <md-button class="md-raised md-primary" 
+       ng-click="$scope.settings.save()">Submit</md-button>
     </div>
   </form>
 </md-content>

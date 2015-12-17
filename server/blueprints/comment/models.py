@@ -9,7 +9,7 @@ from utils.base_utils import now
 
 class CommentExtension(BaseDocument):
     structure = {
-        'open_id' : ObjectId,
+        'open_id' : unicode,
         'allowed_origins': unicode,
         'title' : unicode,
         'style' : unicode,
@@ -36,7 +36,7 @@ class CommentExtension(BaseDocument):
 
     def find_one_by_open_id(self, open_id):
         return self.find_one({
-            "open_id" : ObjectId(open_id)
+            "open_id" : open_id
         })
 
 

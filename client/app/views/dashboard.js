@@ -7,13 +7,19 @@
  * Controller of the commentClient
  */
 angular.module('commentClient')
-  .controller('DashboardCtrl', ['$cookies',
-    function($scope, restAPI, Auth, $cookie, $location) {
+.controller('DashboardCtrl',
+[
+  '$scope',
+  'restAPI',
+  'Auth',  
+  function (
+    $scope,
+    restAPI,
+    Auth
+  ){
+
+    $scope.settings = restAPI.comment_extension.get()
+    console.log($scope.settings)
       
-      
-      $scope.settings = restAPI.comment_extension.$get()
-      $scope.update_settings = function() {
-        $scope.settings.$update()
-      }
-      
+    
 }]);

@@ -22,12 +22,12 @@ class Config(object):
     ALLOW_ORIGINS = ['*']
     ALLOW_CREDENTIALS = False
 
-    EXT_KEY = 'comment-1450347873'
-    EXT_SECRET = 'f9198051-4d0a-49c0-a824-c2bf250873fa'
+    EXT_KEY = 'comment-1450350977'
+    EXT_SECRET = 'af4a8478-fc0e-48cb-a80a-3c29ba83554f'
     GRANT_TYPE = 'code'
 
-    REMOTE_OAUTH_URL = 'http://d.sup.farm/#/oauth'
-    TOKEN_URL = 'http://api.sup.farm/oauth/token'
+    REMOTE_OAUTH_URL = 'http://d.soopro.com/#/oauth'
+    TOKEN_URL = 'http://api.soopro.com/oauth/token'
 
     REDIRECT_URI = 'http://localhost:9527/#/redirect'
     EXPIRED_IN = 36000

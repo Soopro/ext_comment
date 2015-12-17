@@ -10,11 +10,11 @@ urls = [
     ("/visit/group/<group_key>/<comment_id>", visit_remove_comment, "DELETE"),
 
     # admin api
-    # ("/manage/extension", admin_add_comment_extension, "POST"),
-    ("/manage/extension", admin_get_comment_extension, "GET"),
-    ("/manage/extension", admin_update_comment_extension, "PUT"),
-    ("/manage/group", admin_list_comment_groups, "GET"),
-    ("/manage/group/<group_key>", admin_get_group_comments, "GET"),
-    ("/manage/group/<group_key>", admin_remove_batch_comments, "DELETE"),
-    # ("/manage/group/<group_key>/<comment_id>", remove_comment, "DELETE")
+    # ("/admin/extension", admin_add_comment_extension, "POST"),
+    ("/admin/extension", admin_get_comment_extension, "GET"),
+    ("/admin/extension", admin_update_comment_extension, "POST"),
+    ("/admin/group", admin_list_comment_groups, "GET"),
+    ("/admin/group/<group_key>", admin_get_group_comments, "GET"),
+    ("/admin/group/<group_key>", admin_remove_batch_comments, "DELETE"),
+    # ("/admin/group/<group_key>/<comment_id>", remove_comment, "DELETE")
 ]

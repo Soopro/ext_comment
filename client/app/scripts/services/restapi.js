@@ -25,19 +25,19 @@ angular.module('commentClient')
 
 
     comment_extension: (function () {
-      return $resource(api+"/manage/extension/:extension_id");
+      return $resource(api+"/admin/extension/:extension_id");
     })(),
 
     list_comment_groups: (function () {
-      return $resource(api+"/manage/group");
+      return $resource(api+"/admin/group");
     })(),
 
     group_comments: (function () {
-      return $resource(api+"/manage/group/:group_key");
+      return $resource(api+"/admin/group/:group_key");
     })(),
 
     admin_remove_comment: (function () {
-      return $resource(api+"/manage/group/:group_key/:comment_id");
+      return $resource(api+"/admin/group/:group_key/:comment_id");
     })(),
 
 

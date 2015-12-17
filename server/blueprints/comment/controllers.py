@@ -1,7 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from flask import current_app, request
+from flask import current_app, request, g
 from utils.base_utils import output_json, now
 from utils.comment_utils import get_allowed_origin
 from utils.request_json import get_request_json
@@ -77,19 +77,22 @@ def visit_remove_comment(group_key, comment_id):
 @output_json
 def admin_get_comment_extension():
     comment_extension = _get_current_comment_extension()
+    print comment_extension
     return _output_comment_extension(comment_extension)
     
    
 @output_json
 def admin_update_comment_extension():
     data = request.get_json()
+    # print data
     comment_extension = _get_current_comment_extension()
-    comment_ext['allowed_origins'] = data['allowed_origins']
-    comment_ext['title'] = data['title']
-    comment_ext['style'] = data['style']
-    comment_ext['thumbnail'] = data['thumbnail']
-    comment_ext['require_login'] = data['require_login']
-    comment_ext.save()
+    comment_extension['allowed_origins'] = data['allowed_origins']
+    comment_extension['title'] = data['title']
+    comment_extension['style'] = data['style']
+    comment_extension['thumbnail'] = data['thumbnail']
+    comment_extension['require_login'] = data['require_login']
+    comment_extension.save()
+    # print comment_extension
     return _output_comment_extension(comment_extension)
     
     
@@ -154,15 +157,16 @@ def _output_comment(comment):
     
 def _create_comment_extension():
     comment_extension = current_app.mongodb_conn.CommentExtension()
-    comment_extension.user_id = g.current_user["_id"]
+    comment_extension.open_id = g.current_user.open_id
     comment_extension.save()
     return comment_extension
     
     
 def _get_current_comment_extension():
+    # print g.current_user
     if g.current_user:
         comment_extension = current_app.mongodb_conn.\
-            CommentExtension.find_one_by_open_id(g.current_user["_id"])
+            CommentExtension.find_one_by_open_id(g.current_user.open_id)
     else:
         comment_extension = g.current_comment_extension
     if not comment_extension:

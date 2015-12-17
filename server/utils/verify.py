@@ -1,6 +1,8 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+from flask import current_app, request, g
+
 def verify_outer():
     CommentExtension = current_app.mongodb_conn.CommentExtension
     if debug:
@@ -43,6 +45,7 @@ def verify_token(debug=False):
         raise AuthenticationFailed("User Not Exist")
     # print "openid", open_id
     g.current_user = current_user 
+    print "current_user:", g.current_user
     
     
 def check_member_token(memeber_token):
