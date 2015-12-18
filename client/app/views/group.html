@@ -1,28 +1,14 @@
-<md-toolbar class="md-theme-light" layout="row">
-  <h2 class="md-toolbar-tools">
-    <span>Comment Group Name</span>
-  </h2>
-  <button class="md-button md-ink-ripple" ng-click="jumpToIndex()">
-    <span class="ng-scope">
-          Go Back
-    </span>
-    <div class="md-ripple-container"></div>
-  </button>
-</md-toolbar>
-
-<md-content>
+<div flex layout-margin layout-padding>
+  <h2 class="md-title ng-binding">Group: {{group_key}}</h2>
   <md-list>
-    <div layout="row" layout-align="end end">
-      <md-subheader class="md-no-sticky">Mark all</md-subheader>
-      <md-checkbox></md-checkbox>
-    </div>
-    <md-list-item ng-repeat="comment in comments">
-      <div class="md-list-item-text" layout="column">
-        <h3>{{ comment.content }}</h3>
-        <h4>{{ comment.author_name }}</h4>|<h4>{{ comment.creation | date }}</h4>
-        <md-button md-no-ink class="md-primary" ng-click="adminRemoveComment">Delete</md-button>
+    <md-list-item class="md-3-line" ng-click=""
+     ng-repeat="comment in comments">
+      <md-icon md-svg-icon="" aria-label="android "></md-icon>
+      <div class="md-list-item-text">
+        <h3>{{comment.author_name}}</h3>
+        <p>{{comment.creation}}</p>
+        <p>{{comment.content}}</p>
       </div>
-      <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
   </md-list>
-</md-content>
+</div>

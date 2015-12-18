@@ -13,33 +13,34 @@ angular.module('commentClient')
   var api = Config.api;
   var auth_api = Config.auth_api;
 
-  // Public API here
   return {
-    comment: (function () {
+    
+    // apis for visitors
+    visit_group: (function () {
       return $resource(api+"/visit/group/:group_key");
     })(),
-    remove_comment: (function () {
+    visit_comment: (function () {
       return $resource(api+"/visit/group/:group_key/:comment_id");
     })(),
-
-
-    comment_extension: (function () {
+    
+    // apis for admins
+    admin_extension: (function () {
       return $resource(api+"/admin/extension/:extension_id");
     })(),
 
-    list_comment_groups: (function () {
+    admin_groups: (function () {
       return $resource(api+"/admin/group");
     })(),
 
-    group_comments: (function () {
+    admin_group: (function () {
       return $resource(api+"/admin/group/:group_key");
     })(),
 
-    admin_remove_comment: (function () {
-      return $resource(api+"/admin/group/:group_key/:comment_id");
-    })(),
+    // admin_remove_comment: (function () {
+    //   return $resource(api+"/admin/group/:group_key/:comment_id");
+    // })(),
 
-
+    // apis for auth
     alias: (function () {
       return $resource(auth_api+"/alias");
     })(),

@@ -12,7 +12,7 @@ angular.module('commentClient')
     restAPI
   ){
     
-    $scope.settings = restAPI.admin_extension.get();
+    $scope.settings = restAPI.comment_extension.get();
     
     $scope.save = function() {
       $scope.settings.$save()
@@ -35,5 +35,3 @@ angular.module('commentClient')
     // };
       
   }]);
-
-  

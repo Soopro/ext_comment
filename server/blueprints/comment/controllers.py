@@ -144,7 +144,11 @@ def _output_comment_group(comment_group):
 
 
 def _output_comment(comment):
-    pass
+    return {
+        'author_name': comment.author_name,
+        'creation': comment.creation,
+        'content': comment.content
+    }
     
     
 # def _new_comment_extension():

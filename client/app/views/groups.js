@@ -5,12 +5,14 @@ angular.module('commentClient')
 [
   '$scope',
   'restAPI',
+  '$location',
   function (
     $scope,
-    restAPI
+    restAPI,
+    $location
   ){
     
-    $scope.groups = restAPI.list_comment_groups.query()
+    $scope.groups = restAPI.admin_groups.query()
       
   }]);
 
