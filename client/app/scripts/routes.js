@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name commentClient
- * @description
- * # commentClient
- *
- * Main module of the application.
- */
 angular.module('commentClient')
 .config([
   "$routeProvider",
@@ -21,15 +13,15 @@ angular.module('commentClient')
         templateUrl: 'views/auth/redirect.html',
         controller: 'RedirectCtrl'
       })
-      .when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
+      .when('/settings', {
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl'
       })
       .when('/groups', {
         templateUrl: 'views/groups.html',
         controller: 'GroupsCtrl'
       })
-      .when('/comments', {
+      .when('/group/:group_key', {
         templateUrl: 'views/comments.html',
         controller: 'CommentsCtrl'
       })

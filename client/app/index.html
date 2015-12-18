@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="styles/angular-material.css" />
   <link rel="stylesheet" href="styles/main.css">
 </head>
-<body ng-app="commentClient" layout="column" layout-margin>
+<body ng-app="commentClient" layout="row">
+ 
   <ng-view flex></ng-view>
 
   <script src="scripts/libs/angular.js"></script>
@@ -26,14 +27,16 @@
   <script src="scripts/app.js"></script>
   <script src="scripts/routes.js"></script>
   <script src="scripts/config.js"></script>
+  <script src="scripts/theme.js"></script>
 
   <script src="scripts/services/auth.js"></script>
   <script src="scripts/services/requestinterceptor.js"></script>
   <script src="scripts/services/restapi.js"></script>
+  <script src="scripts/services/flash.js"></script>
   
   <script src="views/auth/auth.js"></script>
   <script src="views/auth/redirect.js"></script>
-  <script src="views/dashboard.js"></script>
+  <script src="views/settings.js"></script>
   <script src="views/groups.js"></script>
   <script src="views/comments.js"></script>
 

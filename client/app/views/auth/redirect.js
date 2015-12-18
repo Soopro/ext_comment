@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name commentClient.controller:RedirectCtrl
- * @description
- * # RedirectCtrl
- * Controller of the commentClient
- */
 angular.module('commentClient')
 .controller('RedirectCtrl', function($routeParams, Auth, restAPI, $location) {
   if ($routeParams.code && $routeParams.state) {
@@ -22,7 +15,7 @@ angular.module('commentClient')
     .then(function (data) {
       Auth.setToken(data.ext_token);
       // Auth.setStatus(data.status);
-      $location.url("/dashboard");
+      $location.url("/settings");
     })
   } else {
     alert("code and state is required!");

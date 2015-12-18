@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name commentClient.controller:AuthCtrl
- * @description
- * # AuthCtrl
- * Controller of the commentClient
- */
 angular.module('commentClient')
 .controller('AuthCtrl', function($window, $routeParams, Auth, restAPI, Config, $location) {
 

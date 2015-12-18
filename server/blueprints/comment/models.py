@@ -44,12 +44,16 @@ class CommentGroup(BaseDocument):
     structure = {
         'extension_id': ObjectId,
         'group_key': unicode,
+        'update': int,
         'creation': int
     }
 
     use_dot_notation = True
 
-    default_values = {'creation': now()}
+    default_values = {
+        'creation': now(),
+        'update': now()
+    }
 
     def find_one_by_group_key_and_eid(self, group_key, extension_id):
         return self.find_one({

@@ -102,6 +102,7 @@ def admin_list_comment_groups():
     comment_groups = current_app.mongodb_conn.\
         CommentGroup.find_all_by_eid(comment_extension['_id'])
     comment_groups = [_output_comment_group(group) for group in comment_groups]
+    print comment_groups
     return comment_groups
     
     
@@ -136,7 +137,10 @@ def _output_comment_extension(comment_extension):
     
 
 def _output_comment_group(comment_group):
-    pass
+    return {
+        "group_key": comment_group.group_key,
+        "update": comment_group.update
+    }
 
 
 def _output_comment(comment):

@@ -1,27 +1,13 @@
-<md-toolbar class="md-theme-light" layout="row">
-  <h2 class="md-toolbar-tools">
-    <span>Comment Groups</span>
-  </h2>
-  <button class="md-button md-ink-ripple" ng-click="jumpToIndex()">
-    <span class="ng-scope">
-          Go Back
-    </span>
-    <div class="md-ripple-container"></div>
-  </button>
-</md-toolbar>
-
-<md-content>
+<div flex layout-margin layout-padding>
+  <h2 class="md-title ng-binding">Groups</h2>
   <md-list>
-    <md-list-item class="md-2-line" ng-repeat="group in groups">
+    <md-list-item class="md-2-line" ng-click=""
+     ng-repeat="group in groups">
+      <md-icon md-svg-icon="" aria-label="android "></md-icon>
       <div class="md-list-item-text">
-        <h3>{{ group.group_key }}</h3>
-        <h4>{{ group.creation }}</h4>
+        <h3>{{group.group_key}}</h3>
+        <p>{{group.update}}</p>
       </div>
-      <md-button class="md-secondary" md-ink-ripple>
-        <span class="ng-scope">go there</span>
-        <div class="md-ripplecontainer"></div>
-      </md-button>
-      <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
   </md-list>
-</md-content>
+</div>

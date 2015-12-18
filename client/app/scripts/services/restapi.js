@@ -1,14 +1,13 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name commentClient.restapi
- * @description
- * # restapi
- * Factory in the commentClient.
- */
 angular.module('commentClient')
-.factory('restAPI', function ($resource, Config) {
+.factory('restAPI', [
+  '$resource',
+  'Config',
+  function (
+    $resource, 
+    Config
+  ) {
   // Service logic
   // ...
   var api = Config.api;
@@ -54,4 +53,4 @@ angular.module('commentClient')
       return $resource(auth_api+"/token_check");
     })()
   };
-});
+}]);

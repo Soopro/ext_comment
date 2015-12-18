@@ -1,14 +1,9 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name commentClient.Auth
- * @description
- * # Auth
- * Service in the commentClient.
- */
 angular.module('commentClient')
-.service('Auth', ['$cookies', function ($cookie) {
+.service('Auth', [
+  '$cookies', 
+  function ($cookie) {
 // AngularJS will instantiate a singleton by calling "new" on this function
 var ext_token = $cookie.get('token') ? $cookie.get('token') : null;
 

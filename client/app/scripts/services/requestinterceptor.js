@@ -1,10 +1,14 @@
-/** 
- * description
- * # interceptor
- * Factory in the commentClient.
- */
+'use strict';
+
 angular.module('commentClient')
-.factory('interceptor', function ($q,$location,Auth,Config) {
+.factory(
+  'interceptor', 
+  function (
+    $q,
+    $location,
+    Auth,
+    Config
+  ) {
   // Service logic
   // Public API here
   return {
@@ -18,25 +22,25 @@ angular.module('commentClient')
     response: function (response) {
       return response ? response : $q.when(response);
     },
-    responseError: function (rejection) {
-      if (rejection.status==0 && rejection.data == null){
-        $location.path('/404');
-      }
-      if (rejection.status==401) {
-        $location.path('/auth');
-      }
-			try {
-				console.error({
-					errmsg: rejection.data.errmsg,
-					erraffix: rejection.data.erraffix,
-					errcode: rejection.data.errcode,
-					rejection: rejection
-				});
-		  }catch(e){
-		  	console.error(rejection, e);
-		  }
-      return $q.reject(rejection);
-    }
+      //     responseError: function (rejection) {
+      //       if (rejection.status==0 && rejection.data == null){
+      //         $location.path('/404');
+      //       }
+      //       if (rejection.status==401) {
+      //         $location.path('/auth');
+      //       }
+      // try {
+      //   console.error({
+      //     errmsg: rejection.data.errmsg,
+      //     erraffix: rejection.data.erraffix,
+      //     errcode: rejection.data.errcode,
+      //     rejection: rejection
+      //   });
+      //       }catch(e){
+      //         console.error(rejection, e);
+      //       }
+      //       return $q.reject(rejection);
+      //     }
   };
 })
 .config(function($httpProvider) {
