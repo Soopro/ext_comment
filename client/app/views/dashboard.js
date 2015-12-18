@@ -19,7 +19,6 @@ angular.module('commentClient')
   ){
 
     $scope.settings = restAPI.comment_extension.get()
-    console.log($scope.settings)
       
     
 }]);

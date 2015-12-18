@@ -2,6 +2,8 @@
 from __future__ import absolute_import
 
 from flask import current_app, request, g
+from errors.general_errors import AuthenticationFailed
+
 
 def verify_outer():
     CommentExtension = current_app.mongodb_conn.CommentExtension
@@ -12,15 +14,15 @@ def verify_outer():
     extension_id = base64.b64decode(ExtKey)
     comment_extension = CommentExtension.find_one_by_eid(extension_id)
     if not comment_extension:
-        raise CommentExtensionNotFound()
+        raise AuthenticationFailed('invalid key')
     if not request.url.startswith(comment_ext.allowed_origin):
-        raise PermissionDenied()
+        raise AuthenticationFailed('not allowed origin')
 
     if comment_extension.require_login:
         memeber_token = request.headers.get('MemberAuthor')
         # open_id = comment_ext["open_id"]
         if not check_member_token(memeber_token):
-            raise PermissionDenied
+            raise AuthenticationFailed('login, please')
     
     g.current_comment_extension = comment_extension
 

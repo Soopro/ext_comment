@@ -33,6 +33,7 @@ def get_new_ext_token(open_id):
     state = unicode(uuid.uuid4())
 
     user['random_string'] = state
+    user['expires_in'] = 0
     user.save()
 
     remote_oauth_url = current_app.config.get('REMOTE_OAUTH_URL')
@@ -80,7 +81,6 @@ def get_sup_token():  # code to here
 
     user['ext_token'] = current_app.sup_auth.generate_ext_token(open_id)
     user.save()
-    
     # CommentExtension = current_app.mongodb_conn.CommentExtension
     # comment_extension = CommentExtension.find_one_by_open_id(open_id)
     # if not comment_extension:
