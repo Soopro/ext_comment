@@ -13,6 +13,10 @@ angular.module('commentClient')
   ){
     
     $scope.groups = restAPI.admin_groups.query()
+    
+    $scope.jumpTo = function(route) {
+      $location.path(route)
+    }
       
   }]);
 

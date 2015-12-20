@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('commentClient')
-.controller('CommentsCtrl', [
+.controller('GroupCtrl', [
   '$scope', 
   '$routeParams', 
   'restAPI',
@@ -12,6 +12,6 @@ angular.module('commentClient')
   ) {
     
     $scope.group_key = $routeParams.get('group_key')
-    $scope.comments = restAPI.admin_group.get($scope.group_key)
+    $scope.comments = restAPI.admin_group.query($scope.group_key)
   
 }]);

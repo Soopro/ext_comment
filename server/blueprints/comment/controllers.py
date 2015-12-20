@@ -101,9 +101,15 @@ def admin_list_comment_groups():
     comment_extension = _get_current_comment_extension()
     comment_groups = current_app.mongodb_conn.\
         CommentGroup.find_all_by_eid(comment_extension['_id'])
-    comment_groups = [_output_comment_group(group) for group in comment_groups]
-    print comment_groups
-    return comment_groups
+    return [_output_comment_group(group) for group in comment_groups]
+    
+    
+@output_json
+def admin_add_comment_group():
+    data = request.get_json()
+    group_key = data["group_key"]
+    comment_group = _create_comment_group(group_key)
+    return _output_comment_group(comment_group)
     
     
 @output_json
@@ -181,7 +187,20 @@ def _get_current_comment_extension():
         comment_extension = _create_comment_extension()
     return comment_extension
     
+
+def _create_comment_group(group_key):
+    comment_extension = _get_current_comment_extension()
+    CommentGroup = current_app.mongodb_conn.CommentGroup
+    if CommentGroup.find_one_by_group_key_and_eid(group_key, 
+        comment_extension._id):
+        raise GroupKeyIsExisted()
+    comment_group = CommentGroup()
+    comment_group.group_key = group_key
+    comment_group.extension_id = comment_extension._id
+    comment_group.save()
+    return comment_group
     
+
 def _get_comment_group(group_key):    
     extension_id = _get_current_comment_extension().extension_id
     comment_group = current_app.mongodb_conn. \

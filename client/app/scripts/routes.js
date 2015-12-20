@@ -22,8 +22,8 @@ angular.module('commentClient')
         controller: 'GroupsCtrl'
       })
       .when('/group/:group_key', {
-        templateUrl: 'views/comments.html',
-        controller: 'CommentsCtrl'
+        templateUrl: 'views/group.html',
+        controller: 'GroupCtrl'
       })
       .when('/404', {
         templateUrl: 'views/404.html'

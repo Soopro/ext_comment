@@ -14,6 +14,7 @@ urls = [
     ("/admin/extension", admin_get_comment_extension, "GET"),
     ("/admin/extension", admin_update_comment_extension, "POST"),
     ("/admin/group", admin_list_comment_groups, "GET"),
+    ("/admin/group", admin_add_comment_group, "POST"),
     ("/admin/group/<group_key>", admin_get_group_comments, "GET"),
     ("/admin/group/<group_key>", admin_remove_batch_comments, "DELETE"),
     # ("/admin/group/<group_key>/<comment_id>", remove_comment, "DELETE")
