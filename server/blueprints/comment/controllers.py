@@ -1,25 +1,22 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+import base64
 from flask import current_app, request, g
 from utils.base_utils import output_json, now
-from utils.comment_utils import get_allowed_origin
 from utils.request_json import get_request_json
+from errors.bp_users_errors import SooproAPIError
+from utils.comment_utils import get_allowed_origin
 from errors.validation_errors import ContentStructure
 from errors.general_errors import (PermissionDenied, ErrCommentDeletionError,
                                    CommentGroupNotFound)
-import base64
-from errors.bp_users_errors import SooproAPIError
-    
+
     
 # endpoints for visitors
 @output_json
 def visit_get_group_comments(group_key):
-    comment_group = _get_comment_group(group_key)
-    comments = current_app.mongodb_conn. \
-         Comment.find_all_by_gid(comment_group['_id'])
-    comments = [_output_comment(comment) for comment in comments]
-    return comments
+    comments = _get_comments(group_key)
+    return [_output_comment(comment) for comment in comments]
     
     
 @output_json
@@ -30,33 +27,34 @@ def visit_add_comment(group_key):
 
     remote_addr = unicode(request.remote_addr)
     user_agent = unicode(request.headers.get('User-Agent'))
-    author_id = u"{}{}".format(remote_addr, user_agent)
-    
+    author_id = u"{} - {}".format(remote_addr, user_agent)
+    print author_id
     comment_extension = _get_current_comment_extension()
     
 
     def limit_comments(max_comment, min_time):
         Comment = current_app.mongodb_conn.Comment
-        comments = list(Comment.find_by_eid_and_aid_desc(
-            comment_extension['_id'], author_id, MAXCOMMENTS))
+        comments = list(Comment.find_by_gkey_and_eid_and_aid_desc(
+            group_key, comment_extension['_id'], author_id, max_comment))
 
-        if comments and len(comments) == MAXCOMMENTS:
+        if comments and len(comments) == max_comment:
             time_diff = now() - comments[-1].creation
-            if time_diff < MINTIME:
+            if time_diff < min_time:
                 raise PermissionDenied("Please wait for a while to post")
     
     limit_comments(5, 3600)
-
+    
+    content = request.get_json()['content']
+    
+    
     comment_group = _get_comment_group(group_key)
     comment = current_app.mongodb_conn.Comment()
-    comment.content = get_request_json('content', 
-        validator=ContentStructure, required=True)
+    comment.content = content
     comment.author_id = author_id
-    comment.ext_id = ext_id
-    comment.group_id = comment_group._id
+    comment.extension_id = comment_extension['_id']
+    comment.group_id = comment_group['_id']
     comment.group_key = unicode(group_key)
     comment.save()
-
     return _output_comment(comment)
 
     
@@ -77,7 +75,6 @@ def visit_remove_comment(group_key, comment_id):
 @output_json
 def admin_get_comment_extension():
     comment_extension = _get_current_comment_extension()
-    print comment_extension
     return _output_comment_extension(comment_extension)
     
    
@@ -92,45 +89,36 @@ def admin_update_comment_extension():
     comment_extension['thumbnail'] = data['thumbnail']
     comment_extension['require_login'] = data['require_login']
     comment_extension.save()
-    # print comment_extension
     return _output_comment_extension(comment_extension)
     
     
 @output_json
 def admin_list_comment_groups():
-    comment_extension = _get_current_comment_extension()
-    comment_groups = current_app.mongodb_conn.\
-        CommentGroup.find_all_by_eid(comment_extension['_id'])
+    comment_groups = _get_comment_groups()
     return [_output_comment_group(group) for group in comment_groups]
     
     
 @output_json
 def admin_add_comment_group():
-    print 'add comment group'
     data = request.get_json()
     group_key = data["group_key"]
-    print 'group key:', group_key
     comment_group = _create_comment_group(group_key)
-    print comment_group
-    comment_group = _output_comment_group(comment_group)
-    print comment_group
-    return comment_group
+    return _output_comment_group(comment_group)
     
     
 @output_json
 def admin_get_group_comments(group_key):
-    comment_group = _get_comment_group(group_key)
-    comments = current_app.mongodb_conn. \
-         Comment.find_all_by_gid(comment_group['_id'])
-    comments = [_output_comment(comment) for comment in comments]
-    return comments
+    comments = _get_comments(group_key)
+    return [_output_comment(comment) for comment in comments]
     
     
 @output_json
 def admin_remove_batch_comments(group_key):
+    comment_extension = _get_current_comment_extension()
     comment_group = _get_comment_group(group_key)
     comments = current_app.mongodb_conn. \
-         Comment.find_all_by_gid(comment_group['_id'])
+         Comment.find_all_by_gid(comment_group['_id'], 
+             comment_extension['_id'])
     for comment in comments:
         comment.delete()
     comment_group.delete()
@@ -183,10 +171,10 @@ def _create_comment_extension():
     
 def _get_current_comment_extension():
     # print g.current_user
-    if g.current_user:
+    if hasattr(g, 'current_user'):
         comment_extension = current_app.mongodb_conn.\
             CommentExtension.find_one_by_open_id(g.current_user.open_id)
-    else:
+    elif hasattr(g, 'current_comment_extension'):
         comment_extension = g.current_comment_extension
     if not comment_extension:
         comment_extension = _create_comment_extension()
@@ -207,18 +195,34 @@ def _create_comment_group(group_key):
     
 
 def _get_comment_group(group_key):    
-    extension_id = _get_current_comment_extension().extension_id
+    comment_extension = _get_current_comment_extension()
     comment_group = current_app.mongodb_conn. \
-        CommentGroup.find_one_by_group_key_and_eid(group_key, extension_id)
+        CommentGroup.find_one_by_group_key_and_eid(group_key, 
+            comment_extension['_id'])
     if not comment_group:
         raise GroupNotFound()
     return comment_group
     
     
+def _get_comment_groups():
+    comment_extension = _get_current_comment_extension()
+    comment_groups = current_app.mongodb_conn.\
+        CommentGroup.find_all_by_eid(comment_extension['_id'])
+    return comment_groups
+    
+    
 def _get_comment(comment_id, group_key):
-    extension_id = _get_current_comment_extension().extension_id
+    comment_extension = _get_current_comment_extension()
     comment = current_app.mongodb_conn.Comment.\
-        find_one_by_id_and_gid_and_eid(comment_id, group_key, extension_id)
+        find_one_by_id_and_gkey_and_eid(comment_id, 
+            group_key, comment_extension['_id'])
     if not comment:
         raise CommentNotFound()
     return comment
+    
+
+def _get_comments(group_key):
+    comment_extension = _get_current_comment_extension()
+    comments = current_app.mongodb_conn.Comment.\
+        find_all_by_gkey_and_eid(group_key, comment_extension['_id'])
+    return comments

@@ -17,9 +17,13 @@ angular.module('commentClient')
       if (Auth.getToken()) {
         request.headers.Authorization = Auth.getToken();
       }
+      console.log('request')
+      console.log(request)
       return request;
     },
     response: function (response) {
+      console.log('response')
+      console.log(response)
       return response ? response : $q.when(response);
     },
       //     responseError: function (rejection) {

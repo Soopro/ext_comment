@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('commentClient')
-.controller('SettingsCtrl',
+.controller('AdminSettingsCtrl',
 [
   'flash',
   '$scope',
@@ -12,7 +12,7 @@ angular.module('commentClient')
     restAPI
   ){
     
-    $scope.settings = restAPI.comment_extension.get();
+    $scope.settings = restAPI.admin_extension.get();
     
     $scope.save = function() {
       $scope.settings.$save()
@@ -35,3 +35,5 @@ angular.module('commentClient')
     // };
       
   }]);
+
+  

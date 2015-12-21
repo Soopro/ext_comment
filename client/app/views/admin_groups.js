@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('commentClient')
-.controller('GroupsCtrl',
+.controller('AdminGroupsCtrl',
 [
   'flash',
   '$scope',
@@ -14,14 +14,14 @@ angular.module('commentClient')
     $location
   ){
     
-    $scope.groups = restAPI.admin_groups.query();
+    $scope.groups = restAPI.admin_group.query();
     $scope.newGroup = new restAPI.admin_group();
     
     $scope.jumpTo = function(route) {
       $location.path(route);
     };
     
-    $scope.addComment = function() {
+    $scope.addCommentGroup = function() {
       if($scope.newGroup.group_key.lenth != 0) {
         $scope.newGroup.$save()
         .then(function(data){

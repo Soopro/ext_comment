@@ -90,15 +90,31 @@ class Comment(BaseDocument):
             'group_id': ObjectId(group_id),
             'extension_id': ObjectId(extension_id)
         })
-
-    def find_all_by_gid_and_eid(self, gid, extension_id):
-        return self.find({
-            'group_id': ObjectId(gid),
+        
+    def find_one_by_id_and_gkey_and_eid(self, 
+        comment_id, group_key, extension_id):
+        return self.find_one({
+            '_id': ObjectId(comment_id),
+            'group_key': group_key,
             'extension_id': ObjectId(extension_id)
         })
 
-    def find_all_by_gkey_and_aid_desc(self, group_key, author_id, limit):
+    def find_all_by_gid_and_eid(self, group_id, extension_id):
+        return self.find({
+            'group_id': ObjectId(group_id),
+            'extension_id': ObjectId(extension_id)
+        })
+        
+    def find_all_by_gkey_and_eid(self, group_key, extension_id):
         return self.find({
             'group_key': group_key,
+            'extension_id': ObjectId(extension_id)
+        })
+
+    def find_by_gkey_and_eid_and_aid_desc(self, group_key, 
+        extension_id, author_id, limit):
+        return self.find({
+            'group_key': group_key,
+            'extension_id': extension_id,
             'author_id': author_id
         }).sort('creation', INDEX_DESCENDING).limit(limit)

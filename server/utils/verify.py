@@ -1,16 +1,19 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+import base64
 from flask import current_app, request, g
 from errors.general_errors import AuthenticationFailed
 
 
-def verify_outer():
+def verify_outer(debug=False):
     CommentExtension = current_app.mongodb_conn.CommentExtension
     if debug:
         g.current_comment_extension = CommentExtension.find_one()
         return
     ExtKey = request.headers.get('ExtKey')
+    if not ExtKey:
+        raise AuthenticationFailed('key is required')
     extension_id = base64.b64decode(ExtKey)
     comment_extension = CommentExtension.find_one_by_eid(extension_id)
     if not comment_extension:
@@ -47,7 +50,7 @@ def verify_token(debug=False):
         raise AuthenticationFailed("User Not Exist")
     # print "openid", open_id
     g.current_user = current_user 
-    print "current_user:", g.current_user
+    # print "current_user:", g.current_user
     
     
 def check_member_token(memeber_token):

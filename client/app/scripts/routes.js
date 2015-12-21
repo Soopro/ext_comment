@@ -13,17 +13,21 @@ angular.module('commentClient')
         templateUrl: 'views/auth/redirect.html',
         controller: 'RedirectCtrl'
       })
-      .when('/settings', {
-        templateUrl: 'views/settings.html',
-        controller: 'SettingsCtrl'
+      .when('/admin/settings', {
+        templateUrl: 'views/admin_settings.html',
+        controller: 'AdminSettingsCtrl'
       })
-      .when('/groups', {
-        templateUrl: 'views/groups.html',
-        controller: 'GroupsCtrl'
+      .when('/admin/group', {
+        templateUrl: 'views/admin_groups.html',
+        controller: 'AdminGroupsCtrl'
       })
-      .when('/group/:group_key', {
-        templateUrl: 'views/group.html',
-        controller: 'GroupCtrl'
+      .when('/admin/group/:group_key/comment', {
+        templateUrl: 'views/admin_comments.html',
+        controller: 'AdminCommentsCtrl'
+      })
+      .when('/visit/group/:group_key/comment', {
+        templateUrl: 'views/visit_comments.html',
+        controller: 'VisitCommentsCtrl'
       })
       .when('/404', {
         templateUrl: 'views/404.html'

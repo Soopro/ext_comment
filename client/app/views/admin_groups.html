@@ -2,7 +2,7 @@
   <h2 class="md-title ng-binding">Groups</h2>
   <md-list>
     <md-list-item class="md-2-line"
-     ng-click="jumpTo('/group/' + group.group_key)"
+     ng-click="jumpTo('/admin/group/' + group.group_key + '/comment')"
      ng-repeat="group in groups">
       <md-icon md-svg-icon="" aria-label="android "></md-icon>
       <div class="md-list-item-text">
@@ -17,6 +17,6 @@
       <input ng-model="newGroup.group_key">
     </md-input-container>
     <md-button class="md-raised md-primary" 
-     ng-click="addComment()">ADD</md-button>
+     ng-click="addCommentGroup()">ADD</md-button>
   </div>
 </div>

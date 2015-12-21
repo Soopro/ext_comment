@@ -25,7 +25,7 @@ angular.module('commentClient')
       .then(function (data) {
         Auth.setToken(data.ext_token);
         // Auth.setStatus(data.status);
-        $location.url("/settings");
+        $location.url("/admin/settings");
       })
     } else {
       alert("code and state is required!");

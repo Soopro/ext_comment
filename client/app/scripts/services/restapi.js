@@ -20,7 +20,7 @@ angular.module('commentClient')
       return $resource(api+"/visit/group/:group_key");
     })(),
     visit_comment: (function () {
-      return $resource(api+"/visit/group/:group_key/:comment_id");
+      return $resource(api+"/visit/group/:group_key/comment/:comment_id");
     })(),
     
     // apis for admins
@@ -28,14 +28,18 @@ angular.module('commentClient')
       return $resource(api+"/admin/extension/:extension_id");
     })(),
 
-    admin_groups: (function () {
-      return $resource(api+"/admin/group");
-    })(),
+    // admin_groups: (function () {
+    //   return $resource(api+"/admin/group");
+    // })(),
 
     admin_group: (function () {
       return $resource(api+"/admin/group/:group_key");
     })(),
-
+    
+    admin_comment: (function () {
+      return $resource(api+"/admin/group/:group_key/comment");
+    })(),
+    
     // admin_remove_comment: (function () {
     //   return $resource(api+"/admin/group/:group_key/:comment_id");
     // })(),

@@ -1,0 +1,20 @@
+<div flex layout-margin layout-padding>
+  <md-list>
+    <md-list-item class="md-3-line md-long-text" ng-click=""
+     ng-repeat="comment in comments">
+      <md-icon md-svg-icon="" aria-label="android"></md-icon>
+      <div class="md-list-item-text">
+        <h3>{{comment.author_name}} <span>{{comment.creation}}</span></h3>
+        <p>{{comment.content}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+  <form name="Comment" ng-submit="addComment()">
+    <md-input-container class="md-block">
+      <label>Reply</label>
+      <textarea ng-model="newComment.content" columns="1"
+       md-maxlength="300" rows="5"></textarea>
+    </md-input-container>
+    <md-button class="md-raised md-primary" type="submit">Submit</md-button>
+  </form>
+</div>

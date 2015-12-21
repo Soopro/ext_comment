@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from .routes import urls
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
 from errors.base_errors import APIError
 from utils.verify import verify_outer, verify_token
 from utils.base_utils import route_inject, make_json_response
@@ -33,9 +33,9 @@ route_inject(blueprint, urls)
 @blueprint.before_request
 def before_request():
     if request.endpoint in apis_for_visitors:
-        verify_outer()
+        verify_outer(current_app.debug)
     elif request.endpoint in apis_for_admins:
-        verify_token()
+        verify_token(current_app.debug)
 
 
 @blueprint.errorhandler(APIError)
