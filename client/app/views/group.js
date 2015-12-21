@@ -11,7 +11,7 @@ angular.module('commentClient')
     restAPI
   ) {
     
-    $scope.group_key = $routeParams.get('group_key')
+    $scope.group_key = $routeParams['group_key']
     $scope.comments = restAPI.admin_group.query($scope.group_key)
-  
+    
 }]);

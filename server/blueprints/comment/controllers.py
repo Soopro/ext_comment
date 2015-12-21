@@ -106,10 +106,15 @@ def admin_list_comment_groups():
     
 @output_json
 def admin_add_comment_group():
+    print 'add comment group'
     data = request.get_json()
     group_key = data["group_key"]
+    print 'group key:', group_key
     comment_group = _create_comment_group(group_key)
-    return _output_comment_group(comment_group)
+    print comment_group
+    comment_group = _output_comment_group(comment_group)
+    print comment_group
+    return comment_group
     
     
 @output_json
@@ -134,26 +139,26 @@ def admin_remove_batch_comments(group_key):
 
 def _output_comment_extension(comment_extension):
     return {
-        "title": comment_extension.title,
-        "allowed_origins": comment_extension.allowed_origins,
-        "style": comment_extension.style,
-        "thumbnail": comment_extension.thumbnail,
-        "require_login": comment_extension.require_login,
+        "title": comment_extension['title'],
+        "allowed_origins": comment_extension['allowed_origins'],
+        "style": comment_extension['style'],
+        "thumbnail": comment_extension['thumbnail'],
+        "require_login": comment_extension['require_login'],
     }
     
 
 def _output_comment_group(comment_group):
     return {
-        "group_key": comment_group.group_key,
-        "update": comment_group.update
+        "group_key": comment_group['group_key'],
+        "update": comment_group['update']
     }
 
 
 def _output_comment(comment):
     return {
-        'author_name': comment.author_name,
-        'creation': comment.creation,
-        'content': comment.content
+        'author_name': comment['author_name'],
+        'creation': comment['creation'],
+        'content': comment['content']
     }
     
     

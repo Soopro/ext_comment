@@ -16,10 +16,11 @@ apis_for_visitors = [
 ]
 
 apis_for_admins = [
-    "{}.admin_add_comment_extension".format(bp_name),
+    # "{}.admin_add_comment_extension".format(bp_name),
     "{}.admin_get_comment_extension".format(bp_name),
     "{}.admin_update_comment_extension".format(bp_name),
     "{}.admin_list_comment_groups".format(bp_name),
+    "{}.admin_add_comment_group".format(bp_name),
     "{}.admin_get_group_comments".format(bp_name),
     "{}.admin_remove_batch_comments".format(bp_name)
 ]
