@@ -4,7 +4,9 @@
      ng-repeat="comment in comments">
       <md-icon md-svg-icon="" aria-label="android"></md-icon>
       <div class="md-list-item-text">
-        <h3>{{comment.author_name}} <span>{{comment.creation}}</span></h3>
+        <h3>{{comment.author_name}} 
+          <span>{{comment.creation | dateformat}}</span>
+        </h3>
         <p>{{comment.content}}</p>
       </div>
     </md-list-item>
@@ -12,7 +14,7 @@
   <form name="Comment" ng-submit="addComment()">
     <md-input-container class="md-block">
       <label>Reply</label>
-      <textarea ng-model="newComment.content" columns="1"
+      <textarea ng-model="newComment.content" columns="5"
        md-maxlength="300" rows="5"></textarea>
     </md-input-container>
     <md-button class="md-raised md-primary" type="submit">Submit</md-button>

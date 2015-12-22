@@ -6,7 +6,7 @@
       <md-icon md-svg-icon="" aria-label="android"></md-icon>
       <div class="md-list-item-text">
         <h3>{{comment.author_name}}</h3>
-        <p>{{comment.creation}}</p>
+        <p>Create Time: {{comment.creation | dateformat}}</p>
         <p>{{comment.content}}</p>
       </div>
     </md-list-item>
