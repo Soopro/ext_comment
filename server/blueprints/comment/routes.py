@@ -5,9 +5,9 @@ from .controllers import *
 
 urls = [
     # open api
-    ("/visit/group/<group_id>/comment", visit_get_group_comments, "GET"),
-    ("/visit/group/<group_id>/comment", visit_add_comment, "POST"),
-    ("/visit/group/<group_id>/comment/<comment_id>", visit_remove_comment, "DELETE"),
+    ("/visit/group/<group_key>/comment", visit_get_group_comments, "GET"),
+    ("/visit/group/<group_key>/comment", visit_add_comment, "POST"),
+    ("/visit/group/<group_key>/comment/<comment_id>", visit_remove_comment, "DELETE"),
 
     # admin api
     # ("/admin/extension", admin_add_comment_extension, "POST"),

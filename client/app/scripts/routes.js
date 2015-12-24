@@ -21,7 +21,7 @@ angular.module('commentClient')
         templateUrl: 'views/admin_groups.html',
         controller: 'AdminGroupsCtrl'
       })
-      .when('/admin/group/:group_key/comment', {
+      .when('/admin/group/:group_id/comment', {
         templateUrl: 'views/admin_comments.html',
         controller: 'AdminCommentsCtrl'
       })

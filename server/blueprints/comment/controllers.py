@@ -14,13 +14,13 @@ from errors.general_errors import (PermissionDenied, ErrCommentDeletionError,
     
 # endpoints for visitors
 @output_json
-def visit_get_group_comments(group_id):
-    comments = _get_comments(group_id)
+def visit_get_group_comments(group_key):
+    comments = _visit_get_comments(group_key)
     return [_output_comment(comment) for comment in comments]
     
     
 @output_json
-def visit_add_comment(group_id):
+def visit_add_comment(group_key):
     # auth
     # domain
     # member (option) member_token, open_id
@@ -46,8 +46,8 @@ def visit_add_comment(group_id):
     
     content = request.get_json()['content']
     
+    comment_group = _visit_get_comment_group(group_key)
     
-    comment_group = _get_comment_group(group_key)
     comment = current_app.mongodb_conn.Comment()
     comment.content = content
     comment.author_id = author_id
@@ -59,8 +59,8 @@ def visit_add_comment(group_id):
 
     
 @output_json
-def visit_remove_comment(group_id, comment_id):
-    comment = _get_comment(comment_id, group_id)
+def visit_remove_comment(group_key, comment_id):
+    comment = _visit_get_comment(comment_id, group_key)
     return _output_comment(comment)
     
 
@@ -108,14 +108,14 @@ def admin_list_comment_groups():
     
 @output_json
 def admin_get_group_comments(group_id):
-    comments = _get_comments(group_id)
+    comments = _admin_get_comments(group_id)
     return [_output_comment(comment) for comment in comments]
     
     
 @output_json
 def admin_remove_batch_comments(group_id):
-    comment_group = _get_comment_group(group_id)
-    comments = _get_comments(group_id)
+    comment_group = _admin_get_comment_group(group_id)
+    comments = _admin_get_comments(group_id)
     for comment in comments:
         comment.delete()
     comment_group.delete()
@@ -181,25 +181,15 @@ def _get_current_comment_extension():
     return comment_extension
     
 
-def _create_comment_group(group_id):
+def _create_comment_group(group_key):
     comment_extension = _get_current_comment_extension()
     CommentGroup = current_app.mongodb_conn.CommentGroup
-    if CommentGroup.find_one_by_gid_and_eid(group_id, comment_extension._id):
+    if CommentGroup.find_one_by_gid_and_eid(group_key, comment_extension._id):
         raise GroupKeyIsExisted()
     comment_group = CommentGroup()
     comment_group.group_key = group_key
     comment_group.extension_id = comment_extension._id
     comment_group.save()
-    return comment_group
-    
-
-def _get_comment_group(group_id):    
-    comment_extension = _get_current_comment_extension()
-    comment_group = current_app.mongodb_conn. \
-        CommentGroup.find_one_by_gid_and_eid(group_id, 
-            comment_extension['_id'])
-    if not comment_group:
-        raise GroupNotFound()
     return comment_group
     
     
@@ -210,7 +200,44 @@ def _get_comment_groups():
     return comment_groups
     
     
-def _get_comment(comment_id, group_id):
+def _visit_get_comment_group(group_key):    
+    comment_extension = _get_current_comment_extension()
+    comment_group = current_app.mongodb_conn. \
+        CommentGroup.find_one_by_gkey_and_eid(group_key, 
+            comment_extension['_id'])
+    if not comment_group:
+        comment_group = _create_comment_group(group_key)
+    return comment_group
+    
+
+def _visit_get_comment(comment_id, group_key):
+    comment_extension = _get_current_comment_extension()
+    comment = current_app.mongodb_conn.Comment.\
+        find_one_by_id_and_gkey_and_eid(comment_id, 
+            group_key, comment_extension['_id'])
+    if not comment:
+        raise CommentNotFound()
+    return comment
+    
+
+def _visit_get_comments(group_key):
+    comment_extension = _get_current_comment_extension()
+    comments = current_app.mongodb_conn.Comment.\
+        find_all_by_gkey_and_eid(group_key, comment_extension['_id'])
+    return comments
+    
+
+def _admin_get_comment_group(group_id):    
+    comment_extension = _get_current_comment_extension()
+    comment_group = current_app.mongodb_conn. \
+        CommentGroup.find_one_by_gid_and_eid(group_id, 
+            comment_extension['_id'])
+    if not comment_group:
+        raise GroupNotFound()
+    return comment_group
+    
+    
+def _admin_get_comment(comment_id, group_id):
     comment_extension = _get_current_comment_extension()
     comment = current_app.mongodb_conn.Comment.\
         find_one_by_id_and_gid_and_eid(comment_id, 
@@ -220,7 +247,7 @@ def _get_comment(comment_id, group_id):
     return comment
     
 
-def _get_comments(group_id):
+def _admin_get_comments(group_id):
     comment_extension = _get_current_comment_extension()
     comments = current_app.mongodb_conn.Comment.\
         find_all_by_gid_and_eid(group_id, comment_extension['_id'])

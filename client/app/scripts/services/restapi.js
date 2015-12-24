@@ -33,11 +33,11 @@ angular.module('commentClient')
     // })(),
 
     admin_group: (function () {
-      return $resource(api+"/admin/group/:group_key");
+      return $resource(api+"/admin/group/:group_id");
     })(),
     
     admin_comment: (function () {
-      return $resource(api+"/admin/group/:group_key/comment");
+      return $resource(api+"/admin/group/:group_id/comment");
     })(),
     
     // admin_remove_comment: (function () {
