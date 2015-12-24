@@ -17,6 +17,10 @@ angular.module('commentClient')
         templateUrl: 'views/admin_settings.html',
         controller: 'AdminSettingsCtrl'
       })
+      .when('/admin/generation', {
+        templateUrl: 'views/admin_generate_code.html',
+        controller: 'AdminGenerateCodeCtrl'
+      })
       .when('/admin/group', {
         templateUrl: 'views/admin_groups.html',
         controller: 'AdminGroupsCtrl'
