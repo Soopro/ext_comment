@@ -10,6 +10,9 @@ from utils.comment_utils import get_allowed_origin
 from errors.validation_errors import ContentStructure
 from errors.general_errors import (PermissionDenied, ErrCommentDeletionError,
                                    CommentGroupNotFound)
+from .errors import (CommentGroupKeyIsExsited, 
+                     CommentGroupNotFound, 
+                     CommentNotFound) 
 
     
 # endpoints for visitors
@@ -185,7 +188,7 @@ def _create_comment_group(group_key):
     comment_extension = _get_current_comment_extension()
     CommentGroup = current_app.mongodb_conn.CommentGroup
     if CommentGroup.find_one_by_gid_and_eid(group_key, comment_extension._id):
-        raise GroupKeyIsExisted()
+        raise CommentGroupKeyIsExsited()
     comment_group = CommentGroup()
     comment_group.group_key = group_key
     comment_group.extension_id = comment_extension._id
@@ -233,7 +236,7 @@ def _admin_get_comment_group(group_id):
         CommentGroup.find_one_by_gid_and_eid(group_id, 
             comment_extension['_id'])
     if not comment_group:
-        raise GroupNotFound()
+        raise CommentGroupNotFound()
     return comment_group
     
     

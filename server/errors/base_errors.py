@@ -24,7 +24,9 @@ class APIError(Exception):
     affix_message = None
 
     def __init__(self, message=None):
-        self.affix_message = message
+        self.affix_message = message if message else None
+        self.response_code = int(str(self.status_code) + \
+            str(self.response_code))
 
     def __str__(self):
         return '{}:{}'.format(self.status_message, self.affix_message)
