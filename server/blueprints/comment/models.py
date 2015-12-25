@@ -80,8 +80,10 @@ class Comment(BaseDocument):
 
     use_dot_notation = True
     required_fields = ['content', 'author_name', 'extension_id', 'group_id']
-    default_values = {'creation': now(),
-                      'author_name': u'anonymous'}
+    default_values = {
+        'creation': now(),
+        'author_name': u'anonymous'
+    }
 
     def find_one_by_id_and_gid_and_eid(self, 
         comment_id, group_id, extension_id):

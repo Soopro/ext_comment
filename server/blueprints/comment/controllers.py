@@ -34,7 +34,6 @@ def visit_add_comment(group_key):
     print author_id
     comment_extension = _get_current_comment_extension()
     
-
     def limit_comments(max_comment, min_time):
         Comment = current_app.mongodb_conn.Comment
         comments = list(Comment.find_by_gkey_and_eid_and_aid_desc(
@@ -115,14 +114,35 @@ def admin_get_group_comments(group_id):
     return [_output_comment(comment) for comment in comments]
     
     
+@output_json   
+def admin_remove_comment(group_id, comment_id):
+    comment = _admin_get_comment(comment_id, group_id)
+    comment.delete()
+    return _output_comment(comment)
+    
+    
 @output_json
-def admin_remove_batch_comments(group_id):
+def admin_remove_group(group_id):
     comment_group = _admin_get_comment_group(group_id)
     comments = _admin_get_comments(group_id)
     for comment in comments:
         comment.delete()
     comment_group.delete()
     return _get_comment_group(comment_group)    
+    
+
+@output_json
+def admin_remove_comments(group_id):
+    def deal_comments(comment_id, group_id):
+        comment = _admin_get_comment(comment_id, group_id)
+        comment.delete()
+        return _output_comment(comment)
+        
+    data = request.get_json()
+    comment_ids = data["ids"]
+
+    return [deal_comments(comment_id, group_id) \
+        for comment_id in comment_ids]
     
 
 def _output_comment_extension(comment_extension):
