@@ -27,6 +27,9 @@ angular.module('commentClient')
         // Auth.setStatus(data.status);
         $location.url("/admin/settings");
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     } else {
       alert("code and state is required!");
     }

@@ -52,41 +52,46 @@ def get_new_ext_token(open_id):
 @output_json
 def get_sup_token():  # code to here
     data = request.get_json()
-
     open_id = data.get('open_id')
 
     user = current_app.mongodb_conn.User.find_one_by_open_id(open_id)
-
     if not user:
         raise NotFound('user not found')
-
     if user.get('random_string') != data.get('state'):
         raise PermissionDenied('state is not equal')
 
-
-    if not current_app.config.get('DEBUG'):
-        resp = remote_user_auth(user)
+    print 'user'
+    print user
+    if not user['access_token']:
+        try:
+            resp = current_app.sup_auth.get_access_token(data['code'])
+        except Exception, e:
+            print e
+            raise SooproRequestAccessTokenError()
     else:
-        resp = {
-            'access_token': u'debug_access_token',
-            'refresh_token': u'debug_refresh_token',
-            'expires_in': now()+(3600*24),
-            'display_name': u'DEBUGER'
-        }
-
+        if user['expires_in'] < now():
+            try:
+                resp = current_app.sup_auth.\
+                    refresh_access_token(user['refresh_token'])
+                if not 'access_token' in resp: 
+                    resp = current_app.sup_auth.get_access_token(data['code'])
+            except Exception, e:
+                print e
+                raise SooproRequestAccessTokenError()
+    
+    print 'resp'
+    print resp
+    if not 'access_token' in resp:
+        print resp
+        raise SooproAPIError('Soopro OAuth2 get token error: ' + str(data))
+        
     user['access_token'] = resp['access_token']
     user['refresh_token'] = resp['refresh_token']
     user['expires_in'] = resp['expires_in']
-    user['display_name'] = u''  # TODO display name
-
+    user['display_name'] = u''  # TODO display name   
     user['ext_token'] = current_app.sup_auth.generate_ext_token(open_id)
     user.save()
-    # CommentExtension = current_app.mongodb_conn.CommentExtension
-    # comment_extension = CommentExtension.find_one_by_open_id(open_id)
-    # if not comment_extension:
-    #     comment_extension = CommentExtension()
-    #     comment_extension.user_id = user["_id"]
-    #     comment_extension.save()
+
     return {
         "id": user['_id'],
         "display_name": user['display_name'],
@@ -94,38 +99,6 @@ def get_sup_token():  # code to here
         "status": user['status'],
         "ext_token": user['ext_token']
     }
-
-
-def remote_user_auth(user):
-    resp = None
-    if user['access_token'] and user['expires_in'] > now():
-        access_token = user['access_token']
-        try:
-            resp = current_app.sup_auth.check_access_token(access_token)
-        except Exception, e:
-            raise SooproRequestAccessTokenError
-    else:
-        refresh_token = user['refresh_token']
-        if not refresh_token:
-            try:
-                resp = current_app.sup_auth.get_access_token(data['code'])
-            except Exception, e:
-                raise SooproRequestAccessTokenError
-        else:
-            try:
-                resp = current_app.sup_auth.refresh_access_token(refresh_token)
-            except Exception, e:
-                raise SooproRefreshAccessTokenError
-
-        if resp.get('errcode') or \
-        not isinstance(resp.get('access_token'), basestring):
-            current_app.logger.warn(str(resp))
-            resp = None
-
-    if not resp:
-        raise SooproAPIError('Soopro OAuth2 Token error: ' + str(data))
-
-    return resp
 
 
 @output_json
