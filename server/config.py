@@ -22,8 +22,8 @@ class Config(object):
     ALLOW_ORIGINS = ['*']
     ALLOW_CREDENTIALS = False
 
-    EXT_KEY = 'comment-1450350977'
-    EXT_SECRET = 'af4a8478-fc0e-48cb-a80a-3c29ba83554f'
+    EXT_KEY = 'comment-1451384374'
+    EXT_SECRET = '84c274b0-e7d9-400e-a2d4-a36173ef3318'
     GRANT_TYPE = 'code'
 
     REMOTE_OAUTH_URL = 'http://d.soopro.com/#/oauth'
