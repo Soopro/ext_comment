@@ -1,0 +1,11 @@
+{
+    "author": "Soopro",
+    "title": "Comment",
+    "description": "Soopro comment extension",
+    "capabilities": ["ws"],
+    "protocol": "http",
+    "domain": "",
+    "path": "/comment/",
+    "thumbnail": "comment.png",
+    "previews": ["comment_preview.png"]
+}
