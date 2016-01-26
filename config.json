@@ -5,7 +5,8 @@
     "capabilities": ["ws"],
     "protocol": "http",
     "domain": "",
-    "path": "/comment/",
-    "thumbnail": "comment.png",
+    "entrance": "",
+    "icon": "",
+    "poster": "",
     "previews": ["comment_preview.png"]
 }
