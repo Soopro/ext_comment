@@ -1,11 +1,12 @@
 {
+    "id": "custom_comment",
     "author": "Soopro",
     "title": "Comment",
     "description": "Soopro comment extension",
     "capabilities": ["ws"],
     "protocol": "http",
-    "domain": "",
-    "entrance": "",
+    "domain": "http://ext.soopro.com",
+    "entrance": "http://ext.soopro.com/comment/client/#/auth",
     "icon": "",
     "poster": "",
     "previews": ["comment_preview.png"]

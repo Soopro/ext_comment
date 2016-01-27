@@ -58,6 +58,8 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     EXT_COMMENT_DB_DBNAME = 'ext_comment_production'
+    
+    REDIRECT_URI = 'http://ext.soopro.com/comment/client/#/redirect'
 
 
 config = {

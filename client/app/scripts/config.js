@@ -13,8 +13,8 @@ angular.module('commentClient')
   }
   
   var prd = {
-    api: "http://127.0.0.1:5001/comment",
-    auth_api: "http://127.0.0.1:5001/comment/user",
+    api: "http://ext.soopro.com/comment/server/comment",
+    auth_api: "http://ext.soopro.com/comment/server/comment/user",
   }
   
   var config = dev

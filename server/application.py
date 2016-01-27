@@ -16,6 +16,12 @@ from errors.general_errors import (NotFound,
                                    MethodNotAllowed)
 
 
+__version_info__ = ('0', '1', '0')
+__version__ = '.'.join(__version_info__)
+
+__artisan__ = ['Majik']
+
+
 def create_app(config_name='development'):
     app = Flask(__name__)
     # config
@@ -83,5 +89,10 @@ def create_app(config_name='development'):
             resp.headers.extend(cors_headers)
             return resp
         return
+        
+    print "-------------------------------------------------------"
+    print "Comment Extension: {}".format(app.version)
+    print "Developers: {}".format(', '.join(app.artisan))
+    print "-------------------------------------------------------"
 
     return app
