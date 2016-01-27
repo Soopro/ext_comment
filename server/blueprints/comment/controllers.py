@@ -31,7 +31,7 @@ def visit_add_comment(group_key):
     remote_addr = unicode(request.remote_addr)
     user_agent = unicode(request.headers.get('User-Agent'))
     author_id = u"{} - {}".format(remote_addr, user_agent)
-    print author_id
+    # print author_id
     comment_extension = _get_current_comment_extension()
     
     def limit_comments(max_comment, min_time):

@@ -39,7 +39,7 @@ def get_new_ext_token(open_id):
     remote_oauth_url = current_app.config.get('REMOTE_OAUTH_URL')
     redirect_uri = current_app.config.get('REDIRECT_URI')
 
-    print user
+    # print user
     return {
         'state': state,
         'auth_uri': remote_oauth_url,
@@ -60,13 +60,13 @@ def get_sup_token():  # code to here
     if user.get('random_string') != data.get('state'):
         raise PermissionDenied('state is not equal')
 
-    print 'user'
-    print user
+    # print 'user'
+    # print user
     if not user['access_token']:
         try:
             resp = current_app.sup_auth.get_access_token(data['code'])
         except Exception, e:
-            print e
+            # print e
             raise SooproRequestAccessTokenError()
     else:
         if user['expires_in'] < now():
@@ -76,13 +76,13 @@ def get_sup_token():  # code to here
                 if not 'access_token' in resp: 
                     resp = current_app.sup_auth.get_access_token(data['code'])
             except Exception, e:
-                print e
+                # print e
                 raise SooproRequestAccessTokenError()
     
-    print 'resp'
-    print resp
+    # print 'resp'
+    # print resp
     if not 'access_token' in resp:
-        print resp
+        # print resp
         raise SooproAPIError('Soopro OAuth2 get token error: ' + str(data))
         
     user['access_token'] = resp['access_token']
