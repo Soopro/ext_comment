@@ -6,15 +6,17 @@ angular.module('commentClient')
   '$http',
   'Config',
   '$scope', 
-  '$routeParams', 
   'restAPI',
+  '$location',
+  '$routeParams', 
   function(
     flash,
     $http,
     Config,
     $scope, 
-    $routeParams, 
-    restAPI
+    restAPI,
+    $location,
+    $routeParams
   ) {
     
     $scope.group_id = $routeParams['group_id'];
@@ -65,6 +67,10 @@ angular.module('commentClient')
       //   });
       // }
     }
+    
+    $scope.jumpTo = function(route) {
+      $location.path(route);
+    };
     
     
 }]);

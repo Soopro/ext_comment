@@ -6,10 +6,12 @@ angular.module('commentClient')
   'flash',
   '$scope',
   'restAPI',
+  '$location',
   function (
     flash,
     $scope,
-    restAPI
+    restAPI,
+    $location
   ){
     
     $scope.settings = restAPI.admin_extension.get();
@@ -22,6 +24,10 @@ angular.module('commentClient')
       .catch(function(error){
         flash("Updating was failed!", true)
       })
+    };
+    
+    $scope.jumpTo = function(route) {
+      $location.path(route);
     };
     
     // function showErrorToast(error) {

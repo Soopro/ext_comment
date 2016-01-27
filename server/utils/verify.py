@@ -14,18 +14,22 @@ def verify_outer(debug=False):
     ExtKey = request.headers.get('ExtKey')
     if not ExtKey:
         raise AuthenticationFailed('key is required')
-    extension_id = base64.b64decode(ExtKey)
-    comment_extension = CommentExtension.find_one_by_eid(extension_id)
+    # extension_id = base64.b64decode(ExtKey)
+    # comment_extension = CommentExtension.find_one_by_eid(extension_id)
+    open_id = ExtKey
+    comment_extension = CommentExtension.find_one_by_open_id(open_id)
     if not comment_extension:
         raise AuthenticationFailed('invalid key')
+    
     if not request.url.startswith(comment_ext.allowed_origin):
         raise AuthenticationFailed('not allowed origin')
 
     if comment_extension.require_login:
-        memeber_token = request.headers.get('MemberAuthor')
+        pass
+        # memeber_token = request.headers.get('MemberAuthor')
         # open_id = comment_ext["open_id"]
-        if not check_member_token(memeber_token):
-            raise AuthenticationFailed('login, please')
+        # if not check_member_token(memeber_token):
+        #     raise AuthenticationFailed('login, please')
     
     g.current_comment_extension = comment_extension
 
@@ -53,5 +57,5 @@ def verify_token(debug=False):
     # print "current_user:", g.current_user
     
     
-def check_member_token(memeber_token):
-    return True
+# def check_member_token(memeber_token):
+#     return True

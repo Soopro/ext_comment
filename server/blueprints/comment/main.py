@@ -33,9 +33,9 @@ route_inject(blueprint, urls)
 @blueprint.before_request
 def before_request():
     if request.endpoint in apis_for_visitors:
-        verify_outer(current_app.debug)
+        verify_outer(current_app.config.get("DEBUG"))
     elif request.endpoint in apis_for_admins:
-        verify_token(current_app.debug)
+        verify_token(current_app.config.get("DEBUG"))
 
 
 @blueprint.errorhandler(APIError)

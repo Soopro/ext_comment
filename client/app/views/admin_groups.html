@@ -1,5 +1,8 @@
 <div flex layout-margin layout-padding>
-  <h2 class="md-title ng-binding">Groups</h2>
+  <h2 class="md-title ng-binding">
+    <md-button ng-click="jumpTo('/admin/settings')">Settings</md-button>
+    <md-button ng-disabled="true" class="md-primary">Groups</md-button>
+  </h2>
   <md-list>
     <md-list-item class="md-2-line"
      ng-click="jumpTo('/admin/group/' + group.id + '/comment')"
