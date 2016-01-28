@@ -1,3 +1,4 @@
 Flask==0.10.1
 mongokit==0.9.1.1
 pymongo==2.7.1
+requests==2.3.0
