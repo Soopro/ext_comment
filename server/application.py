@@ -16,7 +16,7 @@ from errors.general_errors import (NotFound,
                                    MethodNotAllowed)
 
 
-__version_info__ = ('0', '1', '2')
+__version_info__ = ('0', '1', '4')
 __version__ = '.'.join(__version_info__)
 
 __artisan__ = ['Majik']
@@ -24,6 +24,10 @@ __artisan__ = ['Majik']
 
 def create_app(config_name='development'):
     app = Flask(__name__)
+    
+    app.version = __version__
+    app.artisan = __artisan__
+        
     # config
     app.config.from_object(config[config_name])
     app.json_encoder = Encoder
