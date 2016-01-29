@@ -50,13 +50,8 @@ def create_app(config_name='development'):
     # app.mongodb_database = mongodb_database
     # app.mongodb_conn = mongodb_conn
 
-
-    from blueprints.comment.models \
-        import Comment, CommentGroup, CommentExtension
     from blueprints.user.models import User
-
-    app.mongodb_database.register([User, 
-        Comment, CommentGroup, CommentExtension])
+    app.mongodb_database.register([User])
 
     # register blueprints
     from blueprints.comment import blueprint as comment_blueprint
@@ -92,7 +87,6 @@ def create_app(config_name='development'):
             cors_headers = make_cors_headers()
             resp.headers.extend(cors_headers)
             return resp
-        return
         
     print "-------------------------------------------------------"
     print "Comment Extension: {}".format(app.version)

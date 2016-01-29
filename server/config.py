@@ -3,12 +3,8 @@ from __future__ import absolute_import
 
 from datetime import timedelta
 
-__version_info__ = ('0', '0', '1')
-__version__ = '.'.join(__version_info__)
-
 
 class Config(object):
-    version = __version__
     DEBUG = True
 
     HOST = "127.0.0.1"
