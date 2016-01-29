@@ -25,7 +25,6 @@ route_inject(blueprint, urlpatterns)
 def before_request():
     if request.endpoint in user_api_endpoints:
         verify_token(current_app.config.get("DEBUG"))
-    return
 
 
 @blueprint.errorhandler(APIError)
