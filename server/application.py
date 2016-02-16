@@ -46,10 +46,6 @@ def create_app(config_name='development'):
                            redirect_uri=app.config.get("REDIRECT_URI"),
                            expired_in=app.config.get("EXPIRED_IN"))
 
-    # inject database connections to app object
-    # app.mongodb_database = mongodb_database
-    # app.mongodb_conn = mongodb_conn
-
     from blueprints.user.models import User
     app.mongodb_database.register([User])
 
