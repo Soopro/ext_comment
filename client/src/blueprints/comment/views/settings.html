@@ -1,0 +1,52 @@
+<div layout="column">
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" aria-label="{{_('Back')}}"
+       ng-click="jump_to('/newsletter/posts')">
+        <md-icon md-svg-icon="ic_arrow_back_24px"></md-icon>
+      </md-button>
+      <h2>
+        <span>{{ _('Settings') }}</span>
+      </h2>
+      <span flex></span>
+      <ng-include src="'blueprints/comment/views/menu.tmpl.html'" 
+       ng-controller="menuCtrl"></ng-include>
+    </div>
+  </md-toolbar>
+  <div class="md-padding">
+    <form name="profile_form" layout="column" 
+     novalidate ng-submit="save()">
+      
+      <md-input-container class="md-block">
+        <label>Title</label>
+        <input ng-model="settings.title">
+      </md-input-container>
+      
+      <md-input-container class="md-block">
+        <label>Allowed Origin</label>
+        <input ng-model="settings.allowed_origins">
+      </md-input-container>
+      
+      <md-input-container class="md-block">
+        <label>Style</label>
+        <input ng-model="settings.style">
+      </md-input-container>
+      
+      <md-input-container class="md-block">
+        <label>Thumbnail</label>
+        <input ng-model="settings.thumbnail">
+      </md-input-container>
+      
+      <div layout="row">
+        <md-button class="md-raised md-primary" type="submit"
+         ng-disabled="is_saved">
+          {{_('Save')}}
+        </md-button>
+        <md-button class="md-raised" type="button"
+         ng-click="jump_to('/dashboard')" ng-disabled="is_saved">
+          {{_('Cancel')}}
+        </md-button>
+      </div>
+    </form>
+  </div>
+</div>

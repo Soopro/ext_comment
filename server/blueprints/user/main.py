@@ -1,19 +1,23 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from .routes import urlpatterns
-from utils.verify import verify_token
-from errors.base_errors import APIError
 from flask import Blueprint, request, current_app
-from utils.base_utils import make_json_response, route_inject
 
+from apiresps import APIError
+
+from utils.helpers import route_inject
+from utils.api_utils import make_json_response
+
+from .models import ExtUser
+from .routes import urlpatterns
+
+from ..helpers import verify_token
 
 bp_name = "user"
 
-user_api_endpoints = [
-    "{}.delete_token".format(bp_name),
-    "{}.set_alias".format(bp_name),
-    "{}.get_alias".format(bp_name)
+open_api_endpoints = [
+    "{}.get_oauth_access_code".format(bp_name),
+    "{}.get_oauth_access_token".format(bp_name)
 ]
 
 blueprint = Blueprint(bp_name, __name__)
@@ -21,10 +25,17 @@ blueprint = Blueprint(bp_name, __name__)
 route_inject(blueprint, urlpatterns)
 
 
+@blueprint.before_app_first_request
+def before_first_request():
+    current_app.mongodb_database.register(ExtUser)
+
+
 @blueprint.before_request
 def before_request():
-    if request.endpoint in user_api_endpoints:
-        verify_token(current_app.config.get("DEBUG"))
+    if request.endpoint in open_api_endpoints:
+        pass
+    else:
+        verify_token()
 
 
 @blueprint.errorhandler(APIError)

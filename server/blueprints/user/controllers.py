@@ -1,48 +1,32 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-import uuid
-from utils.base_utils import now
-from utils.base_utils import output_json
-from flask import current_app, request, g
-from utils.request import parse_json, parse_args
-from errors.validation_errors import ObjectIdStructure, UrlStructure
-from errors.general_errors import (AuthenticationFailed, 
-                                   NotFound,
-                                   PermissionDenied)
-from errors.bp_users_errors import (SooproAccessDeniedError,
-                                    SooproRequestAccessTokenError,
-                                    SooproRefreshAccessTokenError,
-                                    SooproAPIError)
+from flask import current_app, g
+
+from utils.helpers import now, pre_process_scope
+from utils.api_utils import output_json
+from utils.request import get_param
+
+from apiresps.validations import Struct
+
+from .errors import (RequestAccessTokenFailed,
+                     LogoutAccessTokenFailed,
+                     UserTokenFailed,
+                     UserProfileFailed,
+                     UserStateInvalid)
 
 
 @output_json
-def get_new_ext_token(open_id):
-    ObjectIdStructure(open_id)
-
-    User = current_app.mongodb_conn.User
-
-    user = User.find_one_by_open_id(open_id)
-
-    if not user:
-        user = User()
-        user['open_id'] = open_id
-        user['status'] = User.STATUS_INACTIVATED
+def get_oauth_access_code(open_id):
+    Struct.Id(open_id)
+    
+    state = current_app.sup_oauth.make_random_string(open_id)
 
     ext_key = current_app.config.get('EXT_KEY')
-    state = unicode(uuid.uuid4())
+    redirect_uri = current_app.config.get('OAUTH_REDIRECT_URI')
 
-    user['random_string'] = state
-    user['expires_in'] = 0
-    user.save()
-
-    remote_oauth_url = current_app.config.get('REMOTE_OAUTH_URL')
-    redirect_uri = current_app.config.get('REDIRECT_URI')
-
-    # print user
     return {
         'state': state,
-        'auth_uri': remote_oauth_url,
         'ext_key': ext_key,
         'response_type': 'code',
         'redirect_uri': redirect_uri
@@ -50,83 +34,113 @@ def get_new_ext_token(open_id):
 
 
 @output_json
-def get_sup_token():  # code to here
-    data = request.get_json()
-    open_id = data.get('open_id')
+def get_oauth_access_token(open_id):
+    Struct.Id(open_id)
 
-    user = current_app.mongodb_conn.User.find_one_by_open_id(open_id)
+    state = get_param('state', Struct.Sid, True)
+    code = get_param('code', Struct.Sid, True)
+
+    if not current_app.sup_oauth.match_random_string(state, open_id):
+        raise UserStateInvalid
+
+    ExtUser = current_app.mongodb_conn.ExtUser
+
+    user = ExtUser.find_one_by_open_id(open_id)
+
     if not user:
-        raise NotFound('user not found')
-    if user.get('random_string') != data.get('state'):
-        raise PermissionDenied('state is not equal')
+        user = ExtUser()
+        user['open_id'] = open_id
 
-    # print 'user'
-    # print user
-    if not user['access_token']:
-        try:
-            resp = current_app.sup_auth.get_access_token(data['code'])
-        except Exception, e:
-            # print e
-            raise SooproRequestAccessTokenError()
-    else:
-        if user['expires_in'] < now():
-            try:
-                resp = current_app.sup_auth.\
-                    refresh_access_token(user['refresh_token'])
-                if not 'access_token' in resp: 
-                    resp = current_app.sup_auth.get_access_token(data['code'])
-            except Exception, e:
-                # print e
-                raise SooproRequestAccessTokenError()
+    try:
+        resp = current_app.sup_oauth.get_access_token(code)
+        print resp
+        assert 'access_token' in resp
+    except Exception as e:
+        raise RequestAccessTokenFailed('access')
+
+    try:
+        profile = current_app.sup_oauth.get_profile(resp['access_token'])
+    except current_app.sup_oauth.OAuthInvalidAccessToken as e:
+        raise RequestAccessTokenFailed('profile')
+    except Exception as e:
+        raise UserProfileFailed(str(e))
+
+    try:
+        ext_token = current_app.sup_oauth.generate_ext_token(open_id)
+    except Exception as e:
+        raise UserTokenFailed(str(e))
     
-    # print 'resp'
-    # print resp
-    if not 'access_token' in resp:
-        # print resp
-        raise SooproAPIError('Soopro OAuth2 get token error: ' + str(data))
-        
+
     user['access_token'] = resp['access_token']
     user['refresh_token'] = resp['refresh_token']
-    user['expires_in'] = resp['expires_in']
-    user['display_name'] = u''  # TODO display name   
-    user['ext_token'] = current_app.sup_auth.generate_ext_token(open_id)
+    user['expires_at'] = resp['expires_in']+now()
+    user['token_type'] = resp['token_type']
+    user['status'] = ExtUser.STATUS_ACTIVATED
+
+    user['display_name'] = profile['display_name']
+    user['title'] = profile['title']
+    user['locale'] = profile['locale']
+    user['description'] = profile['description']
+    user['type'] = profile['type']
+    user['snapshot'] = profile['snapshot']
+    user['scope'] = pre_process_scope(profile['owner_alias'],
+                                      profile['app_alias'])
     user.save()
+    
+    logged_user = output_user(user)
+    logged_user['token'] = ext_token
+
+    return logged_user
+
+
+@output_json
+def check_user(open_id):
+    Struct.Id(open_id)
+
+    user = g.curr_user
+
+    result = True
+
+    if not user \
+    or user['open_id'] != open_id \
+    or not user["refresh_token"] \
+    or not user["scope"]:
+        result = False
 
     return {
-        "id": user['_id'],
-        "display_name": user['display_name'],
-        "alias": user['alias'],
-        "status": user['status'],
-        "ext_token": user['ext_token']
+        'result': result
     }
 
 
 @output_json
-def get_alias():
-    user = g.current_user
-    return {
-        "open_id": unicode(user.open_id),
-        "alias": user.alias
-    }
+def logout_user(open_id):
+    Struct.Id(open_id)
 
+    user = g.curr_user
 
-@output_json
-def set_alias():
-    user = g.current_user
-    data = request.get_json()
-    user.alias = data.get("alias")
-    user.save()
-    return {
-        "open_id": unicode(user.open_id),
-        "alias": user.alias
-    }
-
-
-@output_json
-def token_check():
-    ext_token = request.get_json().get('ext_token')
-    open_id = current_app.sup_auth.parse_ext_token(ext_token)
-    user = current_app.mongodb_conn.User.find_one_by_open_id(open_id)
     if user:
-        return {'status': 'OK'}
-    return {'error': 'user not found'}
+        try:
+            current_app.sup_oauth.logout(user['access_token'])
+        except Exception:
+            raise LogoutAccessTokenFailed
+
+        user['access_token'] = None
+        user['refresh_token'] = None
+        user.save()
+
+    return output_user(user)
+
+# outputs
+
+
+def output_user(user):
+    if not user:
+        user = {}
+    return {
+        'id': user.get('_id'),
+        'app': user.get('app'),
+        'owner': user.get('owner'),
+        'status': user.get('status'),
+        'access_token': bool(user.get('access_token')),
+        'refresh_token': bool(user.get('refresh_token')),
+    }

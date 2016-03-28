@@ -4,9 +4,8 @@ from __future__ import absolute_import
 from .controllers import *
 
 urlpatterns = [
-    ("/ext_token/<open_id>", get_new_ext_token, "GET"),
-    ("/sup_auth", get_sup_token, "POST"),
-    ("/token_check", token_check, "POST"),
-    ("/alias", get_alias, "GET"),
-    ("/alias", set_alias, "POST")
+    ("/<open_id>", get_oauth_access_code, "GET"),
+    ("/<open_id>", get_oauth_access_token, "POST"),
+    ("/<open_id>", logout_user, "DELETE"),
+    ("/<open_id>/check", check_user, "POST"),
 ]

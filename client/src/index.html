@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{lang}}" ng-app="comment">
+<head>
+  <title>Newsletter</title>
+  
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- build:[href] favicon.png -->
+  <link rel="shortcut icon" href="styles/favicon.png">
+  <!-- /build-->
+  <!-- build:css app.min.css?md5=null -->
+  <link rel="stylesheet" href="styles/fonts/md-fonts.css">
+  <link rel="stylesheet" href="styles/angular-material.css" />
+  <link rel="stylesheet" href="styles/ui.css">
+  <!-- /build-->
+  <!-- build:css locale.min.css?md5=null -->
+  <link rel="stylesheet" href="languages/locales.css">
+  <!-- /build-->
+</head>
+<body layout="column">
+  
+  <!-- ng-templates -->
+  
+  <div ng-view class="view"></div>
+
+  <!-- build:js server_conf.js?md5=null -->
+  {% include '_conf_.html' %}
+  <!-- /build-->
+  
+  <!-- build:js app.min.js?md5=null -->
+  {% include 'scripts/_r_app_.html' %}
+  {% include 'blueprints/_r_scripts_.html' %}
+  <!-- /build-->
+  <!-- build:js locale.min.js?md5=null -->
+  {% include 'languages/_r_scripts_.html' %}
+  <!-- /build-->
+</body>
+</html>

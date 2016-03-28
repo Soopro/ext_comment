@@ -7,6 +7,7 @@ from bson import ObjectId
 
 
 class Encoder(json.JSONEncoder):
+
     """
     This is our customized JSONEncoder
     if the obj is instance of datetime, encode as isoformat

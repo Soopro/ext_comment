@@ -1,0 +1,23 @@
+<md-menu md-offset="0 -5">
+  <md-button aria-label="{{_('Menu')}}" class="md-icon-button"
+   ng-click="$mdOpenMenu($event)">
+    <md-icon md-menu-origin md-svg-icon="ic_more_vert_24px"></md-icon>
+  </md-button>
+  <md-menu-content width="3">
+    <md-menu-item>
+      <md-button ng-click="jump_to('/comment/settings')">
+        {{_('Setting')}}
+      </md-button>
+    </md-menu-item>
+    <md-menu-item>
+      <md-button ng-click="return()" ng-disabled="is_list">
+        {{_('Return to list')}}
+      </md-button>
+    </md-menu-item>
+    <md-menu-item>
+      <md-button ng-click="close()">
+        {{_('Close Extension')}}
+      </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>

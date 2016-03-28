@@ -4,17 +4,19 @@ from __future__ import absolute_import
 from bson import ObjectId
 from mongokit import INDEX_DESCENDING
 from utils.models import BaseDocument
-from utils.base_utils import now
+from utils.helpers import now
 
 
 class CommentExtension(BaseDocument):
+    __collection__ = 'comment_extensions'
+
     structure = {
-        'open_id' : unicode,
+        'open_id': unicode,
         'allowed_origins': unicode,
-        'title' : unicode,
-        'style' : unicode,
-        'thumbnail' : unicode,
-        'require_login' : bool
+        'title': unicode,
+        'style': unicode,
+        'thumbnail': unicode,
+        'require_login': bool
     }
 
     use_dot_notation = True
@@ -36,14 +38,16 @@ class CommentExtension(BaseDocument):
 
     def find_one_by_open_id(self, open_id):
         return self.find_one({
-            "open_id" : open_id
+            "open_id": open_id
         })
 
 
 class CommentGroup(BaseDocument):
+    __collection__ = 'comment_groups'
+
     structure = {
         'extension_id': ObjectId,
-        'group_key': unicode,
+        'key': unicode,
         'update': int,
         'creation': int
     }
@@ -68,6 +72,8 @@ class CommentGroup(BaseDocument):
 
 
 class Comment(BaseDocument):
+    __collection__ = 'comments'
+
     structure = {
         'creation': int,
         'content': unicode,
@@ -85,16 +91,16 @@ class Comment(BaseDocument):
         'author_name': u'anonymous'
     }
 
-    def find_one_by_id_and_gid_and_eid(self, 
-        comment_id, group_id, extension_id):
+    def find_one_by_id_and_gid_and_eid(self,
+                                       comment_id, group_id, extension_id):
         return self.find_one({
             '_id': ObjectId(comment_id),
             'group_id': ObjectId(group_id),
             'extension_id': ObjectId(extension_id)
         })
-        
-    def find_one_by_id_and_gkey_and_eid(self, 
-        comment_id, group_key, extension_id):
+
+    def find_one_by_id_and_gkey_and_eid(self,
+                                        comment_id, group_key, extension_id):
         return self.find_one({
             '_id': ObjectId(comment_id),
             'group_key': group_key,
@@ -106,15 +112,15 @@ class Comment(BaseDocument):
             'group_id': ObjectId(group_id),
             'extension_id': ObjectId(extension_id)
         })
-        
+
     def find_all_by_gkey_and_eid(self, group_key, extension_id):
         return self.find({
             'group_key': group_key,
             'extension_id': ObjectId(extension_id)
         })
 
-    def find_by_gkey_and_eid_and_aid_desc(self, group_key, 
-        extension_id, author_id, limit):
+    def find_by_gkey_and_eid_and_aid_desc(self, group_key,
+                                          extension_id, author_id, limit):
         return self.find({
             'group_key': group_key,
             'extension_id': extension_id,
