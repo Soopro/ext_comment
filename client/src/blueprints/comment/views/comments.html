@@ -9,6 +9,9 @@
         <span>{{ _('Comments') }}</span>
       </h2>
       <span flex></span>
+      <md-button ng-click="removeAllComment()">
+        {{ _('Clear') }}
+      </md-button>
       <ng-include src="'blueprints/comment/views/menu.tmpl.html'" 
        ng-controller="menuCtrl"></ng-include>
     </div>
@@ -16,10 +19,8 @@
   <div class="md-padding">
     
     <md-list>
-      <md-list-item class="" ng-click=""
-       ng-repeat="comment in comments">
-        <md-checkbox ng-check="exists(comment, selected)" 
-         ng-click="toggle(comment, selected)"></md-checkbox>
+      <md-list-item md-swipe-right="removeComment(comment)"
+      ng-repeat="comment in comments">
         <div class="md-list-item-text">
           <h3>{{comment.author_name}}</h3>
           <p>{{ _('Create Time:') }} {{comment.creation | dateformat}}</p>
@@ -27,11 +28,6 @@
         </div>
       </md-list-item>
     </md-list>
-    
-    <md-button class="md-fab md-accent md-fab-bottom-right fixed"
-     ng-disabled="disabled()" ng-click="removeBatchComment()">
-      Del
-    </md-button>
     
   </div>
 </div>

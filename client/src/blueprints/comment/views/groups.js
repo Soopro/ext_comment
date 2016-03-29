@@ -12,7 +12,7 @@ angular.module('comment')
     $location
   ){
     
-    $scope.groups = restAPI.admin_group.query();
+    $scope.groups = restAPI.group.query();
     
     $scope.jump_to = function(route) {
       $location.path(route);

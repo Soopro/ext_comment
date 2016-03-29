@@ -16,16 +16,20 @@ angular.module('comment')
     var res = {
       extension: supResource(api+"/admin/extension/:extension_id"),
 
-      admin_group: supResource(api+"/admin/group/:group_id"),
+      group: supResource(api+"/admin/group/:group_id"),
     
-      admin_comment: supResource(api+"/admin/group/:group_id/comment"),
+      comment: supResource(api+"/admin/group/:group_id/comment/:comment_id", {
+        group_id: '@group_id',
+        comment_id: '@id'
+      }, {
+        
+      }),
       
       batch_comment: supResource(api+"/admin/group/:group_id/comment/batch", {
         group_id: '@group_id'
       }, {
         batch_delete: {method: 'POST'},
-      }
-                                  )
+      })
     };
   
     return res;

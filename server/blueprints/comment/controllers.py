@@ -175,6 +175,7 @@ def output_comment_group(comment_group):
 def output_comment(comment):
     return {
         'id': comment['_id'],
+        'group_id': comment['group_id'],
         'author_name': comment['author_name'],
         'creation': comment['creation'],
         'content': comment['content']
