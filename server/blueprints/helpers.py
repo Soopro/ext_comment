@@ -11,15 +11,15 @@ def verify_token():
 
     # fake data
 
-    user = ExtUser.find_one()
-    if not user:
-        user = ExtUser()
-        user['scope'] = u'tester/testapp'
-        user['open_id'] = u'test-open-id'
-        user.save()
-    g.curr_user = user
+    # user = ExtUser.find_one()
+    # if not user:
+    #     user = ExtUser()
+    #     user['scope'] = u'tester/testapp'
+    #     user['open_id'] = u'test-open-id'
+    #     user.save()
+    # g.curr_user = user
 
-    return
+    # return
 
     open_id = current_app.sup_oauth.load_ext_token(request.headers)
 
@@ -46,7 +46,7 @@ def verify_token():
             profile = None
 
         user['access_token'] = resp['access_token']
-        user['expires_at'] = resp['expires_in']+now()
+        user['expires_at'] = resp['expires_in'] + now()
         user['owner'] = resp['owner']
         user['app'] = resp['app']
         user['token_type'] = resp['token_type']
@@ -67,21 +67,28 @@ def verify_token():
 
 def verify_outer(debug=False):
     CommentExtension = current_app.mongodb_conn.CommentExtension
-    if debug:
-        g.current_comment_extension = CommentExtension.find_one()
-        return
+
+    comment_extension = CommentExtension.find_one()
+    if not comment_extension:
+        comment_extension = CommentExtension()
+    g.current_comment_extension = comment_extension
+
+    return
+
     ExtKey = request.headers.get('ExtKey')
     if not ExtKey:
-        raise AuthenticationFailed('key is required')
-    # extension_id = base64.b64decode(ExtKey)
-    # comment_extension = CommentExtension.find_one_by_eid(extension_id)
+        raise AuthFailed('key is required')
+
+    # open_id = base64.b64decode(ExtKey)
     open_id = ExtKey
+
     comment_extension = CommentExtension.find_one_by_open_id(open_id)
     if not comment_extension:
-        raise AuthenticationFailed('invalid key')
+        raise AuthFailed('invalid key')
 
-    if not request.url.startswith(comment_ext.allowed_origin):
-        raise AuthenticationFailed('not allowed origin')
+    allowed_origins = comment_extension['allowed_origins']
+    if allowed_origins and not request.host.endswith(allowed_origins):
+        raise AuthFailed('not allowed origins')
 
     if comment_extension.require_login:
         pass

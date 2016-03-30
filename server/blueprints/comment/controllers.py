@@ -8,6 +8,8 @@ from utils.request import get_param
 from .errors import (CommentGroupKeyHasExsited,
                      CommentGroupNotFound,
                      CommentNotFound)
+from apiresps.errors import PermissionDenied
+from apiresps.validations import Struct
 
 
 # endpoints for visitors
@@ -42,7 +44,7 @@ def visit_add_comment(group_key):
 
     limit_comments(5, 3600)
 
-    content = request.get_json()['content']
+    content = get_param('content', validator=Struct.Text, required=True)
 
     comment_group = _visit_get_comment_group(group_key)
 

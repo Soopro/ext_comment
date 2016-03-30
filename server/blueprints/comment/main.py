@@ -41,6 +41,7 @@ def before_first_request():
 
 @blueprint.before_request
 def before_request():
+    print request.host
     if request.endpoint in apis_for_visitors:
         verify_outer()
     elif request.endpoint in apis_for_admins:
