@@ -1,0 +1,68 @@
+{
+  "watch":{
+    "src": "src",
+    "dest": "demo",
+    "clean": true,
+    "server": true,
+    "port": 9000
+  },
+  "init":{
+    "copy": {
+      "libs":{
+        "flatten": true,
+        "src":[
+          "jquery/dist/jquery.min.js",
+          "q/q.js"
+        ],
+        "cwd":"bower_components",
+        "dest":"src/scripts/libs"
+      }
+    }
+  },
+  "release":{
+    "clean": ["build", "dist"],
+    "render":{
+      "cwd": "src",
+      "dest": "build"
+    },
+    "copy":{
+      "scripts":{
+        "src": [
+          "**/*"
+        ],
+        "cwd": "build",
+        "dest": "dist"
+      },
+      "assets":{
+        "flatten": true,
+        "src": [
+          "**/*.ttf",
+          "**/*.woff*",
+          "**/*.png",
+          "**/*.jpg",
+          "**/*.svg",
+          "!uploads/*"
+        ],
+        "cwd": "build",
+        "dest": "dist"
+      }
+    },
+    "compress": {
+      "process_html":{
+        "type": "process_html",
+        "cwd": "dist",
+        "src": ["*.html"],
+        "minify": false
+      },
+      "js":{
+        "type": "js",
+        "cwd": "dist",
+        "src": [
+          "scripts/libs/q.js",
+          "scripts/skipper.js"
+        ],
+        "output": "scripts/libs/skipper.min.js"
+      }
+    }
+  }
+}
