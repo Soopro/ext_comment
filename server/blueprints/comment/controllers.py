@@ -189,7 +189,7 @@ def output_comment_group(comment_group):
     return {
         "id": comment_group['_id'],
         "group_key": comment_group['key'],
-        "update": comment_group['update']
+        "updated": comment_group['updated']
     }
 
 
@@ -197,7 +197,7 @@ def output_comment(comment):
     return {
         'id': comment['_id'],
         'group_id': comment['group_id'],
-        'author_name': comment['author_name'],
+        'meta': comment['meta'],
         'creation': comment['creation'],
         'content': comment['content']
     }
