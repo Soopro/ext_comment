@@ -75,19 +75,16 @@ def verify_outer(debug=False):
 
     return
 
-    ExtKey = request.headers.get('ExtKey')
-    if not ExtKey:
-        raise AuthFailed('key is required')
-
-    # open_id = base64.b64decode(ExtKey)
-    open_id = ExtKey
+    open_id = request.headers.get('AppOpenId')
+    if not open_id:
+        raise AuthFailed('invalid app open id')
 
     comment_extension = CommentExtension.find_one_by_open_id(open_id)
     if not comment_extension:
         raise AuthFailed('invalid key')
 
     allowed_origins = comment_extension['allowed_origins']
-    if allowed_origins and not request.host.endswith(allowed_origins):
+    if allowed_origins and not request.referrer.startswith(allowed_origins):
         raise AuthFailed('not allowed origins')
 
     if comment_extension.require_login:

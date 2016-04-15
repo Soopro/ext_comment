@@ -1,10 +1,11 @@
 # -------------------------------
-# Skipper - Soopro member system front-end.
+# Comment Extension SDK.
 # -------------------------------
+
 is_exports = typeof exports isnt "undefined" and exports isnt null
 root = if is_exports then exports else this
 
-version = '0.1.5'
+version = '0.1.0'
 
 TOKEN_COOKIE_NAME = 'sup_member_auth'
 OPEN_ID_COOKIE_NAME = 'sup_member_open_id'
@@ -73,72 +74,11 @@ utils =
 
 
 default_options =
-  apiBaseURL: 'http://api.soopro.com'
   apiExtURL: 'http://comment.ext.soopro.net/server'
   contentType: 'application/json'
   responseType: 'json'
   withCredentials: false
   expires: 1000*3600*24
-
-
-render_template = (author, comm_items)->
-  if author
-    output_author = '
-      <img src="'+(author.avatar or default_avatar)+'"
-       alt="'+author.name+'"/>
-      <h5>'+author.name+'</h5>
-    '
-  else
-    output_author = '<h5>'+_('Anonymous')+'</h5>'
-
-  output_comm_items = ''
-  for item in comm_items
-    if item.meta and item.meta.author_name
-      author_avatar = item.meta.author_avatar or default_avatar
-      author_name = item.meta.author_name
-      output_item_author = '
-        <img src="'+author_avatar+'" alt="'+author_name+'"/>
-        <h5>'+author_name+'</h5>
-      '
-    else
-      output_item_author = '<h5>'+_('Anonymous')+'</h5>'
-
-    output_item = '
-    <div class="comm-item">
-      <div class="author-container">
-        '+output_item_author+'
-      </figure>
-      <div>
-        '+item.content+'
-      </div>
-    </div>
-    '
-    output_comm_items += output_item
-
-
-  output = '
-  <header>
-    <h3>'+_('Comments:')+'</h3>
-  </header>
-  <form name="sup-exts-comment-form" class="comm-form">
-    <div class="author-container">
-      '+output_author+'
-    </div>
-    <div class="input-container">
-      <div>
-        <textarea placeholder="'+_('Your Comment here...')+'"
-                  rows="6"></textarea>
-      </div>
-      <button type="submit">
-        '+_('Write your Comment')+'
-      </button>
-    </div>
-  </form>
-  <hr>
-  <div class="comm-list">
-    '+output_comm_items+'
-  </div>
-  '
 
 
 root.SupExtComment = (opts) ->
@@ -170,8 +110,8 @@ root.SupExtComment = (opts) ->
   do_request = (request, success_callback, failed_callback) ->
     if typeof request.headers isnt 'object'
       request.headers = {}
-    if request.token
-      request.headers['Authorization'] = 'Bearer '+request.token
+
+    request.headers['AppOpenId'] = app_id
 
     response = ajax.send
       type: request.type
@@ -202,21 +142,23 @@ root.SupExtComment = (opts) ->
     return response
 
   # define api resource
-  api = options.apiBaseURL
+  api = options.apiExtURL
   api_comment = api + '/visit/group'
 
   comment =
 
     query: (params, success, failed)->
+      key = encodeURIComponent(params.key)
       do_request
-        url: api_comment+'/'+params.key+'/comment'
+        url: api_comment+'/'+key+'/comment'
         type: 'GET'
       , success
       , failed
 
     get: (params, success, failed)->
+      key = encodeURIComponent(params.key)
       do_request
-        url: api_comment+'/'+params.key+'/comment/'+params.id
+        url: api_comment+'/'+key+'/comment/'+params.id
         type: 'GET'
       , success
       , failed
@@ -224,17 +166,18 @@ root.SupExtComment = (opts) ->
     add: (params, data, success, failed)->
       data['member_open_id'] = supCookie.get OPEN_ID_COOKIE_NAME
       data['member_token'] = supCookie.get TOKEN_COOKIE_NAME
-
+      key = encodeURIComponent(params.key)
       do_request
-        url: api_comment+'/'+params.key+'/comment'
+        url: api_comment+'/'+key+'/comment'
         data: data
         type: 'POST'
       , success
       , failed
 
     remove: (params, success, failed)->
+      key = encodeURIComponent(params.key)
       do_request
-        url: api_comment+'/'+params.key+'/comment/'+params.id
+        url: api_comment+'/'+key+'/comment/'+params.id
         type: 'DELETE'
         params:
           'member_open_id': supCookie.get OPEN_ID_COOKIE_NAME
@@ -242,7 +185,7 @@ root.SupExtComment = (opts) ->
       , success
       , failed
 
-    member:
+    author:
       profile: ->
         return supCookie.get PROFILE_COOKIE_NAME
 

@@ -11,7 +11,7 @@ Author: redy
 ----------------------------------------------- */
 /* Styles
 ----------------------------------------------- */
-#sup-comment-exts-plugin[exts-alias="comment"] {
+#sup-comment-exts-plugin {
   /* Reset */
   animation: none;
   animation-delay: 0;
@@ -162,59 +162,59 @@ Author: redy
   word-spacing: normal;
   z-index: auto;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .clearfix {
+#sup-comment-exts-plugin .clearfix {
   *zoom: 1;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .clearfix:before,
-#sup-comment-exts-plugin[exts-alias="comment"] .clearfix:after {
+#sup-comment-exts-plugin .clearfix:before,
+#sup-comment-exts-plugin .clearfix:after {
   display: table;
   content: "";
   line-height: 0;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .clearfix:after {
+#sup-comment-exts-plugin .clearfix:after {
   clear: both;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] * {
+#sup-comment-exts-plugin * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-size: 14px;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] h3 {
+#sup-comment-exts-plugin h3 {
   font-size: 24px;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] h4 {
+#sup-comment-exts-plugin h4 {
   font-size: 18px;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] hr {
+#sup-comment-exts-plugin hr {
   border: 0;
   border-top: 1px solid #ccc;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .author-container {
+#sup-comment-exts-plugin .author-container {
   display: table-cell;
   width: 120px;
   padding: 15px;
   vertical-align: top;
   word-break: break-all;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .author-container img {
+#sup-comment-exts-plugin .author-container img {
   max-width: 100%;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .comm-container,
-#sup-comment-exts-plugin[exts-alias="comment"] .input-container {
+#sup-comment-exts-plugin .comm-container,
+#sup-comment-exts-plugin .input-container {
   display: table-cell;
   padding: 15px;
   vertical-align: top;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .comm-container textarea,
-#sup-comment-exts-plugin[exts-alias="comment"] .input-container textarea {
+#sup-comment-exts-plugin .comm-container textarea,
+#sup-comment-exts-plugin .input-container textarea {
   width: 100%;
   max-width: 100%;
   padding: 15px;
   margin-bottom: 15px;
   resize: vertical;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] button {
+#sup-comment-exts-plugin button {
   color: #fff;
   background: #666;
   border: 0;
@@ -222,11 +222,11 @@ Author: redy
   outline: 0;
   cursor: pointer;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] button:hover {
+#sup-comment-exts-plugin button:hover {
   background: #404040;
 }
-#sup-comment-exts-plugin[exts-alias="comment"] .comm-form,
-#sup-comment-exts-plugin[exts-alias="comment"] .comm-list section {
+#sup-comment-exts-plugin .comm-form,
+#sup-comment-exts-plugin .comm-list section {
   display: table;
   width: 100%;
   padding-top: 15px;
