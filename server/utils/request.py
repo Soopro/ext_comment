@@ -48,6 +48,22 @@ def get_param(key, validator=None, required=False, default=None):
     return value
 
 
+def get_args(key, required=False, default=None, multiple=False):
+    source = _check_request_source('args')
+    if multiple:
+        value = source.getlist(key)
+    else:
+        value = source.get(key)
+
+    if is_empty_value(value):
+        if default is not None:
+            value = default
+        elif required:
+            raise ValidationParameterRequired(key)
+
+    return value
+
+
 def parse_args():
     new = dict()
     args = request.args

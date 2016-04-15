@@ -37,6 +37,15 @@ class MethodNotAllowed(APIError):
     status_message = 'REQUEST_METHOD_NOT_ALLOWED'
     response_code = 103000
 
+class RequestMaxLimited(MethodNotAllowed):
+    response_code = 103001
+    status_message = "REQUEST_REACHES_MAX_LIMIT"
+
+
+class RequestBlocked(MethodNotAllowed):
+    response_code = 103002
+    status_message = "REQUEST_BLOCKED"
+
 
 # bad request
 class BadRequest(APIError):

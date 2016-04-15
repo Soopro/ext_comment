@@ -8,6 +8,8 @@ urls = [
     ("/visit/group/<group_key>/comment", visit_get_group_comments, "GET"),
     ("/visit/group/<group_key>/comment", visit_add_comment, "POST"),
     ("/visit/group/<group_key>/comment/<comment_id>",
+        visit_get_comment, "GET"),
+    ("/visit/group/<group_key>/comment/<comment_id>",
         visit_remove_comment, "DELETE"),
 
     # admin api

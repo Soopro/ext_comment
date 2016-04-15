@@ -6,6 +6,7 @@ root = if is_exports then exports else this
 
 version = '0.1.5'
 
+TOKEN_COOKIE_NAME = 'sup_member_auth'
 OPEN_ID_COOKIE_NAME = 'sup_member_open_id'
 PROFILE_COOKIE_NAME = 'sup_member_profile'
 
@@ -146,38 +147,47 @@ root.SupExtComment = (opts) ->
 
   comment =
 
-    query: (param, success, failed)->
+    query: (params, success, failed)->
       do_request
-        url: api_comment+'/'+param.key+'/comment'
+        url: api_comment+'/'+params.key+'/comment'
         type: 'GET'
       , success
       , failed
 
-    get: (param, success, failed)->
+    get: (params, success, failed)->
       do_request
-        url: api_comment+'/'+param.key+'/comment/'+param.id
+        url: api_comment+'/'+params.key+'/comment/'+params.id
         type: 'GET'
       , success
       , failed
 
-    add: (param, data, success, failed)->
+    add: (params, data, success, failed)->
+      data['member_open_id'] = supCookie.get OPEN_ID_COOKIE_NAME
+      data['member_token'] = supCookie.get TOKEN_COOKIE_NAME
+
       do_request
-        url: api_comment+'/'+param.key+'/comment'
+        url: api_comment+'/'+params.key+'/comment'
         data: data
         type: 'POST'
       , success
       , failed
 
-    remove: (param, success, failed)->
+    remove: (params, success, failed)->
       do_request
-        url: api_comment+'/'+param.key+'/comment/'+param.id
+        url: api_comment+'/'+params.key+'/comment/'+params.id
         type: 'DELETE'
+        params:
+          'member_open_id': supCookie.get OPEN_ID_COOKIE_NAME
+          'member_token': supCookie.get TOKEN_COOKIE_NAME
       , success
       , failed
 
     member:
       profile: ->
         return supCookie.get PROFILE_COOKIE_NAME
+
+      token: ->
+        return supCookie.get TOKEN_COOKIE_NAME
 
       open_id: ->
         return supCookie.get OPEN_ID_COOKIE_NAME
