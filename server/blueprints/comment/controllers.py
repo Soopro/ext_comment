@@ -15,16 +15,17 @@ from apiresps.validations import Struct
 # endpoints for visitors
 @output_json
 def visit_get_group_comments(group_key):
+    author_id = get_args('author_id')
     comments = _visit_get_comments(group_key)
 
-    return [output_comment(comment) for comment in comments]
+    return [output_comment(comment, author_id) for comment in comments]
 
 
 @output_json
 def visit_add_comment(group_key):
     content = get_param('content', validator=Struct.Text, required=True)
-    member_open_id = get_param('member_open_id')
-    member_token = get_param('member_token')
+    author_id = get_param('author_id')
+    author_token = get_param('author_token')
 
     # todo
     # verify member
@@ -63,15 +64,16 @@ def visit_add_comment(group_key):
 
 @output_json
 def visit_get_comment(group_key, comment_id):
+    author_id = get_args('author_id')
     comment = _visit_get_comment(comment_id, group_key)
 
-    return output_comment(comment)
+    return output_comment(comment, author_id)
 
 
 @output_json
 def visit_remove_comment(group_key, comment_id):
-    member_open_id = get_args('member_open_id')
-    member_token = get_args('member_token')
+    author_id = get_param('author_id')
+    author_token = get_param('author_token')
     # todo
     # verify member
 
@@ -193,12 +195,13 @@ def output_comment_group(comment_group):
     }
 
 
-def output_comment(comment):
+def output_comment(comment, author_id):
     return {
         'id': comment['_id'],
         'group_id': comment['group_id'],
         'meta': comment['meta'],
         'creation': comment['creation'],
+        'author': bool(author_id == comment['author_id']),
         'content': comment['content']
     }
 

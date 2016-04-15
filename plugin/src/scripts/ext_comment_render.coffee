@@ -2,6 +2,11 @@
 # Comment Extension Render.
 # -------------------------------
 
+default_avatar = 'styles/default_avatar.png'
+
+_ = (text)->
+  return text
+
 render_item = (item)->
   if item.meta and item.meta.author_name
     author_avatar = item.meta.author_avatar or default_avatar
@@ -12,6 +17,10 @@ render_item = (item)->
     '
   else
     output_item_author = '<h5>'+_('Anonymous')+'</h5>'
+  if item.author
+    remove_btn = '<a href="#" class="remove-comment">'+_('Remove')+'</a>'
+  else
+    remove_btn = ''
 
   output_item = '
   <div class="comm-item">
@@ -20,6 +29,7 @@ render_item = (item)->
     </div>
     <div class="comm-container">
       <p>'+item.content+'</p>
+      '+remove_btn+'
     </div>
   </div>
   '
@@ -43,7 +53,7 @@ render_list = (author, comm_items)->
 
   output = '
   <header>
-    <h3>'+_('Comments:')+'</h3>
+    <h3>'+_('Comments')+'</h3>
   </header>
   <form name="sup-exts-comment-form" class="comm-form">
     <div class="author-container">
@@ -74,14 +84,14 @@ initHandler = ->
   comm_element = document.querySelector('#sup-comment-exts-plugin')
   if not comm_element
     return
-
+  comm_element.innerHTML = render_list({}, [{author:true},{}])
   group_key = comm_element.getAttribute('group-key') or location.href
 
   comment.query({key: group_key})
   .then (comments)->
-    comm_element.innerHTML = render_list(comment.author.profile, comments)
-  .catch (error)->
-    console.log error
+    author = comment.author.profile()
+    comm_element.innerHTML = render_list(author, comments)
+
   return
 
 

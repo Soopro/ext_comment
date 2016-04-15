@@ -37,7 +37,7 @@ utils =
       return url
 
     for k, v of params
-      if typeof v is 'object' and typeof v.length is 'number'
+      if v isnt null and typeof v is 'object' and typeof v.length is 'number'
         for item in v
           url = _add(url, k, item)
       else
@@ -152,6 +152,8 @@ root.SupExtComment = (opts) ->
       do_request
         url: api_comment+'/'+key+'/comment'
         type: 'GET'
+        params:
+          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
       , success
       , failed
 
@@ -160,12 +162,14 @@ root.SupExtComment = (opts) ->
       do_request
         url: api_comment+'/'+key+'/comment/'+params.id
         type: 'GET'
+        params:
+          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
       , success
       , failed
 
     add: (params, data, success, failed)->
-      data['member_open_id'] = supCookie.get OPEN_ID_COOKIE_NAME
-      data['member_token'] = supCookie.get TOKEN_COOKIE_NAME
+      data['author_id'] = supCookie.get OPEN_ID_COOKIE_NAME
+      data['author_token'] = supCookie.get TOKEN_COOKIE_NAME
       key = encodeURIComponent(params.key)
       do_request
         url: api_comment+'/'+key+'/comment'
@@ -180,8 +184,8 @@ root.SupExtComment = (opts) ->
         url: api_comment+'/'+key+'/comment/'+params.id
         type: 'DELETE'
         params:
-          'member_open_id': supCookie.get OPEN_ID_COOKIE_NAME
-          'member_token': supCookie.get TOKEN_COOKIE_NAME
+          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
+          'author_token': supCookie.get TOKEN_COOKIE_NAME
       , success
       , failed
 
