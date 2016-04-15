@@ -72,8 +72,9 @@ def visit_get_comment(group_key, comment_id):
 
 @output_json
 def visit_remove_comment(group_key, comment_id):
-    author_id = get_param('author_id')
-    author_token = get_param('author_token')
+    author_id = get_args('author_id')
+    author_token = get_args('author_token')
+
     # todo
     # verify member
 
