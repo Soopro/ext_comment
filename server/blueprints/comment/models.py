@@ -63,11 +63,18 @@ class CommentGroup(BaseDocument):
         'updated': now,
     }
 
-    def find_one_by_gkey_and_eid(self, group_key, extension_id):
+    def find_one_by_gkey_eid(self, group_key, extension_id):
         return self.find_one({
             'group_key': group_key,
             'extension_id': ObjectId(extension_id)
         })
+
+    def find_one_by_gid_eid(self, group_id, extension_id):
+        return self.find_one({
+            '_id': ObjectId(group_id),
+            'extension_id': ObjectId(extension_id)
+        })
+
 
     def find_all_by_eid(self, extension_id):
         return self.find({

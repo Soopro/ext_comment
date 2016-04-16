@@ -50,4 +50,5 @@ def before_request():
 
 @blueprint.errorhandler(APIError)
 def comment_api_err(error):
+    print error
     return make_json_response(error)

@@ -154,7 +154,13 @@ submitHandler = (e)->
   value = escape_html(value)
 
   if value and typeof value is 'string'
-    Comment.add({key: get_comment_key()})
+    params =
+      key: get_comment_key()
+    data =
+      content: value
+    Comment.add(params, data)
+    .catch (error)->
+      console.log error.data
 
   return false
 
@@ -188,6 +194,7 @@ initHandler = ->
   # render elements
   Comment.query({key: get_comment_key()})
   .then (comments)->
+
     author = Comment.author.profile()
     comm_element.innerHTML = render_list(author, comments)
 
