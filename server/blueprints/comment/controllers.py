@@ -8,7 +8,8 @@ from utils.request import get_param, get_args
 from .errors import (CommentGroupKeyHasExsited,
                      CommentGroupNotFound,
                      CommentNotFound)
-from apiresps.errors import MethodNotAllowed
+from apiresps.errors import (MethodNotAllowed,
+                             RequestBlocked)
 from apiresps.validations import Struct
 
 
@@ -30,9 +31,11 @@ def visit_add_comment(group_key):
     # todo
     # verify member
 
-    remote_addr = unicode(request.remote_addr)
-    user_agent = unicode(request.headers.get('User-Agent'))
-    author_id = u"{} - {}".format(remote_addr, user_agent)
+    if not author_id:
+        remote_addr = unicode(request.remote_addr)
+        user_agent = unicode(request.headers.get('User-Agent'))
+        author_id = u"{} - {}".format(remote_addr, user_agent)
+
     # print author_id
     comment_extension = _get_current_comment_extension()
 
@@ -46,6 +49,8 @@ def visit_add_comment(group_key):
         _comm_cursor = comments.skip(max_comment-1)
         _comm = next(_comm_cursor, None)
 
+        if current_app.debug:
+            min_time = 60
         if _comm:
             if now() - _comm['creation'] < min_time:
                 raise RequestBlocked("overrun")

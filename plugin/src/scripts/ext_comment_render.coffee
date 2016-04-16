@@ -44,12 +44,12 @@ render_entry = (entry)->
   if entry.meta and entry.meta.author_name
     author_avatar = entry.meta.author_avatar or default_avatar
     author_name = entry.meta.author_name
-    output_item_author = '
+    output_entry_author = '
       <img src="'+author_avatar+'" alt="'+author_name+'"/>
       <h5>'+author_name+'</h5>
     '
   else
-    output_item_author = '<h5>'+_('Anonymous')+'</h5>'
+    output_entry_author = '<h5>'+_('Anonymous')+'</h5>'
 
   if entry.author
     remove_btn = '<a href="#" class="remove-comment">'+_('Remove')+'</a>'
@@ -58,19 +58,18 @@ render_entry = (entry)->
     remove_btn = ''
     output_entry_id = ''
 
-  output_item = '
-  <div class="comm-entry" '+output_entry_id+'>
-    <div class="author-container">
-      '+output_item_author+'
+  output_entry = '
+    <div class="comm-entry" '+output_entry_id+'>
+      <div class="author-container">
+        '+output_entry_author+'
+      </div>
+      <div class="comm-container">
+        <p>'+entry.content+'</p>
+        '+remove_btn+'
+      </div>
     </div>
-    <div class="comm-container">
-      <p>'+item.content+'</p>
-      '+remove_btn+'
-    </div>
-  </div>
   '
-
-  return output_item
+  return output_entry
 
 
 render_list = (author, comm_items)->
@@ -159,8 +158,10 @@ submitHandler = (e)->
     data =
       content: value
     Comment.add(params, data)
+    .then (data)->
+      console.log data
     .catch (error)->
-      console.log error.data
+      console.error error.data
 
   return false
 
@@ -193,6 +194,7 @@ initHandler = ->
 
   # render elements
   Comment.query({key: get_comment_key()})
+
   .then (comments)->
 
     author = Comment.author.profile()
@@ -201,9 +203,12 @@ initHandler = ->
     form = comm_element.querySelector('.comm-form .submit-comment')
     addListener(form, 'click', submitHandler)
 
-    remove_btns = comm_element.querySelector('.remove-comment')
+    remove_btns = comm_element.querySelectorAll('.remove-comment')
     for btn in remove_btns
       addListener(btn, 'click', removeHanlder)
+
+  .catch (error)->
+    console.log error.data
 
   return
 

@@ -265,6 +265,7 @@ Ajax = ->
           deferred.resolve(result.data)
         else
           deferred.reject(result)
+      return
 
     xhr.addEventListener 'readystatechange', ready
 
