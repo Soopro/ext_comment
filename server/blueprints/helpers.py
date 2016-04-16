@@ -65,15 +65,20 @@ def verify_token():
     g.curr_user = user
 
 
-def verify_outer(debug=False):
-    CommentExtension = current_app.mongodb_conn.CommentExtension
+def verify_outer():
+    # fake outer
+    if current_app.use_fake_data:
+        CommentExtension = current_app.mongodb_conn.CommentExtension
 
-    comment_extension = CommentExtension.find_one()
-    if not comment_extension:
-        comment_extension = CommentExtension()
-    g.current_comment_extension = comment_extension
+        comment_extension = CommentExtension.find_one()
 
-    return
+        if not comment_extension:
+            comment_extension = CommentExtension()
+            comment_extension['open_id'] = u'fade_id'
+            comment_extension.save()
+        g.current_comment_extension = comment_extension
+
+        return
 
     open_id = request.headers.get('AppOpenId')
     if not open_id:

@@ -12,6 +12,7 @@ bp_name = 'comment'
 
 apis_for_visitors = [
     "{}.visit_get_group_comments".format(bp_name),
+    "{}.visit_get_comment".format(bp_name),
     "{}.visit_add_comment".format(bp_name),
     "{}.visit_remove_comment".format(bp_name)
 ]
@@ -41,7 +42,6 @@ def before_first_request():
 
 @blueprint.before_request
 def before_request():
-    print request.host
     if request.endpoint in apis_for_visitors:
         verify_outer()
     elif request.endpoint in apis_for_admins:

@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from flask import current_app, request, g
 from utils.api_utils import output_json
 from utils.helpers import now
-from utils.request import get_param
+from utils.request import get_param, get_args
 from .errors import (CommentGroupKeyHasExsited,
                      CommentGroupNotFound,
                      CommentNotFound)

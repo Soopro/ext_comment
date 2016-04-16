@@ -14,6 +14,12 @@ PROFILE_COOKIE_NAME = 'sup_member_profile'
 Q = root.Q.noConflict()
 
 utils =
+  url2key: (url) ->
+    key = url.replace(/[\/\\]/ig, '-')
+    key = key.replace(/:/ig, '^')
+    key = key.replace(/[\?&]/ig, '*')
+    return encodeURIComponent(key)
+
   setParam: (key, value) ->
     key = encodeURIComponent(key)
     value = encodeURIComponent(value)
@@ -143,14 +149,14 @@ root.SupExtComment = (opts) ->
 
   # define api resource
   api = options.apiExtURL
-  api_comment = api + '/visit/group'
+  api_comment = api + '/comment/visit/group'
 
   comment =
 
     query: (params, success, failed)->
-      key = encodeURIComponent(params.key)
+      key = utils.url2key(params.key)
       do_request
-        url: api_comment+'/'+key+'/comment'
+        url: api_comment+'/'+key+'/entry'
         type: 'GET'
         params:
           'author_id': supCookie.get OPEN_ID_COOKIE_NAME
@@ -158,9 +164,9 @@ root.SupExtComment = (opts) ->
       , failed
 
     get: (params, success, failed)->
-      key = encodeURIComponent(params.key)
+      key = utils.url2key(params.key)
       do_request
-        url: api_comment+'/'+key+'/comment/'+params.id
+        url: api_comment+'/'+key+'/entry/'+params.id
         type: 'GET'
         params:
           'author_id': supCookie.get OPEN_ID_COOKIE_NAME
@@ -168,20 +174,22 @@ root.SupExtComment = (opts) ->
       , failed
 
     add: (params, data, success, failed)->
+      if not data
+        data = {}
       data['author_id'] = supCookie.get OPEN_ID_COOKIE_NAME
       data['author_token'] = supCookie.get TOKEN_COOKIE_NAME
-      key = encodeURIComponent(params.key)
+      key = utils.url2key(params.key)
       do_request
-        url: api_comment+'/'+key+'/comment'
+        url: api_comment+'/'+key+'/entry'
         data: data
         type: 'POST'
       , success
       , failed
 
     remove: (params, success, failed)->
-      key = encodeURIComponent(params.key)
+      key = utils.url2key(params.key)
       do_request
-        url: api_comment+'/'+key+'/comment/'+params.id
+        url: api_comment+'/'+key+'/entry/'+params.id
         type: 'DELETE'
         params:
           'author_id': supCookie.get OPEN_ID_COOKIE_NAME

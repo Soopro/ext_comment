@@ -34,6 +34,7 @@ def create_app(config_name='development'):
     # config
     app.config.from_object(config[config_name])
     app.json_encoder = Encoder
+    app.debug = app.config.get("DEBUG")
 
     # logging
     if app.config.get("TESTING") is True:
@@ -108,7 +109,7 @@ def create_app(config_name='development'):
             cors_headers = make_cors_headers()
             resp.headers.extend(cors_headers)
             return resp
-        
+
     print "-------------------------------------------------------"
     print "Comment Extension: {}".format(app.version)
     print "Developers: {}".format(', '.join(app.artisan))
