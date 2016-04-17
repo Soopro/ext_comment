@@ -8,7 +8,7 @@ or typeof document.addEventListener isnt 'function'
   return
 
 if typeof SupExtComment isnt 'function'
-  console.error 'SupExtComment not fully loaded!!'
+  console.error 'SupExtComment: not fully loaded!!'
   return
 
 # globals
@@ -20,14 +20,26 @@ Comment = null
 
 get_comment_element = ->
   el = document.querySelector('#sup-comment-exts-plugin')
+  if not el
+    console.error 'SupExtComment: no commment base element.'
   return el
+
+get_comment_list = ->
+  comm_element = get_comment_element()
+  comm_list = comm_element.querySelector('.comm-list')
+  if not comm_list
+    console.error 'SupExtComment: no comment list.'
+  return comm_list
 
 get_comment_key = ->
   el = get_comment_element()
-  group_key = el.getAttribute('group-key') or location.href
+  loc_group_key = window.location.hostname+location.pathname
+  group_key = el.getAttribute('group-key') or loc_group_key
   return group_key
 
 escape_html = (str)->
+  if typeof str isnt 'string'
+    return ''
   tagsToReplace =
     '&': '&amp;'
     '<': '&lt;'
@@ -41,6 +53,11 @@ escape_html = (str)->
 
 # renders
 render_entry = (entry)->
+  comm_list = get_comment_list()
+
+  if not comm_list
+    return
+
   if entry.meta and entry.meta.author_name
     author_avatar = entry.meta.author_avatar or default_avatar
     author_name = entry.meta.author_name
@@ -51,28 +68,32 @@ render_entry = (entry)->
   else
     output_entry_author = '<h5>'+_('Anonymous')+'</h5>'
 
-  if entry.author
-    remove_btn = '<a href="#" class="remove-comment">'+_('Remove')+'</a>'
-    output_entry_id = 'data-entry-id="'+entry.id+'"'
+  if entry.is_author
+    remove_btn = '<a href="#rm" class="remove-comment">'+_('Remove')+'</a>'
   else
     remove_btn = ''
-    output_entry_id = ''
 
-  output_entry = '
-    <div class="comm-entry" '+output_entry_id+'>
-      <div class="author-container">
-        '+output_entry_author+'
-      </div>
-      <div class="comm-container">
-        <p>'+entry.content+'</p>
-        '+remove_btn+'
-      </div>
+  entry_inner = '
+    <div class="author-container">
+      '+output_entry_author+'
+    </div>
+    <div class="comm-container">
+      <p>'+entry.content+'</p>
+      '+remove_btn+'
     </div>
   '
-  return output_entry
+  entry_div = document.createElement('div')
+  entry_div.innerHTML = entry_inner
+  if entry.is_author
+    entry_div.dataset['entryId'] = entry.id
+  entry_div.className = 'comm-entry'
+
+  comm_list.appendChild(entry_div)
+
+  return entry_div
 
 
-render_list = (author, comm_items)->
+render_outer = (author)->
   if author
     output_author = '
       <img src="'+(author.avatar or default_avatar)+'"
@@ -82,36 +103,36 @@ render_list = (author, comm_items)->
   else
     output_author = '<h5>'+_('Anonymous')+'</h5>'
 
-  output_comm_items = ''
-  for item in comm_items
-    output_comm_items += render_entry(item)
-
-
-  output = '
-  <header>
-    <h3>'+_('Comments')+'</h3>
-  </header>
-  <form name="sup-exts-comment-form" class="comm-form">
-    <div class="author-container">
-      '+output_author+'
-    </div>
-    <div class="input-container">
-      <div>
-        <textarea class="comm-textarea"
-                  placeholder="'+_('Your Comment here...')+'"
-                  rows="6"></textarea>
+  output_outer = '
+    <header>
+      <h3>'+_('Comments')+'</h3>
+    </header>
+    <form name="sup-exts-comment-form" class="comm-form">
+      <div class="author-container">
+        '+output_author+'
       </div>
-      <button class="submit-comment btn btn-default" type="submit">
-        '+_('Write your Comment')+'
-      </button>
-    </div>
-  </form>
-  <hr>
-  <div class="comm-list">
-    '+output_comm_items+'
-  </div>
+      <div class="input-container">
+        <div>
+          <textarea class="comm-textarea"
+                    placeholder="'+_('Your Comment here...')+'"
+                    rows="6"></textarea>
+        </div>
+        <button class="submit-comment btn btn-default" type="submit">
+          '+_('Write your Comment')+'
+        </button>
+      </div>
+    </form>
+    <hr>
+    <div class="comm-list"></div>
   '
 
+  comm_div = document.createElement('div')
+  comm_div.innerHTML = output_outer
+
+  comm_element = get_comment_element()
+  comm_element.appendChild(comm_div)
+
+  return comm_div
 
 # lisenters
 _eventListeners = []
@@ -141,34 +162,77 @@ removeAllListeners = ->
   _eventListeners.length = 0
   return
 
-
+last_value = null
 submitHandler = (e)->
   e.preventDefault()
-  ta = e.target.parentElement.querySelector('.comm-textarea')
+  btn = e.target
+  ta = btn.parentElement.querySelector('.comm-textarea')
   try
     value = ta.value.trim()
   catch
     value = null
 
   value = escape_html(value)
+  if last_value == value
+    return
+  else
+    last_value = value
 
   if value and typeof value is 'string'
     params =
       key: get_comment_key()
     data =
       content: value
+
+    btn.disabled = true
+
     Comment.add(params, data)
     .then (data)->
-      console.log data
+      el = render_entry(data)
+      new_btn = el.querySelector('.remove-comment')
+      addListener(new_btn, 'click', removeHandler)
     .catch (error)->
-      console.error error.data
+      console.error error
+    .finally ->
+      btn.disabled = false
 
   return false
 
 
 removeHandler = (e)->
-  console.log e
   e.preventDefault()
+  btn = e.target
+
+  if btn.hasAttribute('disabled')
+    return false
+
+  parent = btn.parentElement
+  entry = null
+  while true
+    if parent.className.indexOf('comm-entry') > -1
+      entry = parent
+      break
+    parent = parent.parentElement
+
+  if not entry
+    console.error 'SupExtComment: entry not found.'
+    return
+
+  params =
+    key: get_comment_key()
+    id: entry.dataset['entryId']
+
+  btn.setAttribute('disabled', true)
+
+  Comment.remove(params)
+  .then (data)->
+    removeListeners(btn, 'click')
+    entry.parentElement.removeChild(entry)
+  .catch (error)->
+    console.error error
+  .finally ->
+    btn.removeAttribute('disabled')
+
   return false
 
 
@@ -198,17 +262,19 @@ initHandler = ->
   .then (comments)->
 
     author = Comment.author.profile()
-    comm_element.innerHTML = render_list(author, comments)
+    render_outer(author)
+    for entry in comments
+      render_entry(entry)
 
     form = comm_element.querySelector('.comm-form .submit-comment')
     addListener(form, 'click', submitHandler)
 
     remove_btns = comm_element.querySelectorAll('.remove-comment')
     for btn in remove_btns
-      addListener(btn, 'click', removeHanlder)
+      addListener(btn, 'click', removeHandler)
 
   .catch (error)->
-    console.log error.data
+    console.error error
 
   return
 

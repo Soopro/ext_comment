@@ -33,3 +33,7 @@ class CommentError(InternalServerError):
 class CommentNotFound(NotFound):
     status_message = "COMMENT_NOT_FOUND"
     response_code = 400022
+
+class CommentNotAuthor(NotFound):
+    status_message = "COMMENT_NOT_AUTHOR"
+    response_code = 400022

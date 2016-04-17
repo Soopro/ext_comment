@@ -15,9 +15,8 @@ Q = root.Q.noConflict()
 
 utils =
   url2key: (url) ->
-    key = url.replace(/[\/\\]/ig, '-')
-    key = key.replace(/:/ig, '^')
-    key = key.replace(/[\?&]/ig, '*')
+    key = url.replace(/[\/\\]/ig, '.')
+    key = key.replace(/[\?&:#]/ig, '')
     return encodeURIComponent(key)
 
   setParam: (key, value) ->
@@ -155,21 +154,25 @@ root.SupExtComment = (opts) ->
 
     query: (params, success, failed)->
       key = utils.url2key(params.key)
+      author_id = supCookie.get OPEN_ID_COOKIE_NAME
+      if author_id
+        params.author_id = author_id
       do_request
         url: api_comment+'/'+key+'/entry'
         type: 'GET'
-        params:
-          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
+        params: params
       , success
       , failed
 
     get: (params, success, failed)->
       key = utils.url2key(params.key)
+      author_id = supCookie.get OPEN_ID_COOKIE_NAME
+      if author_id
+        params.author_id = author_id
       do_request
         url: api_comment+'/'+key+'/entry/'+params.id
         type: 'GET'
-        params:
-          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
+        params: params
       , success
       , failed
 
@@ -188,12 +191,15 @@ root.SupExtComment = (opts) ->
 
     remove: (params, success, failed)->
       key = utils.url2key(params.key)
+      author_id = supCookie.get OPEN_ID_COOKIE_NAME
+      author_token = supCookie.get TOKEN_COOKIE_NAME
+      if author_id and author_token
+        params.author_id = author_id
+        params.author_token = author_token
       do_request
         url: api_comment+'/'+key+'/entry/'+params.id
         type: 'DELETE'
-        params:
-          'author_id': supCookie.get OPEN_ID_COOKIE_NAME
-          'author_token': supCookie.get TOKEN_COOKIE_NAME
+        params: params
       , success
       , failed
 

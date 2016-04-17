@@ -11,8 +11,6 @@ class ExtUser(Document):
     STATUS_INACTIVATED = 0
     STATUS_ACTIVATED = 1
 
-    use_dot_notation = True
-
     structure = {
         "open_id": unicode,
         "scope": unicode,

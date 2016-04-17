@@ -4,10 +4,11 @@ from __future__ import absolute_import
 from flask import current_app, request, g
 from utils.api_utils import output_json
 from utils.helpers import now
-from utils.request import get_param, get_args
+from utils.request import get_param, get_args, get_remote_addr
 from .errors import (CommentGroupKeyHasExsited,
                      CommentGroupNotFound,
-                     CommentNotFound)
+                     CommentNotFound,
+                     CommentNotAuthor)
 from apiresps.errors import (MethodNotAllowed,
                              RequestBlocked)
 from apiresps.validations import Struct
@@ -30,13 +31,12 @@ def visit_add_comment(group_key):
 
     # todo
     # verify member
-
     if not author_id:
-        remote_addr = unicode(request.remote_addr)
-        user_agent = unicode(request.headers.get('User-Agent'))
-        author_id = u"{} - {}".format(remote_addr, user_agent)
+        author_id = _get_default_author_id()
+        anonymous_author = True
+    else:
+        anonymous_author = False
 
-    # print author_id
     comment_extension = _get_current_comment_extension()
 
     def limit_comments(max_comment, min_time):
@@ -61,6 +61,7 @@ def visit_add_comment(group_key):
 
     comment = current_app.mongodb_conn.Comment()
     comment['content'] = content
+    comment['anonymous'] = anonymous_author
     comment['author_id'] = author_id
     comment['extension_id'] = comment_extension['_id']
     comment['group_id'] = comment_group['_id']
@@ -72,6 +73,8 @@ def visit_add_comment(group_key):
 
 @output_json
 def visit_get_comment(group_key, comment_id):
+    Struct.ObjectId(comment_id, 'comment_id')
+
     author_id = get_args('author_id')
     comment = _visit_get_comment(comment_id, group_key)
 
@@ -80,13 +83,23 @@ def visit_get_comment(group_key, comment_id):
 
 @output_json
 def visit_remove_comment(group_key, comment_id):
+    Struct.ObjectId(comment_id, 'comment_id')
+
     author_id = get_args('author_id')
     author_token = get_args('author_token')
 
-    # todo
-    # verify member
+    if not author_id:
+        author_id = _get_default_author_id()
 
     comment = _visit_get_comment(comment_id, group_key)
+
+    if not comment['anonymous']:
+        pass
+        # todo
+        # verify member
+    elif author_id != comment['author_id']:
+        raise CommentNotAuthor
+
     comment.delete()
 
     return {
@@ -147,6 +160,8 @@ def admin_list_comment_groups():
 
 @output_json
 def admin_remove_group(group_id):
+    Struct.ObjectId(group_id, 'group_id')
+
     comment_group = _admin_get_comment_group(group_id)
     comments = _admin_get_comments(group_id)
     for comment in comments:
@@ -158,6 +173,8 @@ def admin_remove_group(group_id):
 
 @output_json
 def admin_get_group_comments(group_id):
+    Struct.ObjectId(group_id, 'group_id')
+
     comments = _admin_get_comments(group_id)
 
     return [output_comment(comment) for comment in comments]
@@ -165,6 +182,9 @@ def admin_get_group_comments(group_id):
 
 @output_json
 def admin_remove_comment(group_id, comment_id):
+    Struct.ObjectId(group_id, 'group_id')
+    Struct.ObjectId(comment_id, 'comment_id')
+
     comment = _admin_get_comment(comment_id, group_id)
     comment.delete()
 
@@ -173,13 +193,15 @@ def admin_remove_comment(group_id, comment_id):
 
 @output_json
 def admin_remove_comments(group_id):
+    Struct.ObjectId(group_id, 'group_id')
 
     def deal_comments(comment_id, group_id):
+        Struct.ObjectId(comment_id, 'comment_id')
         comment = _admin_get_comment(comment_id, group_id)
         comment.delete()
         return output_comment(comment)
 
-    comment_ids = get_param('comment_ids', )
+    comment_ids = get_param('comment_ids', Struct.List)
 
     return {
         "deleted": [deal_comments(comment_id, group_id)
@@ -211,7 +233,8 @@ def output_comment(comment, author_id=None):
         'group_id': comment['group_id'],
         'meta': comment['meta'],
         'creation': comment['creation'],
-        'author': bool(author_id == comment['author_id']),
+        'is_author': bool(author_id == comment['author_id']),
+        'anonymous': comment['anonymous'],
         'content': comment['content'],
     }
 
@@ -226,6 +249,12 @@ def output_comment(comment, author_id=None):
 #     comment_extension.user_id = g.curr_user["_id"]
 #     comment_extension.save()
 #     return comment_extension
+
+def _get_default_author_id():
+    remote_addr = unicode(get_remote_addr())
+    user_agent = unicode(request.headers.get('User-Agent'))
+    author_id = u"{} - {}".format(remote_addr, user_agent)
+    return author_id
 
 
 def _create_comment_extension():

@@ -89,6 +89,7 @@ class Comment(BaseDocument):
         'creation': int,
         'content': unicode,
         'author_id': unicode,
+        'anonymous': bool,
         'meta': dict,
         'extension_id': ObjectId,
         'group_id': ObjectId,
@@ -97,10 +98,10 @@ class Comment(BaseDocument):
         'updated': int,
     }
 
-    use_dot_notation = True
     required_fields = ['content', 'extension_id', 'group_id']
     default_values = {
         'meta': {},
+        'anonymous': False,
         'creation': now,
         'updated': now,
     }
