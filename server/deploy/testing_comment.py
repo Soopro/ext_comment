@@ -8,4 +8,4 @@ workers = multiprocessing.cpu_count() * 2 + 1
 accesslog = "deploy/comment.access.log"
 errorlog = "deploy/comment.error.log"
 pidfile = "deploy/comment.pid"
-raw_env = "SUP_EXT_NEWSLETTER_CONFIG_NAME=testing"
+raw_env = "SUP_EXT_COMMENT_CONFIG_NAME=testing"

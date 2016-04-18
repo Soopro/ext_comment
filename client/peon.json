@@ -70,14 +70,13 @@
           "cwd": "build",
           "dest": "dist"
         }
-        
+
       },
       "compress": {
         "ng_templates":{
           "type": "inline_angular_templates",
           "src": [
             "blueprints/**/*.html",
-            "modals/**/*.html",
             "!**/_*.html"
           ],
           "cwd": "dist",
@@ -105,7 +104,7 @@
         "cwd": "dist",
         "replacements": [
           {
-            "pattern": "/styles/icons/svg",
+            "pattern": "/styles/svg",
             "replace": "svg"
           },
           {
