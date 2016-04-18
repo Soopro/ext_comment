@@ -13,8 +13,8 @@
       "zh": "添加评论功能。"
     },
     "published": false,
-    "domain":"comm.exts.soopro.net",
+    "domain":"sup.local:8888",
     "protocol": "http",
-    "path": "",
-    "entrance": "http://comm.exts.soopro.net/#/"
+    "path": "/",
+    "entrance": "http://sup.local:8888/#/"
 }
