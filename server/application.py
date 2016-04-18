@@ -6,7 +6,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, current_app, request
-from redis import Redis
 from mongokit import Connection as MongodbConn
 
 from envs import CONFIG_NAME
@@ -72,8 +71,6 @@ def create_app(config_name='development'):
         token_uri=app.config.get("OAUTH_TOKEN_API_URI"),
         redirect_uri=app.config.get("OAUTH_REDIRECT_URI")
     )
-
-    app.redis = Redis()
 
     from blueprints.user.models import ExtUser
     app.mongodb_database.register([ExtUser])
