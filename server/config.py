@@ -69,8 +69,8 @@ class ProductionConfig(Config):
     DEBUG = False
     DB_DBNAME = 'ext_comment_prd'
 
-    EXT_KEY = 'comment-custom'
-    EXT_SECRET = 'comment-custom-2016'
+    EXT_KEY = 'comment-1460987711'
+    EXT_SECRET = 'id: 5714e646f596b12841c005f3'
 
     OAUTH_API_URI = 'http://api.soopro.com'
     OAUTH_TOKEN_API_URI = '{}/oauth/token'.format(OAUTH_API_URI)
