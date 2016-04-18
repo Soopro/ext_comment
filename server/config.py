@@ -60,9 +60,9 @@ class TestingConfig(Config):
 
     OAUTH_API_URI = 'http://api.sup.farm'
     OAUTH_TOKEN_API_URI = '{}/oauth/token'.format(OAUTH_API_URI)
-    OAUTH_REDIRECT_URI = 'http://url4.d-exts.sup.farm/#/auth/redirect'
+    OAUTH_REDIRECT_URI = 'http://comment.d-exts.sup.farm/#/auth/redirect'
 
-    CURL_BASE_URL = 'http://url4.exts.sup.farm'
+    CURL_BASE_URL = 'http://comment.exts.sup.farm'
 
 
 class ProductionConfig(Config):
@@ -74,9 +74,9 @@ class ProductionConfig(Config):
 
     OAUTH_API_URI = 'http://api.soopro.com'
     OAUTH_TOKEN_API_URI = '{}/oauth/token'.format(OAUTH_API_URI)
-    OAUTH_REDIRECT_URI = 'http://manage.url4.cc/#/auth/redirect'
+    OAUTH_REDIRECT_URI = 'http://comm.exts.soopro.net/#/auth/redirect'
 
-    CURL_BASE_URL = 'http://url4.cc'
+    CURL_BASE_URL = 'http://api-comm.exts.soopro.net'
 
 
 config = {

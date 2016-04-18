@@ -66,10 +66,10 @@ def verify_token():
 
 
 def verify_outer():
+    CommentExtension = current_app.mongodb_conn.CommentExtension
+
     # fake outer
     if current_app.use_fake_data:
-        CommentExtension = current_app.mongodb_conn.CommentExtension
-
         comment_extension = CommentExtension.find_one()
 
         if not comment_extension:

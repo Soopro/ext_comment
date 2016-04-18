@@ -1,15 +1,25 @@
 server{
   listen 80;
-  server_name ext.soopro.com
+  server_name comm.exts.soopro.net;
 
   index           index.html;
-	
-	location /comment/server/ {
-    proxy_pass http://127.0.0.1:5001
+
+  location {
+    root /var/www/ext_comment/client/dist;
   }
-  
-  location /comment/client/ {
-    root /var/www/ext_comment/client/app;
+
+}
+
+server{
+  listen 80;
+  server_name api-comm.exts.soopro.net;
+
+  client_max_body_size 20M;
+
+  location / {
+    proxy_pass http://127.0.0.1:5001;
+    proxy_set_header Host            $http_host;
+    proxy_set_header X-Real-IP       $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   }
-  
 }
