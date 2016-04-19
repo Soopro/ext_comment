@@ -15,7 +15,7 @@ var dev = {
 }
 
 var prd = {
-  'api': 'http://api-comm.exts.soopro.net'
+  'api': 'http://exts.soopro.net'
 }
 
 sup_ext_comment.server = dev;
