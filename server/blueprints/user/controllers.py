@@ -19,7 +19,7 @@ from .errors import (RequestAccessTokenFailed,
 @output_json
 def get_oauth_access_code(open_id):
     Struct.Id(open_id)
-    
+
     state = current_app.sup_oauth.make_random_string(open_id)
 
     ext_key = current_app.config.get('EXT_KEY')
@@ -69,11 +69,10 @@ def get_oauth_access_token(open_id):
         ext_token = current_app.sup_oauth.generate_ext_token(open_id)
     except Exception as e:
         raise UserTokenFailed(str(e))
-    
 
     user['access_token'] = resp['access_token']
     user['refresh_token'] = resp['refresh_token']
-    user['expires_at'] = resp['expires_in']+now()
+    user['expires_at'] = resp['expires_in'] + now()
     user['token_type'] = resp['token_type']
     user['status'] = ExtUser.STATUS_ACTIVATED
 
@@ -86,7 +85,7 @@ def get_oauth_access_token(open_id):
     user['scope'] = pre_process_scope(profile['owner_alias'],
                                       profile['app_alias'])
     user.save()
-    
+
     logged_user = output_user(user)
     logged_user['token'] = ext_token
 
@@ -102,9 +101,9 @@ def check_user(open_id):
     result = True
 
     if not user \
-    or user['open_id'] != open_id \
-    or not user["refresh_token"] \
-    or not user["scope"]:
+            or user['open_id'] != open_id \
+            or not user["refresh_token"] \
+            or not user["scope"]:
         result = False
 
     return {
