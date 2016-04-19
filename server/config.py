@@ -74,9 +74,9 @@ class ProductionConfig(Config):
 
     OAUTH_API_URI = 'http://api.soopro.com'
     OAUTH_TOKEN_API_URI = '{}/oauth/token'.format(OAUTH_API_URI)
-    OAUTH_REDIRECT_URI = 'http://sup.local:8888/#/auth/redirect'
+    OAUTH_REDIRECT_URI = 'http://comm.exts.soopro.net/#/auth/redirect'
 
-    CURL_BASE_URL = 'http://exts.soopro.net/commment'
+    CURL_BASE_URL = 'http://api-comm.exts.soopro.net/commment'
 
 
 config = {
