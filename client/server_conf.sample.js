@@ -18,5 +18,5 @@ var prd = {
   'api': 'http://api-comm.exts.soopro.net'
 }
 
-sup_ext_comment.server = dev
+sup_ext_comment.server = dev;
 sup_ext_comment.is_debug = true;
