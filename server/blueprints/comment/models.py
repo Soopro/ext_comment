@@ -45,6 +45,10 @@ class CommentExtension(BaseDocument):
             "open_id": open_id
         })
 
+    def save(self, *args, **kwargs):
+        self['updated'] = now()
+        return super(CommentExtension, self).save(*args, **kwargs)
+
 
 class CommentGroup(BaseDocument):
     __collection__ = 'comment_groups'
@@ -75,11 +79,14 @@ class CommentGroup(BaseDocument):
             'extension_id': ObjectId(extension_id)
         })
 
-
     def find_all_by_eid(self, extension_id):
         return self.find({
             'extension_id': ObjectId(extension_id)
         })
+
+    def save(self, *args, **kwargs):
+        self['updated'] = now()
+        return super(CommentGroup, self).save(*args, **kwargs)
 
 
 class Comment(BaseDocument):
@@ -138,3 +145,7 @@ class Comment(BaseDocument):
             'extension_id': extension_id,
             'author_id': author_id
         }).sort('creation', INDEX_DESCENDING).limit(limit)
+
+    def save(self, *args, **kwargs):
+        self['updated'] = now()
+        return super(Comment, self).save(*args, **kwargs)

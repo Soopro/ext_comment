@@ -259,7 +259,7 @@ def _get_default_author_id():
 
 def _create_comment_extension():
     comment_extension = current_app.mongodb_conn.CommentExtension()
-    comment_extension.open_id = g.curr_user.open_id
+    comment_extension.open_id = g.curr_user["open_id"]
     comment_extension.save()
     return comment_extension
 
@@ -270,7 +270,7 @@ def _get_current_comment_extension():
         comment_extension = g.current_comment_extension
     elif hasattr(g, 'curr_user'):
         comment_extension = current_app.mongodb_conn.\
-            CommentExtension.find_one_by_open_id(g.curr_user.open_id)
+            CommentExtension.find_one_by_open_id(g.curr_user["open_id"])
         if not comment_extension:
             comment_extension = _create_comment_extension()
         g.current_comment_extension = comment_extension

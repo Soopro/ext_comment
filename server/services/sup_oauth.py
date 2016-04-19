@@ -106,7 +106,9 @@ class SupOAuth(object):
             r = requests.post(self.token_uri,
                               data=json.dumps(payloads),
                               headers=headers)
+            print r
             result = r.json()
+            print result
             assert isinstance(result, dict)
         except Exception:
             raise self.OAuthInvalidAccessToken

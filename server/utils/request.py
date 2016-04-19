@@ -2,12 +2,11 @@
 from __future__ import absolute_import
 
 from flask import request, current_app
-import os
 
-from apiresps.errors import (InvalidRequestBody,
+from apiresps.errors import (InvalidRequest,
                              RequestMaxLimited,
                              RequestBlocked,
-                             RequestBodyNotExists)
+                             RequestSourceNotExists)
 from apiresps.validations import ValidationParameterRequired
 
 
@@ -15,11 +14,11 @@ def _check_request_source(req_type):
     try:
         source = getattr(request, req_type)
     except Exception:
-        raise InvalidRequestBody
+        raise InvalidRequest
     if source is None:
-        raise RequestBodyNotExists
+        raise RequestSourceNotExists
     if not isinstance(source, dict):
-        raise InvalidRequestBody
+        raise InvalidRequest
     return source
 
 
@@ -98,26 +97,26 @@ def get_remote_addr():
 
 def get_request_path(user_alias, app_alias):
     apps_prefix = current_app.config.get("APPS_PREFIX")
-    app_base_path = os.path.normpath(
-        os.path.join(apps_prefix, user_alias, app_alias)
-    )
+    app_base_path = "/{0}/{1}/{2}".format(apps_prefix, user_alias, app_alias)
     return request.path.replace(app_base_path, '', 1) or '/'
 
 
 def rate_limit(key, remote_addr=None, limit=600, expires_in=3600):
     rate_prefix = current_app.config['RATE_LIMIT_PREFIX']
-    bad_ip_prefix = current_app.config['INVALID_REMOTE_ADDR_PREFIX']
-    bad_ip_limit = current_app.config['INVALID_REMOTE_ADDR_LIMIT']
-    bad_ip_expire = current_app.config['INVALID_REMOTE_ADDR_EXPIRATION']
+    bad_addr_prefix = current_app.config['INVALID_REMOTE_ADDR_PREFIX']
+    bad_addr_limit = current_app.config['INVALID_REMOTE_ADDR_LIMIT']
+    bad_addr_expire = current_app.config['INVALID_REMOTE_ADDR_EXPIRATION']
 
-    bad_ip_key = "{}/{}".format(bad_ip_prefix, remote_addr)
-    rate_key = "{}{}/{}".format(rate_prefix, key,
-                                remote_addr or get_remote_addr())
+    if not remote_addr:
+        remote_addr = get_remote_addr()
+
+    bad_addr_key = "{}{}".format(bad_addr_prefix, remote_addr)
+    rate_key = "{}{}/{}".format(rate_prefix, key, remote_addr)
 
     redis = current_app.redis
 
-    bad_ip = redis.get(bad_ip_key)
-    if bad_ip > bad_ip_limit:
+    bad_addr = redis.get(bad_addr_key)
+    if bad_addr > bad_addr_limit:
         raise RequestBlocked
 
     curr = redis.get(rate_key)
@@ -127,12 +126,12 @@ def rate_limit(key, remote_addr=None, limit=600, expires_in=3600):
         print "current rate:", curr, '/', limit
         print "timer remain:", redis.ttl(rate_key)
         print "-----------------"
-    p = redis.pipeline()
+    p = redis.pipeline(transaction=False)
     if curr and int(curr) > limit:
-        p.incr(bad_ip_key)
-        p.expire(bad_ip_key, bad_ip_expire)
-        if bad_ip > bad_ip_limit/2:
-            record_bad_remote_addr(bad_ip, rate_key)
+        if bad_addr >= bad_addr_limit:
+            record_bad_remote_addr(bad_addr, rate_key)
+        p.incr(bad_addr_key)
+        p.expire(bad_addr_key, bad_addr_expire)
         raise RequestMaxLimited
     if not curr:
         p.setex(rate_key, 0, expires_in)

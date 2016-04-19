@@ -1,10 +1,11 @@
-# coding=utf-8
+#coding=utf-8
 from __future__ import absolute_import
 
 from bson import ObjectId
 import re
 
-from .errors import ValidationError
+from .base import APIError
+from .errors import BadRequest, ValidationError
 
 
 class ValidationParameterRequired(ValidationError):
@@ -62,6 +63,7 @@ class ValidationParameterInvalid(ValidationError):
     status_message = "PARAMETER_INVALID"
 
 
+
 class ParamStructure(object):
     name = None
     type = None
@@ -85,10 +87,10 @@ class ParamStructure(object):
             self._validate_non_empty()
         elif not self.value:
             return
-
+        
         if self.type is not None:
             self._validate_type()
-
+        
         self.value = self.pre_handler()
 
         if self.len_min is not None:
@@ -114,7 +116,7 @@ class ParamStructure(object):
 
     def _validate_non_empty(self):
         if not bool(self.value) and self.value is not 0 \
-                and self.value is not False:
+        and self.value is not False:
             raise ValidationParameterBlank(self.name)
 
     def _validate_len_min(self):
@@ -138,119 +140,99 @@ class ParamStructure(object):
 
     def pre_handler(self):
         return self.value
-
-# Parameter structure preset
-
+        
+# Parameter structure preset 
 
 class ObjectIdStructure(ParamStructure):
     format_ObjectId = True
-
     def validator(self):
         if self.value and not ObjectId.is_valid(self.value):
             raise ValidationParameterInvalidObjectId(self.name)
-
 
 class AliasStructure(ParamStructure):
     len_max = 100
     format_alias = True
     type = unicode
-
     def validator(self):
         alias_pattern = re.compile(r'^[a-z0-9_\-]+$')
         if not self.value or not alias_pattern.match(self.value.lower()):
             raise ValidationParameterInvalidAlias(self.name)
 
-
 class IDStructure(ParamStructure):
     len_max = 500
     type = unicode
-
-
+    
 class SIDStructure(ParamStructure):
     len_max = 500
     type = unicode
-
 
 class MD5Structure(ParamStructure):
     len_max = 32
     type = unicode
 
-
 class TokenStructure(ParamStructure):
     len_max = 500
     type = unicode
 
-
 class DictStructure(ParamStructure):
     type = dict
-
 
 class AttrStructure(ParamStructure):
     len_max = 100
     type = unicode
 
-
 class DescStructure(ParamStructure):
     len_max = 500
     type = unicode
-
 
 class TextStructure(ParamStructure):
     len_max = 100000
     type = unicode
 
-
 class ListStructure(ParamStructure):
     type = list
 
+class FilenameStructure(ParamStructure):
+    len_max = 200
+    type = None
 
 class FileStructure(ParamStructure):
     type = None
 
-
 class IntegerStructure(ParamStructure):
     type = int
-
 
 class BoolStructure(ParamStructure):
     type = bool
 
-
 class UrlStructure(ParamStructure):
-    len_max = 500
+    len_max = 1000
     type = unicode
-
 
 class ProtocolStructure(ParamStructure):
     len_max = 10
     type = unicode
 
-
 class DomainStructure(ParamStructure):
     len_max = 100
     type = unicode
 
-
 class EmailStructure(ParamStructure):
     len_max = 150
     type = unicode
-
     def validator(self):
         if not self.value or '@' not in self.value:
             raise ValidationParameterInvalidEmail(self.name)
-
-
+        
 class FlagBitStructure(ParamStructure):
     value_min = 0
     value_max = 100
     type = int
-
-
+    
 class LoginStructure(ParamStructure):
     len_max = 200
     type = unicode
-
-
+    
 class PasswordStructure(ParamStructure):
     len_max = 50
     type = unicode
@@ -274,11 +256,13 @@ class Struct(object):
     MD5 = MD5Structure
     ObjectId = ObjectIdStructure
     Alias = AliasStructure
-
+    
     Dict = DictStructure
     Bool = BoolStructure
     Flag = FlagBitStructure
     Int = IntegerStructure
     List = ListStructure
-
+    
     File = FileStructure
+    Filename = FilenameStructure
+    

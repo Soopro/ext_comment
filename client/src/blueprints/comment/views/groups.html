@@ -9,12 +9,12 @@
         <span>{{ _('Groups') }}</span>
       </h2>
       <span flex></span>
-      <ng-include src="'blueprints/comment/views/menu.tmpl.html'" 
+      <ng-include src="'blueprints/comment/views/menu.tmpl.html'"
        ng-controller="menuCtrl"></ng-include>
     </div>
   </md-toolbar>
   <div class="md-padding">
-    
+
     <md-list>
       <md-list-item class="md-2-line"
        ng-click="jump_to('/comment/groups/' + group.id)"
@@ -22,10 +22,10 @@
         <md-icon md-svg-icon="" aria-label="android "></md-icon>
         <div class="md-list-item-text">
           <h3>{{group.group_key}}</h3>
-          <p>Latest Update: {{group.update | dateformat}}</p>
+          <p>{{ _('Latest Update:') }} {{group.update | dateformat}}</p>
         </div>
       </md-list-item>
     </md-list>
-    
+
   </div>
 </div>
