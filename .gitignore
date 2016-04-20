@@ -62,3 +62,4 @@ mongo_data
 *.sublime*
 
 server_conf.js
+_minify_temp_.js
