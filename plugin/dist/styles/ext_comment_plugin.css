@@ -1,0 +1,78 @@
+/*
+-----------------------------------------------
+Plugin: Comment Extension Styles
+http://www.soopro.io
+
+Author: redy
+----------------------------------------------- */
+/* Global Variables
+----------------------------------------------- */
+/* Mixins
+----------------------------------------------- */
+/* Styles
+----------------------------------------------- */
+#sup-ext-comment-plugin {
+  /* Reset */
+  /* Element styles */
+}
+#sup-ext-comment-plugin .clearfix {
+  *zoom: 1;
+}
+#sup-ext-comment-plugin .clearfix:before,
+#sup-ext-comment-plugin .clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+#sup-ext-comment-plugin .clearfix:after {
+  clear: both;
+}
+#sup-ext-comment-plugin .comm-form,
+#sup-ext-comment-plugin .comm-list section {
+  display: table !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  box-sizing: border-box;
+}
+#sup-ext-comment-plugin .author-container {
+  display: table-cell !important;
+  width: 120px;
+  margin: 0;
+  padding: 15px;
+  vertical-align: top;
+  word-break: break-all;
+  box-sizing: border-box;
+}
+#sup-ext-comment-plugin .author-container img {
+  max-width: 100%;
+}
+#sup-ext-comment-plugin .comm-container,
+#sup-ext-comment-plugin .input-container {
+  display: table-cell !important;
+  margin: 0;
+  padding: 15px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+#sup-ext-comment-plugin .comm-container textarea,
+#sup-ext-comment-plugin .input-container textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 15px;
+  margin: 0;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  box-sizing: border-box;
+}
+#sup-ext-comment-plugin .comm-container .remove-comment,
+#sup-ext-comment-plugin .input-container .remove-comment {
+  line-height: 3em;
+}
+#sup-ext-comment-plugin .comm-container .remove-comment[disabled],
+#sup-ext-comment-plugin .input-container .remove-comment[disabled] {
+  opacity: 0.5;
+}
