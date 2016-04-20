@@ -11,7 +11,6 @@
       "libs":{
         "flatten": true,
         "src":[
-          "jquery/dist/jquery.min.js",
           "q/q.js"
         ],
         "cwd":"bower_components",
@@ -59,9 +58,10 @@
         "cwd": "dist",
         "src": [
           "scripts/libs/q.js",
-          "scripts/skipper.js"
+          "scripts/ext_comment_sdk.js",
+          "scripts/ext_comment_render"
         ],
-        "output": "scripts/libs/skipper.min.js"
+        "output": "scripts/libs/ext_comment_plugin.min.js"
       }
     }
   }

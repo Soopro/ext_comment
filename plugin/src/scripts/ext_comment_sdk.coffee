@@ -79,7 +79,7 @@ utils =
 
 
 default_options =
-  apiExtURL: 'http://comment.ext.soopro.net/server'
+  apiExtURL: 'http://api-comm.exts.soopro.net'
   contentType: 'application/json'
   responseType: 'json'
   withCredentials: false

@@ -10,16 +10,16 @@ def verify_token():
     ExtUser = current_app.mongodb_conn.ExtUser
 
     # fake data
+    # if current_app.use_fake_data:
+    #     user = ExtUser.find_one()
+    #     if not user:
+    #         user = ExtUser()
+    #         user['scope'] = u'tester/testapp'
+    #         user['open_id'] = u'test-open-id'
+    #         user.save()
+    #     g.curr_user = user
 
-    # user = ExtUser.find_one()
-    # if not user:
-    #     user = ExtUser()
-    #     user['scope'] = u'tester/testapp'
-    #     user['open_id'] = u'test-open-id'
-    #     user.save()
-    # g.curr_user = user
-
-    # return
+    #     return
 
     open_id = current_app.sup_oauth.load_ext_token(request.headers)
 
@@ -69,16 +69,16 @@ def verify_outer():
     CommentExtension = current_app.mongodb_conn.CommentExtension
 
     # fake outer
-    if current_app.use_fake_data:
-        comment_extension = CommentExtension.find_one()
+    # if current_app.use_fake_data:
+    #     comment_extension = CommentExtension.find_one()
 
-        if not comment_extension:
-            comment_extension = CommentExtension()
-            comment_extension['open_id'] = u'fade_id'
-            comment_extension.save()
-        g.current_comment_extension = comment_extension
+    #     if not comment_extension:
+    #         comment_extension = CommentExtension()
+    #         comment_extension['open_id'] = u'fade_id'
+    #         comment_extension.save()
+    #     g.current_comment_extension = comment_extension
 
-        return
+    #     return
 
     open_id = request.headers.get('AppOpenId')
     if not open_id:

@@ -19,7 +19,7 @@ default_avatar = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAIAAAC2
 Comment = null
 
 get_comment_element = ->
-  el = document.querySelector('#sup-comment-exts-plugin')
+  el = document.querySelector('#sup-ext-comment-plugin')
   if not el
     console.error 'SupExtComment: no commment base element.'
   return el
