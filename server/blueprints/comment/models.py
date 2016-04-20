@@ -42,7 +42,7 @@ class CommentExtension(BaseDocument):
 
     def find_one_by_open_id(self, open_id):
         return self.find_one({
-            "open_id": open_id
+            "open_id": unicode(open_id)
         })
 
     def save(self, *args, **kwargs):
