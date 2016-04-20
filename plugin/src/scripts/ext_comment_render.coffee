@@ -250,9 +250,12 @@ initHandler = ->
     return
 
   api_url = comm_element.getAttribute('api-url')
+  app_open_id = comm_element.getAttribute('app-open-id')
   opts = {}
   if api_url
     opts.apiExtURL = api_url
+  if app_open_id
+    opts.app_id = app_open_id
 
   Comment = new SupExtComment(opts)
 
