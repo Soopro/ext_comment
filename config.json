@@ -16,5 +16,6 @@
     "domain":"comm.exts.soopro.net",
     "protocol": "http",
     "path": "",
-    "entrance": "http://comm.exts.soopro.net/#/"
+    "entrance": "http://comm.exts.soopro.net/#/",
+    "script": "aasfawe"
 }

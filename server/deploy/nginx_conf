@@ -2,15 +2,15 @@ server{
   listen 80;
   server_name comm.exts.soopro.net;
 
-  root  /var/www/ext_comment;
   index           index.html;
 
   location / {
-    rewrite ^/(.*)$ /client/dist/$1 break;
+    root /var/www/ext_comment/client/dist;
   }
 
   location /plugin/ {
-    rewrite ^/plugin/(.*)$ /plugin/dist/scripts/libs/$1 break;
+    root /var/www/ext_comment/plugin/dist/scripts/libs;
+    rewrite ^/plugin/(.*)$ /$1 break;
   }
 
 }
