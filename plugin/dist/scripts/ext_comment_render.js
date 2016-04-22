@@ -262,7 +262,7 @@
   locale_meta = document.querySelector('meta[name="locale"]');
 
   if (locale_meta) {
-    locale = locale_meta.getAttrbutie('content');
+    locale = locale_meta.getAttrbute('content');
   }
 
   if (!locale) {

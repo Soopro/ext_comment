@@ -257,8 +257,6 @@ initHandler = ->
   if app_open_id
     opts.app_id = app_open_id
 
-  console.log(opts)
-
   Comment = new SupExtComment(opts)
 
   # render elements
