@@ -53,16 +53,17 @@ class TestCaseConfig(Config):
 
 
 class TestingConfig(Config):
+    DEBUG = False
     DB_DBNAME = 'ext_comment_test'
 
-    EXT_KEY = 'comment-1453895893'
-    EXT_SECRET = '38a6daf0-a718-4456-938f-c6ab2ad03456'
+    EXT_KEY = 'comment-1460987711'
+    EXT_SECRET = '477a39f0-ff8f-4af6-b596-ce9d9d914f94'
 
     OAUTH_API_URI = 'http://api.sup.farm'
     OAUTH_TOKEN_API_URI = '{}/oauth/token'.format(OAUTH_API_URI)
-    OAUTH_REDIRECT_URI = 'http://comment.d-exts.sup.farm/#/auth/redirect'
+    OAUTH_REDIRECT_URI = 'http://comm.exts.sup.farm/#/auth/redirect'
 
-    CURL_BASE_URL = 'http://comment.exts.sup.farm'
+    CURL_BASE_URL = 'http://api-comm.exts.sup.farm/commment'
 
 
 class ProductionConfig(Config):

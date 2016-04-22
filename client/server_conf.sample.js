@@ -7,7 +7,7 @@ if (sup_ext_comment == 'undefined' || !sup_ext_comment){
 }
 
 var test = {
-  'api': 'http://ext.sup.farm/comment/server'
+  'api': 'http://api-comm.exts.sup.farm'
 }
 
 var dev = {

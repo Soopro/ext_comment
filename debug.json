@@ -16,5 +16,6 @@
     "domain":"sup.local:8888",
     "protocol": "http",
     "path": "/",
-    "entrance": "http://sup.local:8888/#/"
+    "entrance": "http://sup.local:8888/#/",
+    "script": "<section id='sup-ext-comment-plugin' app-open-id='{{app_id}}' group-key='{{}}' ext-alias='{{ext_alias}}'></section><script src='http://comm.exts.soopro.net/plugin/ext_comment_render.js'></script>"
 }

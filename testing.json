@@ -13,9 +13,9 @@
       "zh": "添加评论功能。"
     },
     "published": false,
-    "domain":"comm.exts.soopro.net",
+    "domain":"comm.exts.sup.farm",
     "protocol": "http",
     "path": "",
-    "entrance": "http://comm.exts.soopro.net/#/",
-    "script": "<section id='sup-ext-comment-plugin' app-open-id='{{app_id}}' group-key='{{}}' ext-alias='{{ext_alias}}'></section><script src='http://comm.exts.soopro.net/plugin/ext_comment_render.js'></script>"
+    "entrance": "http://comm.exts.sup.farm/#/",
+    "script": "<section id='sup-ext-comment-plugin' app-open-id='{{app_id}}' group-key='{{}}' ext-alias='{{ext_alias}}'></section><script src='http://comm.exts.sup.farm/plugin/ext_comment_render.js'></script>"
 }
