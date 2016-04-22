@@ -229,7 +229,6 @@
     if (app_open_id) {
       opts.app_id = app_open_id;
     }
-    console.log(opts);
     Comment = new SupExtComment(opts);
     Comment.query({
       key: get_comment_key()
@@ -262,7 +261,7 @@
   locale_meta = document.querySelector('meta[name="locale"]');
 
   if (locale_meta) {
-    locale = locale_meta.getAttrbute('content');
+    locale = locale_meta.getAttrbutie('content');
   }
 
   if (!locale) {
