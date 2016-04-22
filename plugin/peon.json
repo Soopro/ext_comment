@@ -59,7 +59,7 @@
         "src": [
           "scripts/libs/q.js",
           "scripts/ext_comment_sdk.js",
-          "scripts/ext_comment_render"
+          "scripts/ext_comment_render.js"
         ],
         "output": "scripts/libs/ext_comment_plugin.min.js"
       }
