@@ -9,7 +9,7 @@ server{
   }
 
   location /plugin/ {
-    root /var/www/ext_comment/plugin/dist/scripts/libs;
+    root /var/www/ext_comment/plugin/dist/out;
     rewrite ^/plugin/(.*)$ /$1 break;
   }
 

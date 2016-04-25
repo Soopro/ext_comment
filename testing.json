@@ -17,5 +17,5 @@
     "protocol": "http",
     "path": "",
     "entrance": "http://comm.exts.sup.farm/#/",
-    "scripts": "<section id='sup-ext-comment-plugin' app-open-id='{{app_id}}' group-key='{{content_id}}' ext-alias='comment' api-url='http://api-comm.exts.sup.farm'></section><script src='http://comm.exts.sup.farm/plugin/ext_comment_plugin.min.js'></script>"
+    "scripts": "<link rel='stylesheet' href='http://comm.exts.sup.farm/plugin/ext_comment_plugin.min.css' type='text/css'><section id='sup-ext-comment-plugin' app-open-id='{{app_id}}' group-key='{{content_id}}' ext-alias='comment' api-url='http://api-comm.exts.sup.farm'></section><script src='http://comm.exts.sup.farm/plugin/ext_comment_plugin.min.js'></script>"
 }

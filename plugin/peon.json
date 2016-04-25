@@ -56,13 +56,22 @@
       "js":{
         "type": "js",
         "cwd": "dist",
-        "minify": false,
         "src": [
           "scripts/libs/q.js",
           "scripts/ext_comment_sdk.js",
           "scripts/ext_comment_render.js"
         ],
-        "output": "scripts/libs/ext_comment_plugin.min.js"
+        "output": "out/ext_comment_plugin.min.js"
+      },
+      "css":{
+        "type": "js",
+        "cwd": "dist",
+        "src": [
+          "styles/ext_comment_plugin.css",
+          "styles/bootstrap.min.css",
+          "styles/style.css"
+        ],
+        "output": "out/ext_comment_plugin.min.css"
       }
     }
   }
