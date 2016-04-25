@@ -67,9 +67,7 @@
         "type": "css",
         "cwd": "dist",
         "src": [
-          "styles/ext_comment_plugin.css",
-          "styles/bootstrap.min.css",
-          "styles/style.css"
+          "styles/ext_comment_plugin.css"
         ],
         "output": "out/ext_comment_plugin.min.css"
       }
