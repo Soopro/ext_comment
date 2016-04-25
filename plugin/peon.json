@@ -64,7 +64,7 @@
         "output": "out/ext_comment_plugin.min.js"
       },
       "css":{
-        "type": "js",
+        "type": "css",
         "cwd": "dist",
         "src": [
           "styles/ext_comment_plugin.css",
