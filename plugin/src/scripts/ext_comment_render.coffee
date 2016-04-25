@@ -289,7 +289,7 @@ locale = null
 
 locale_meta = document.querySelector('meta[name="locale"]')
 if locale_meta
-  locale = locale_meta.getAttrbutie('content')
+  locale = locale_meta.getAttribute('content')
 
 if not locale
   userLang = navigator.language or navigator.userLanguage
