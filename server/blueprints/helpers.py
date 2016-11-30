@@ -7,7 +7,7 @@ from apiresps.errors import AuthFailed
 
 
 def verify_token():
-    ExtUser = current_app.mongodb_conn.ExtUser
+    ExtUser = current_app.mongodb.ExtUser
 
     # fake data
     # if current_app.use_fake_data:
@@ -66,7 +66,7 @@ def verify_token():
 
 
 def verify_outer():
-    CommentExtension = current_app.mongodb_conn.CommentExtension
+    CommentExtension = current_app.mongodb.CommentExtension
 
     # fake outer
     # if current_app.use_fake_data:

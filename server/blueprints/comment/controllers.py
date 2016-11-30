@@ -40,7 +40,7 @@ def visit_add_comment(group_key):
     comment_extension = _get_current_comment_extension()
 
     def limit_comments(max_comment, min_time):
-        comments = current_app.mongodb_conn.\
+        comments = current_app.mongodb.\
             Comment.find_by_gkey_eid_aid(group_key,
                                          comment_extension['_id'],
                                          author_id,
@@ -59,7 +59,7 @@ def visit_add_comment(group_key):
 
     comment_group = _visit_get_comment_group(group_key)
 
-    comment = current_app.mongodb_conn.Comment()
+    comment = current_app.mongodb.Comment()
     comment['content'] = content
     comment['anonymous'] = anonymous_author
     comment['author_id'] = author_id
@@ -240,7 +240,7 @@ def output_comment(comment, author_id=None):
 
 
 # def _new_comment_extension():
-#     CommentExtension = current_app.mongodb_conn.CommentExtension
+#     CommentExtension = current_app.mongodb.CommentExtension
 #     comment_extension = CommentExtension.\
 #         find_one_by_open_id(g.curr_user["_id"])
 #     if comment_extension:
@@ -258,7 +258,7 @@ def _get_default_author_id():
 
 
 def _create_comment_extension():
-    comment_extension = current_app.mongodb_conn.CommentExtension()
+    comment_extension = current_app.mongodb.CommentExtension()
     comment_extension.open_id = g.curr_user["open_id"]
     comment_extension.save()
     return comment_extension
@@ -269,7 +269,7 @@ def _get_current_comment_extension():
     if hasattr(g, 'current_comment_extension'):
         comment_extension = g.current_comment_extension
     elif hasattr(g, 'curr_user'):
-        comment_extension = current_app.mongodb_conn.\
+        comment_extension = current_app.mongodb.\
             CommentExtension.find_one_by_open_id(g.curr_user["open_id"])
         if not comment_extension:
             comment_extension = _create_comment_extension()
@@ -279,7 +279,7 @@ def _get_current_comment_extension():
 
 def _create_comment_group(group_key):
     comment_extension = _get_current_comment_extension()
-    CommentGroup = current_app.mongodb_conn.CommentGroup
+    CommentGroup = current_app.mongodb.CommentGroup
     if CommentGroup.find_one_by_gkey_eid(group_key, comment_extension._id):
         raise CommentGroupKeyHasExsited()
     comment_group = CommentGroup()
@@ -291,14 +291,14 @@ def _create_comment_group(group_key):
 
 def _get_comment_groups():
     comment_extension = _get_current_comment_extension()
-    comment_groups = current_app.mongodb_conn.\
+    comment_groups = current_app.mongodb.\
         CommentGroup.find_all_by_eid(comment_extension['_id'])
     return comment_groups
 
 
 def _visit_get_comment_group(group_key):
     comment_extension = _get_current_comment_extension()
-    comment_group = current_app.mongodb_conn. \
+    comment_group = current_app.mongodb. \
         CommentGroup.find_one_by_gkey_eid(group_key,
                                               comment_extension['_id'])
     if not comment_group:
@@ -308,7 +308,7 @@ def _visit_get_comment_group(group_key):
 
 def _visit_get_comment(comment_id, group_key):
     comment_extension = _get_current_comment_extension()
-    comment = current_app.mongodb_conn.Comment.\
+    comment = current_app.mongodb.Comment.\
         find_one_by_id_gkey_eid(comment_id,
                                 group_key,
                                 comment_extension['_id'])
@@ -319,14 +319,14 @@ def _visit_get_comment(comment_id, group_key):
 
 def _visit_get_comments(group_key):
     comment_extension = _get_current_comment_extension()
-    comments = current_app.mongodb_conn.Comment.\
+    comments = current_app.mongodb.Comment.\
         find_all_by_gkey_eid(group_key, comment_extension['_id'])
     return comments
 
 
 def _admin_get_comment_group(group_id):
     comment_extension = _get_current_comment_extension()
-    comment_group = current_app.mongodb_conn. \
+    comment_group = current_app.mongodb. \
         CommentGroup.find_one_by_gid_eid(group_id,
                                          comment_extension['_id'])
     if not comment_group:
@@ -336,7 +336,7 @@ def _admin_get_comment_group(group_id):
 
 def _admin_get_comment(comment_id, group_id):
     comment_extension = _get_current_comment_extension()
-    comment = current_app.mongodb_conn.Comment.\
+    comment = current_app.mongodb.Comment.\
         find_one_by_id_gid_eid(comment_id,
                                        group_id, comment_extension['_id'])
     if not comment:
@@ -346,6 +346,6 @@ def _admin_get_comment(comment_id, group_id):
 
 def _admin_get_comments(group_id):
     comment_extension = _get_current_comment_extension()
-    comments = current_app.mongodb_conn.Comment.\
+    comments = current_app.mongodb.Comment.\
         find_all_by_gid_eid(group_id, comment_extension['_id'])
     return comments

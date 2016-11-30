@@ -43,7 +43,7 @@ def get_oauth_access_token(open_id):
     if not current_app.sup_oauth.match_random_string(state, open_id):
         raise UserStateInvalid
 
-    ExtUser = current_app.mongodb_conn.ExtUser
+    ExtUser = current_app.mongodb.ExtUser
 
     user = ExtUser.find_one_by_open_id(open_id)
 

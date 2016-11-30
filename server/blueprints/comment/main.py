@@ -36,7 +36,7 @@ route_inject(blueprint, urls)
 @blueprint.before_app_first_request
 def before_first_request():
     from .models import (Comment, CommentGroup, CommentExtension)
-    current_app.mongodb_database.register([
+    current_app.mongodb_conn.register([
         Comment, CommentGroup, CommentExtension])
 
 

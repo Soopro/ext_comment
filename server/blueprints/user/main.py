@@ -27,7 +27,7 @@ route_inject(blueprint, urlpatterns)
 
 @blueprint.before_app_first_request
 def before_first_request():
-    current_app.mongodb_database.register(ExtUser)
+    current_app.mongodb_conn.register(ExtUser)
 
 
 @blueprint.before_request

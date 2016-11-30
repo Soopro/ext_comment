@@ -56,10 +56,10 @@ def create_app(config_name='development'):
         app.logger.addHandler(error_file_handler)
 
     # database connections
-    app.mongodb_database = MongodbConn(
+    app.mongodb_conn = MongodbConn(
         host=app.config.get("DB_HOST"),
         port=app.config.get("DB_PORT"))
-    app.mongodb_conn = app.mongodb_database[
+    app.mongodb = app.mongodb_conn[
         app.config.get("DB_DBNAME")]
 
     app.sup_oauth = SupOAuth(
@@ -73,7 +73,7 @@ def create_app(config_name='development'):
     )
 
     from blueprints.user.models import ExtUser
-    app.mongodb_database.register([ExtUser])
+    app.mongodb_conn.register([ExtUser])
 
     # register blueprints
     from blueprints.user import blueprint as user_module

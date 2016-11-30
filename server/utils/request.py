@@ -140,10 +140,10 @@ def rate_limit(key, remote_addr=None, limit=600, expires_in=3600):
 
 
 def record_bad_remote_addr(bad_addr, rate_key):
-    bad_addr = current_app.mongodb_conn.\
+    bad_addr = current_app.mongodb.\
         BadRemoteAddr.find_one_by_addr(bad_addr)
     if not bad_addr:
-        bad_addr = current_app.mongodb_conn.BadRemoteAddr()
+        bad_addr = current_app.mongodb.BadRemoteAddr()
         bad_addr["requests"] = []
         bad_addr["risk"] = 0
 
